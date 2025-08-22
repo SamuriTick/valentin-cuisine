@@ -11,6 +11,11 @@ export const metadata: Metadata = {
 
 async function getNews() {
   try {
+    // Only fetch from database if DATABASE_URL is available
+    if (!process.env.DATABASE_URL) {
+      return []
+    }
+
     // Use prisma directly in server components for better performance
     const { prisma } = await import('@/lib/prisma')
     const news = await prisma.newsPost.findMany({
