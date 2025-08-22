@@ -140,43 +140,43 @@ model MediaItem {
   filePath       String   @map("file_path")
   fileType       String   @map("file_type")
   fileSize       Int?     @map("file_size")
-  width          Int?
-  height         Int?
-  thumbnailPath  String?  @map("thumbnail_path")
-  thumbnailSize  Int?     @map("thumbnail_size")
-  optimizedPath  String?  @map("optimized_path")
-  optimizedSize  Int?     @map("optimized_size")
   altText        String?  @map("alt_text")
   caption        String?
   uploadedAt     DateTime @default(now()) @map("uploaded_at")
+  height         Int?
+  optimized_path String?
+  optimized_size Int?
+  thumbnail_path String?
+  thumbnail_size Int?
+  width          Int?
 
   @@map("media_library")
 }
 
 model CommunityGroup {
-  id           Int      @id @default(autoincrement())
-  title        String   // Keep original field name to maintain compatibility
-  name         String?  // Add as optional for now
-  description  String?
-  category     String?  @default("Cultural & Social")
-  meetingTime  String?  @map("meeting_time")
-  meetingDay   String?  @map("meeting_day")
-  contactName  String?  @map("contact_name")
-  contactEmail String?  @map("contact_email")
-  contactPhone String?  @map("contact_phone")
-  imageUrl     String?  @map("image_url")
-  websiteUrl   String?  @map("website_url")
-  facebookUrl  String?  @map("facebook_url")
-  instagramUrl String?  @map("instagram_url")
-  memberCount  Int?     @map("member_count")
-  ageGroup     String?  @map("age_group")
-  language     String?
-  fees         String?
-  featured     Boolean  @default(false)
-  displayOrder Int      @default(0) @map("display_order")
-  active       Boolean  @default(true)
-  createdAt    DateTime? @default(now()) @map("created_at")
-  updatedAt    DateTime? @updatedAt @map("updated_at")
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String?
+  active        Boolean   @default(true)
+  age_group     String?
+  category      String?   @default("Cultural & Social")
+  contact_email String?
+  contact_name  String?
+  contact_phone String?
+  created_at    DateTime? @default(now())
+  display_order Int       @default(0)
+  facebook_url  String?
+  featured      Boolean   @default(false)
+  fees          String?
+  image_url     String?
+  instagram_url String?
+  language      String?
+  meeting_day   String?
+  meeting_time  String?
+  member_count  Int?
+  name          String?
+  updated_at    DateTime?
+  website_url   String?
 
   @@map("community_groups")
 }
@@ -268,18 +268,37 @@ model bookings {
   facilities        Facility @relation(fields: [facility_id], references: [id])
 }
 
-model FacilityGallery {
+model facility_gallery {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  image_url     String
+  category      String   @default("general")
+  alt_text      String?
+  display_order Int      @default(0)
+  active        Boolean  @default(true)
+  featured      Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime
+}
+
+model NewsPost {
   id           Int      @id @default(autoincrement())
   title        String
-  description  String?
-  imageUrl     String   @map("image_url")
+  slug         String   @unique
+  excerpt      String?
+  content      String
+  imageUrl     String?  @map("image_url")
   category     String   @default("general")
-  altText      String?  @map("alt_text")
-  displayOrder Int      @default(0) @map("display_order")
-  active       Boolean  @default(true)
+  tags         String?
+  author       String?
   featured     Boolean  @default(false)
+  published    Boolean  @default(false)
+  publishedAt  DateTime? @map("published_at")
+  displayOrder Int      @default(0) @map("display_order")
+  viewCount    Int      @default(0) @map("view_count")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  @@map("facility_gallery")
+  @@map("news_posts")
 }

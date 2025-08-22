@@ -73,6 +73,7 @@ export const Navbar = () => {
     { label: "HOME", href: "/" },
     { label: "WHAT'S ON", href: "/programs" },
     { label: "BOOK A ROOM", href: "/facilities" },
+    { label: "NEWS", href: "/news" },
     { label: "ABOUT", href: "/about" },
     { label: "CONTACT", href: "/contact" },
   ];

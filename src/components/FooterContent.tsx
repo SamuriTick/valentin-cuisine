@@ -13,6 +13,7 @@ export function FooterContent({ settings }: FooterContentProps) {
     { label: "Home", href: "/" },
     { label: "Facilities", href: "/facilities" },
     { label: "Programs", href: "/programs" },
+    { label: "News", href: "/news" },
     { label: "Contact", href: "/contact" },
   ];
 

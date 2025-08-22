@@ -35,3 +35,5 @@ export const SectionTitle = (props: Readonly<SectionTitleProps>) => {
   );
 }
 
+export default SectionTitle;
+

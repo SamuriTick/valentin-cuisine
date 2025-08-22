@@ -28,3 +28,5 @@ export const TextOnlyHero = ({ title, subtitle, backgroundImage }: TextOnlyHeroP
     </div>
   );
 };
+
+export default TextOnlyHero;
