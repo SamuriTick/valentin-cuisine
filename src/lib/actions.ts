@@ -109,11 +109,11 @@ export async function getFacilityGallery() {
       return []
     }
 
-    return await prisma.facilityGallery.findMany({
+    return await prisma.facility_gallery.findMany({
       where: { active: true },
       orderBy: [
-        { displayOrder: 'asc' },
-        { createdAt: 'desc' }
+        { display_order: 'asc' },
+        { created_at: 'desc' }
       ]
     })
   } catch (error) {

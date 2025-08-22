@@ -382,7 +382,7 @@ export default async function Facilities() {
 
         <div className="grid gap-6 lg:grid-cols-3 xl:grid-cols-3 mt-16">
           {galleryImages.length > 0 ? (
-            galleryImages.map((image) => (
+            galleryImages.map((image: any) => (
               <div key={image.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                 <div className="h-48 bg-gray-100 relative">
                   <img

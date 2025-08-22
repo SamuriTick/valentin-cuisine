@@ -62,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }),
       prisma.communityGroup.findMany({
         where: { active: true },
-        select: { id: true, updatedAt: true },
+        select: { id: true, updated_at: true },
       }),
     ])
 
@@ -85,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Add community group routes (if individual group pages exist)
     const groupRoutes: MetadataRoute.Sitemap = communityGroups.map((group) => ({
       url: `${baseUrl}/community-groups/${group.id}`,
-      lastModified: group.updatedAt || new Date(),
+      lastModified: group.updated_at || new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
     }))

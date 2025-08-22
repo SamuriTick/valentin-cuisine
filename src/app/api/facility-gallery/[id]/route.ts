@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const galleryImage = await prisma.facilityGallery.findUnique({
+    const galleryImage = await prisma.facility_gallery.findUnique({
       where: { id: parseInt(params.id) }
     })
 
@@ -55,15 +55,15 @@ export async function PUT(
       featured
     } = body
 
-    const galleryImage = await prisma.facilityGallery.update({
+    const galleryImage = await prisma.facility_gallery.update({
       where: { id: parseInt(params.id) },
       data: {
         ...(title !== undefined && { title }),
         ...(description !== undefined && { description }),
-        ...(imageUrl !== undefined && { imageUrl }),
+        ...(imageUrl !== undefined && { image_url: imageUrl }),
         ...(category !== undefined && { category }),
-        ...(altText !== undefined && { altText }),
-        ...(displayOrder !== undefined && { displayOrder }),
+        ...(altText !== undefined && { alt_text: altText }),
+        ...(displayOrder !== undefined && { display_order: displayOrder }),
         ...(active !== undefined && { active }),
         ...(featured !== undefined && { featured })
       }
@@ -93,7 +93,7 @@ export async function DELETE(
   }
 
   try {
-    await prisma.facilityGallery.delete({
+    await prisma.facility_gallery.delete({
       where: { id: parseInt(params.id) }
     })
 

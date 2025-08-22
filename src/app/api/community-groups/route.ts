@@ -9,8 +9,8 @@ export async function GET() {
       where: { active: true },
       orderBy: [
         { featured: 'desc' },
-        { displayOrder: 'asc' },
-        { createdAt: 'desc' }
+        { display_order: 'asc' },
+        { created_at: 'desc' }
       ]
     })
 
@@ -71,21 +71,21 @@ export async function POST(request: NextRequest) {
         name,
         description,
         category,
-        meetingTime,
-        meetingDay,
-        contactName,
-        contactEmail,
-        contactPhone,
-        imageUrl,
-        websiteUrl,
-        facebookUrl,
-        instagramUrl,
-        memberCount,
-        ageGroup,
+        meeting_time: meetingTime,
+        meeting_day: meetingDay,
+        contact_name: contactName,
+        contact_email: contactEmail,
+        contact_phone: contactPhone,
+        image_url: imageUrl,
+        website_url: websiteUrl,
+        facebook_url: facebookUrl,
+        instagram_url: instagramUrl,
+        member_count: memberCount,
+        age_group: ageGroup,
         language,
         fees,
         featured: featured || false,
-        displayOrder: displayOrder || 0
+        display_order: displayOrder || 0
       }
     })
 

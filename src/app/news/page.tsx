@@ -96,7 +96,7 @@ export default async function NewsPage() {
             <div className="space-y-8">
               <SectionTitle
                 title="Featured News"
-                pretitle="Important"
+                preTitle="Important"
               />
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {featuredNews.map((post: NewsPost) => (
@@ -151,7 +151,7 @@ export default async function NewsPage() {
             <div className="space-y-8">
               <SectionTitle
                 title="Latest News"
-                pretitle="Updates"
+                preTitle="Updates"
               />
               <div className="space-y-6">
                 {regularNews.map((post: NewsPost) => (

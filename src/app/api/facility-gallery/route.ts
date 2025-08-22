@@ -5,11 +5,11 @@ import { checkAuth } from '@/lib/auth-middleware'
 // GET /api/facility-gallery - Get all gallery images
 export async function GET() {
   try {
-    const galleryImages = await prisma.facilityGallery.findMany({
+    const galleryImages = await prisma.facility_gallery.findMany({
       where: { active: true },
       orderBy: [
-        { displayOrder: 'asc' },
-        { createdAt: 'desc' }
+        { display_order: 'asc' },
+        { created_at: 'desc' }
       ]
     })
 
@@ -60,15 +60,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const galleryImage = await prisma.facilityGallery.create({
+    const galleryImage = await prisma.facility_gallery.create({
       data: {
         title,
         description,
-        imageUrl,
+        image_url: imageUrl,
         category: category || 'general',
-        altText: altText || title,
-        displayOrder: displayOrder || 0,
-        featured: featured || false
+        alt_text: altText || title,
+        display_order: displayOrder || 0,
+        featured: featured || false,
+        updated_at: new Date()
       }
     })
 
@@ -105,9 +106,9 @@ export async function PUT(request: NextRequest) {
 
     // Update display order for multiple items
     const updatePromises = reorderData.map(({ id, displayOrder }) =>
-      prisma.facilityGallery.update({
+      prisma.facility_gallery.update({
         where: { id },
-        data: { displayOrder }
+        data: { display_order: displayOrder }
       })
     )
 
