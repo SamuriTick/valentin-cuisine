@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Container from '@/components/Container'
 import Link from 'next/link'
+import { getNewsPost, getRelatedNews } from '@/lib/actions'
 
 interface NewsPost {
   id: number
@@ -20,62 +21,6 @@ interface NewsPost {
   viewCount: number
   createdAt: string
   updatedAt: string
-}
-
-async function getNewsPost(slug: string): Promise<NewsPost | null> {
-  try {
-    const { prisma } = await import('@/lib/prisma')
-    const post = await prisma.newsPost.findUnique({
-      where: { slug }
-    })
-    
-    if (!post) {
-      return null
-    }
-    
-    // Increment view count
-    await prisma.newsPost.update({
-      where: { id: post.id },
-      data: { viewCount: { increment: 1 } }
-    })
-    
-    // Convert dates to strings for serialization
-    return {
-      ...post,
-      publishedAt: post.publishedAt?.toISOString() || null,
-      createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString()
-    } as NewsPost
-  } catch (error) {
-    console.error('Error fetching news post:', error)
-    return null
-  }
-}
-
-async function getRelatedNews(category: string, currentSlug: string): Promise<NewsPost[]> {
-  try {
-    const { prisma } = await import('@/lib/prisma')
-    const news = await prisma.newsPost.findMany({
-      where: {
-        published: true,
-        category,
-        slug: { not: currentSlug }
-      },
-      orderBy: { publishedAt: 'desc' },
-      take: 3
-    })
-    
-    // Convert dates to strings for serialization
-    return news.map(post => ({
-      ...post,
-      publishedAt: post.publishedAt?.toISOString() || null,
-      createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString()
-    })) as NewsPost[]
-  } catch (error) {
-    console.error('Error fetching related news:', error)
-    return []
-  }
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {

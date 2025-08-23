@@ -3,43 +3,11 @@ import Container from '@/components/Container'
 import SectionTitle from '@/components/SectionTitle'
 import { TextOnlyHero } from '@/components/TextOnlyHero'
 import Link from 'next/link'
+import { getNews } from '@/lib/actions'
 
 export const metadata: Metadata = {
   title: 'News & Announcements | West Acton Community Centre',
   description: 'Stay updated with the latest news, announcements, and notices from West Acton Community Centre',
-}
-
-async function getNews() {
-  try {
-    // Only fetch from database if DATABASE_URL is available
-    if (!process.env.DATABASE_URL) {
-      return []
-    }
-
-    // Use prisma directly in server components for better performance
-    const { prisma } = await import('@/lib/prisma')
-    const news = await prisma.newsPost.findMany({
-      where: {
-        published: true
-      },
-      orderBy: [
-        { featured: 'desc' },
-        { publishedAt: 'desc' },
-        { createdAt: 'desc' }
-      ]
-    })
-    
-    // Convert dates to strings for serialization
-    return news.map(post => ({
-      ...post,
-      publishedAt: post.publishedAt?.toISOString() || null,
-      createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString()
-    }))
-  } catch (error) {
-    console.error('Error fetching news:', error)
-    return []
-  }
 }
 
 interface NewsPost {

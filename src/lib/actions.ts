@@ -121,3 +121,95 @@ export async function getFacilityGallery() {
     return []
   }
 }
+
+export async function getNews() {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return []
+    }
+
+    const news = await prisma.newsPost.findMany({
+      where: {
+        published: true
+      },
+      orderBy: [
+        { featured: 'desc' },
+        { publishedAt: 'desc' },
+        { createdAt: 'desc' }
+      ]
+    })
+    
+    // Convert dates to strings for serialization
+    return news.map(post => ({
+      ...post,
+      publishedAt: post.publishedAt?.toISOString() || null,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString()
+    }))
+  } catch (error) {
+    console.error('Error fetching news:', error)
+    return []
+  }
+}
+
+export async function getNewsPost(slug: string) {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return null
+    }
+
+    const post = await prisma.newsPost.findUnique({
+      where: { slug }
+    })
+    
+    if (!post) {
+      return null
+    }
+    
+    // Increment view count
+    await prisma.newsPost.update({
+      where: { id: post.id },
+      data: { viewCount: { increment: 1 } }
+    })
+    
+    // Convert dates to strings for serialization
+    return {
+      ...post,
+      publishedAt: post.publishedAt?.toISOString() || null,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString()
+    }
+  } catch (error) {
+    console.error('Error fetching news post:', error)
+    return null
+  }
+}
+
+export async function getRelatedNews(category: string, currentSlug: string) {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return []
+    }
+
+    const news = await prisma.newsPost.findMany({
+      where: {
+        published: true,
+        category,
+        slug: { not: currentSlug }
+      },
+      orderBy: { publishedAt: 'desc' },
+      take: 3
+    })
+    
+    // Convert dates to strings for serialization
+    return news.map(post => ({
+      ...post,
+      publishedAt: post.publishedAt?.toISOString() || null,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString()
+    }))
+  } catch (error) {
+    console.error('Error fetching related news:', error)
+    return []
+  }
+}
