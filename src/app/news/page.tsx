@@ -5,6 +5,8 @@ import { TextOnlyHero } from '@/components/TextOnlyHero'
 import Link from 'next/link'
 import { getNews } from '@/lib/actions'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'News & Announcements | West Acton Community Centre',
   description: 'Stay updated with the latest news, announcements, and notices from West Acton Community Centre',

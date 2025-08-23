@@ -4,6 +4,8 @@ import Container from '@/components/Container'
 import Link from 'next/link'
 import { getNewsPost, getRelatedNews } from '@/lib/actions'
 
+export const dynamic = 'force-dynamic'
+
 interface NewsPost {
   id: number
   title: string
