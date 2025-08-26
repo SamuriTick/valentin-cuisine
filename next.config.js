@@ -2,6 +2,20 @@
 const nextConfig = {
     experimental: {
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'cdn.chartedconsultants.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'f47d23c072e7b2f871ecca11e36e0b25.r2.cloudflarestorage.com',
+                pathname: '/**',
+            }
+        ],
+    },
     webpack: (config) => {
         config.module.rules.push({
             test: /\.(mp4|webm)$/,

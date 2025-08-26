@@ -14,7 +14,17 @@ interface OptimizedImageProps extends Omit<ImageProps, 'src' | 'onError'> {
  * This component provides a long-term solution for image optimization across the app
  */
 export default function OptimizedImage({ src, fallback, onError, ...props }: OptimizedImageProps) {
-  const [imgSrc, setImgSrc] = useState(src)
+  // Fix CDN URLs that are missing the /uploads/ prefix
+  const fixCdnUrl = (url: string): string => {
+    if (url?.includes('cdn.chartedconsultants.com') && !url.includes('/uploads/')) {
+      // Extract filename and add /uploads/ prefix
+      const filename = url.split('/').pop()
+      return `https://cdn.chartedconsultants.com/uploads/${filename}`
+    }
+    return url
+  }
+  
+  const [imgSrc, setImgSrc] = useState(fixCdnUrl(src))
   const [hasError, setHasError] = useState(false)
   
   // Check if the image is from R2 or external source
@@ -32,7 +42,7 @@ export default function OptimizedImage({ src, fallback, onError, ...props }: Opt
     setHasError(true)
     
     if (fallback && !hasError) {
-      setImgSrc(fallback)
+      setImgSrc(fixCdnUrl(fallback))
       return
     }
     

@@ -3,6 +3,20 @@
  */
 
 /**
+ * Fix CDN URLs that are missing the /uploads/ prefix
+ */
+export function fixCdnUrl(url: string | null): string | null {
+  if (!url) return url
+  
+  if (url.includes('cdn.chartedconsultants.com') && !url.includes('/uploads/')) {
+    // Extract filename and add /uploads/ prefix
+    const filename = url.split('/').pop()
+    return `https://cdn.chartedconsultants.com/uploads/${filename}`
+  }
+  return url
+}
+
+/**
  * Check if an uploaded image exists on disk or is an R2 URL
  * Note: This function only works on the server side for local files
  */
@@ -105,8 +119,11 @@ export function processFacilityImage(imageUrl: string | null, facilityName?: str
     return fallback
   }
   
+  // Fix CDN URLs if needed
+  imageUrl = fixCdnUrl(imageUrl)
+  
   // If it's an R2 URL (http/https), return as is
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (imageUrl && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
     return imageUrl
   }
   
@@ -136,8 +153,11 @@ export function processProgramImage(imageUrl: string | null, programName?: strin
     return fallback
   }
   
+  // Fix CDN URLs if needed
+  imageUrl = fixCdnUrl(imageUrl)
+  
   // If it's an R2 URL (http/https), return as is
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (imageUrl && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
     return imageUrl
   }
   
