@@ -128,12 +128,12 @@ export function processFacilityImage(imageUrl: string | null, facilityName?: str
   }
   
   // If it's not an upload path, return as is (assumes it's a static image)
-  if (!imageUrl.startsWith('/uploads/')) {
+  if (imageUrl && !imageUrl.startsWith('/uploads/')) {
     return imageUrl
   }
   
   // Check if uploaded image exists
-  if (imageExists(imageUrl)) {
+  if (imageUrl && imageExists(imageUrl)) {
     return imageUrl
   }
   
@@ -162,12 +162,12 @@ export function processProgramImage(imageUrl: string | null, programName?: strin
   }
   
   // If it's not an upload path, return as is (assumes it's a static image)
-  if (!imageUrl.startsWith('/uploads/')) {
+  if (imageUrl && !imageUrl.startsWith('/uploads/')) {
     return imageUrl
   }
   
   // Check if uploaded image exists
-  if (imageExists(imageUrl)) {
+  if (imageUrl && imageExists(imageUrl)) {
     return imageUrl
   }
   
