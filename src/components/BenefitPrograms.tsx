@@ -128,19 +128,13 @@ export const BenefitPrograms = (props: Readonly<BenefitProgramsProps>) => {
 
                 {/* Compact horizontal image area with overlaid info button */}
                 <div className="relative h-32 lg:h-40 bg-gray-200">
-                  {program.imageUrl ? (
-                    <OptimizedImage
-                      src={processProgramImage(program.imageUrl, program.title) || "/img/poster-stayandplay.jpeg"}
-                      fill
-                      alt={program.title}
-                      className="object-cover"
-                      style={{ objectPosition: 'center' }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-gray-400 text-xs lg:text-sm">
-                      <span>Programme Image</span>
-                    </div>
-                  )}
+                  <OptimizedImage
+                    src={program.imageUrl || processProgramImage(null, program.title) || "/img/poster-stayandplay.jpeg"}
+                    fill
+                    alt={program.title}
+                    className="object-cover"
+                    style={{ objectPosition: 'center' }}
+                  />
                   
                   {/* Small "Info" button overlaid on image */}
                   <button className={`absolute bottom-2 right-2 ${getCategoryColor(program.category)} hover:opacity-90 text-white px-2 lg:px-3 py-1 lg:py-2 rounded-md text-xs lg:text-sm font-medium transition-opacity shadow-lg uppercase`}>

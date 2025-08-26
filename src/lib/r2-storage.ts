@@ -113,6 +113,31 @@ export function generateR2Key(filename: string, folder: string = 'uploads'): str
 }
 
 /**
+ * Convert old R2 signed URLs to public CDN URLs
+ */
+export function convertToPublicUrl(url: string): string | null {
+  if (!url || !PUBLIC_URL) return null
+  
+  // Check if it's an R2 signed URL
+  if (url.includes('r2.cloudflarestorage.com')) {
+    try {
+      const urlObj = new URL(url)
+      const pathParts = urlObj.pathname.split('/')
+      // Get the key from the path (usually after the bucket name)
+      const key = pathParts.slice(2).join('/')
+      if (key) {
+        const baseUrl = PUBLIC_URL.endsWith('/') ? PUBLIC_URL.slice(0, -1) : PUBLIC_URL
+        return `${baseUrl}/${key}`
+      }
+    } catch (e) {
+      console.error('Error parsing R2 URL:', e)
+    }
+  }
+  
+  return null
+}
+
+/**
  * Extract the key from an R2 URL
  * @param url - The full R2 URL
  */

@@ -19,11 +19,12 @@ export default function OptimizedImage({ src, fallback, onError, ...props }: Opt
   
   // Check if the image is from R2 or external source
   const isExternalImage = imgSrc?.startsWith('http://') || imgSrc?.startsWith('https://')
-  const isR2Image = imgSrc?.includes('r2.cloudflarestorage.com')
+  const isR2PrivateBucket = imgSrc?.includes('r2.cloudflarestorage.com')
+  const isCDN = imgSrc?.includes('cdn.chartedconsultants.com')
   
-  // For R2 signed URLs or other external images, disable optimization
-  // Next.js image optimization doesn't work well with signed URLs that change
-  const shouldOptimize = !isExternalImage || !isR2Image
+  // For CDN images and local images, we CAN optimize
+  // For R2 private bucket signed URLs, we CANNOT optimize (they expire)
+  const shouldOptimize = !isR2PrivateBucket && (isCDN || !isExternalImage)
   
   // Add error handling for broken images
   const handleError = () => {
@@ -45,7 +46,7 @@ export default function OptimizedImage({ src, fallback, onError, ...props }: Opt
       {...props}
       src={imgSrc}
       onError={handleError}
-      unoptimized={!shouldOptimize || isR2Image}
+      unoptimized={!shouldOptimize}
       priority={props.priority || false}
       alt={props.alt || 'Image'}
     />
