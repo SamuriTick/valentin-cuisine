@@ -113,17 +113,22 @@ export function getProgramFallbackImage(programName?: string | null): string {
  * Process facility image URL, replacing non-existent uploads with fallbacks
  */
 export function processFacilityImage(imageUrl: string | null, facilityName?: string): string | null {
+  console.log(`[processFacilityImage] Processing imageUrl: "${imageUrl}" for facility: "${facilityName}"`)
+  
   // If no image URL provided, return fallback
   if (!imageUrl) {
     const fallback = getFacilityFallbackImage(facilityName)
+    console.log(`[processFacilityImage] No imageUrl, using fallback: "${fallback}"`)
     return fallback
   }
   
   // Fix CDN URLs if needed
   imageUrl = fixCdnUrl(imageUrl)
+  console.log(`[processFacilityImage] After fixCdnUrl: "${imageUrl}"`)
   
   // If it's an R2 URL (http/https), return as is
   if (imageUrl && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
+    console.log(`[processFacilityImage] Returning HTTPS URL as-is: "${imageUrl}"`)
     return imageUrl
   }
   

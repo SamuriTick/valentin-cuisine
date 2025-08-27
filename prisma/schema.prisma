@@ -283,22 +283,22 @@ model facility_gallery {
 }
 
 model NewsPost {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   title        String
-  slug         String   @unique
+  slug         String    @unique
   excerpt      String?
   content      String
-  imageUrl     String?  @map("image_url")
-  category     String   @default("general")
+  imageUrl     String?   @map("image_url")
+  category     String    @default("general")
   tags         String?
   author       String?
-  featured     Boolean  @default(false)
-  published    Boolean  @default(false)
+  featured     Boolean   @default(false)
+  published    Boolean   @default(false)
   publishedAt  DateTime? @map("published_at")
-  displayOrder Int      @default(0) @map("display_order")
-  viewCount    Int      @default(0) @map("view_count")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  displayOrder Int       @default(0) @map("display_order")
+  viewCount    Int       @default(0) @map("view_count")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
 
   @@map("news_posts")
 }

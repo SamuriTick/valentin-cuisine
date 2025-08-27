@@ -27,6 +27,7 @@ export interface SiteSettings {
   hero_background_image: string
   hero_cta_button_text: string
   hero_cta_button_link: string
+  banner_programs_image: string
   [key: string]: any
 }
 
@@ -77,7 +78,8 @@ export async function getSettings(): Promise<SiteSettings> {
       ['hero_description', 'From Stay & Play sessions for young families to martial arts, fitness classes, and cultural groups — we\'re here to bring our community together and support wellbeing for all ages.'],
       ['hero_background_image', '/img/entrance.jpeg'],
       ['hero_cta_button_text', 'EXPLORE OUR PROGRAMS'],
-      ['hero_cta_button_link', '/programs']
+      ['hero_cta_button_link', '/programs'],
+      ['banner_programs_image', '/img/all-programs.jpeg']
     ])
 
     // Override with database values
