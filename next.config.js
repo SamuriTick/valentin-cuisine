@@ -3,6 +3,7 @@ const nextConfig = {
     experimental: {
     },
     images: {
+        domains: ['cdn.chartedconsultants.com', 'f47d23c072e7b2f871ecca11e36e0b25.r2.cloudflarestorage.com'],
         remotePatterns: [
             {
                 protocol: 'https',
