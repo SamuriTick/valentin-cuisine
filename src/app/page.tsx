@@ -71,7 +71,7 @@ export default async function Home() {
       description: activePrograms.length > 0 
         ? `Join our vibrant community with programmes including ${activePrograms[0]?.title || 'various activities'}${activePrograms[0]?.ageGroup ? ` for ${activePrograms[0].ageGroup}` : ''}. From fitness classes to educational sessions, there's something for everyone.`
         : "From Stay & Play sessions and fitness classes to martial arts and educational programmes for all ages and interests",
-      image: "https://cdn.chartedconsultants.com/uploads/1756318161146_6cqk8s_candle.jpg",
+      image: settings.banner_programs_image || "/img/all-programs.jpeg",
       buttonText: "VIEW PROGRAMMES",
       buttonLink: "/programs",
       features: activePrograms.length > 0 ? `${featuredPrograms.length}+ programmes available` : "15+ weekly programmes",
