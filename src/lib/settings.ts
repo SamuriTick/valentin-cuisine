@@ -143,7 +143,8 @@ function getDefaultSettings(): SiteSettings {
     hero_description: 'From Stay & Play sessions for young families to martial arts, fitness classes, and cultural groups — we\'re here to bring our community together and support wellbeing for all ages.',
     hero_background_image: '/img/entrance.jpeg',
     hero_cta_button_text: 'Explore Our Facilities',
-    hero_cta_button_link: '/facilities'
+    hero_cta_button_link: '/facilities',
+    banner_programs_image: '/img/all-programs.jpeg'
   }
 }
 
@@ -178,7 +179,8 @@ export async function fetchClientSettings(): Promise<SiteSettings> {
       ['hero_description', 'From Stay & Play sessions for young families to martial arts, fitness classes, and cultural groups — we\'re here to bring our community together and support wellbeing for all ages.'],
       ['hero_background_image', '/img/entrance.jpeg'],
       ['hero_cta_button_text', 'Explore Our Facilities'],
-      ['hero_cta_button_link', '/facilities']
+      ['hero_cta_button_link', '/facilities'],
+      ['banner_programs_image', '/img/all-programs.jpeg']
     ])
 
     settingsArray.forEach((setting: any) => {
