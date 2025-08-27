@@ -44,11 +44,22 @@ const fallbackBenefitOne = {
 
 export default async function Home() {
   const settings = await getSettings();
+  console.log('[Home] Settings loaded:', { 
+    banner_programs_image: settings.banner_programs_image,
+    site_title: settings.site_title 
+  });
   
   // Fetch data using server actions
   const featuredPrograms = await getFeaturedPrograms()
   const facilities = await getActiveFacilities(3)
   const activePrograms = await getActivePrograms(1)
+  
+  console.log('[Home] Data fetched:', {
+    featuredPrograms: featuredPrograms.length,
+    facilities: facilities.length,
+    activePrograms: activePrograms.length,
+    facilityImages: facilities.map(f => ({ name: f.name, imageUrl: f.imageUrl }))
+  });
 
   // Create dynamic split banner data
   const splitBannerData = [
@@ -60,7 +71,7 @@ export default async function Home() {
       description: activePrograms.length > 0 
         ? `Join our vibrant community with programmes including ${activePrograms[0]?.title || 'various activities'}${activePrograms[0]?.ageGroup ? ` for ${activePrograms[0].ageGroup}` : ''}. From fitness classes to educational sessions, there's something for everyone.`
         : "From Stay & Play sessions and fitness classes to martial arts and educational programmes for all ages and interests",
-      image: settings.banner_programs_image || "/img/all-programs.jpeg",
+      image: "https://cdn.chartedconsultants.com/uploads/1756318161146_6cqk8s_candle.jpg",
       buttonText: "VIEW PROGRAMMES",
       buttonLink: "/programs",
       features: activePrograms.length > 0 ? `${featuredPrograms.length}+ programmes available` : "15+ weekly programmes",

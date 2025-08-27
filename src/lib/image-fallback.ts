@@ -144,7 +144,7 @@ export function processFacilityImage(imageUrl: string | null, facilityName?: str
   
   // If uploaded image doesn't exist, return fallback
   const fallback = getFacilityFallbackImage(facilityName)
-  console.warn(`[Image Fallback] Upload missing for facility '${facilityName}' at ${imageUrl}, using fallback:`, fallback)
+  console.error(`[processFacilityImage] Upload missing for facility '${facilityName}' at ${imageUrl}, using fallback: ${fallback}`)
   return fallback
 }
 
