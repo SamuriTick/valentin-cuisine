@@ -72,7 +72,7 @@ function formatTime(time: string | null) {
 
 export const ProgramDetail = ({ program, heroImage }: ProgramDetailProps) => {
   return (
-    <Container className="h-[80vh] overflow-hidden py-3">
+    <Container className="min-h-[80vh] lg:h-[80vh] lg:overflow-hidden py-3">
       <div className="h-full flex flex-col">
         {/* Back to programs link - compact */}
         <Link
@@ -87,7 +87,7 @@ export const ProgramDetail = ({ program, heroImage }: ProgramDetailProps) => {
 
 
         {/* Two-column layout - fills remaining height */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 flex-1 lg:min-h-0">
             {/* Left column - Fixed image */}
             <div className="lg:col-span-5 flex items-start">
               {heroImage && (
@@ -106,7 +106,7 @@ export const ProgramDetail = ({ program, heroImage }: ProgramDetailProps) => {
             </div>
 
             {/* Right column - Details */}
-            <div className="lg:col-span-7 lg:overflow-y-auto">
+            <div className="lg:col-span-7 overflow-y-auto lg:overflow-y-auto">
               <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                 {/* Title and subtitle */}
                 <div className="mb-4">
