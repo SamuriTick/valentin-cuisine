@@ -28,7 +28,7 @@ export async function sendAdminBookingNotification(data: AdminNotificationData) 
   try {
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'no-reply@chartedconsultants.com',
       to: ['dakthi9@gmail.com'],
       subject: `New Booking Request - ${data.eventTitle}`,
       html: `
@@ -87,7 +87,7 @@ export async function sendContactFormNotification(data: ContactFormData) {
   try {
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'no-reply@chartedconsultants.com',
       to: ['dakthi9@gmail.com'],
       subject: `Contact Enquiry: ${data.subject}`,
       html: `
@@ -142,7 +142,7 @@ export async function sendAdminBookingStatusUpdate(data: AdminNotificationData) 
 
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'no-reply@chartedconsultants.com',
       to: ['dakthi9@gmail.com'],
       subject: `Booking Status Update - ${data.eventTitle}`,
       html: `
