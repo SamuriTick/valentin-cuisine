@@ -2,6 +2,7 @@ import OptimizedImage from "@/components/OptimizedImage";
 import React from "react";
 import { Container } from "@/components/Container";
 import { processProgramImage } from "@/lib/image-fallback";
+import Link from "next/link";
 
 interface ProgramCard {
   id: number;
@@ -137,9 +138,12 @@ export const BenefitPrograms = (props: Readonly<BenefitProgramsProps>) => {
                   />
                   
                   {/* Small "Info" button overlaid on image */}
-                  <button className={`absolute bottom-2 right-2 ${getCategoryColor(program.category)} hover:opacity-90 text-white px-2 lg:px-3 py-1 lg:py-2 rounded-md text-xs lg:text-sm font-medium transition-opacity shadow-lg uppercase`}>
+                  <Link 
+                    href={`/programs/${program.id}`}
+                    className={`absolute bottom-2 right-2 ${getCategoryColor(program.category)} hover:opacity-90 text-white px-2 lg:px-3 py-1 lg:py-2 rounded-md text-xs lg:text-sm font-medium transition-opacity shadow-lg uppercase inline-block`}
+                  >
                     Info
-                  </button>
+                  </Link>
 
                   {/* Price tag if available */}
                   {program.price && (
