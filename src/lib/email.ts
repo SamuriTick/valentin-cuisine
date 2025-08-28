@@ -29,7 +29,7 @@ export async function sendAdminBookingNotification(data: AdminNotificationData) 
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
       from: 'no-reply@chartedconsultants.com',
-      to: ['dakthi9@gmail.com'],
+      to: ['thi@thielts.com'],
       subject: `New Booking Request - ${data.eventTitle}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -88,7 +88,7 @@ export async function sendContactFormNotification(data: ContactFormData) {
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
       from: 'no-reply@chartedconsultants.com',
-      to: ['dakthi9@gmail.com'],
+      to: ['thi@thielts.com'],
       subject: `Contact Enquiry: ${data.subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -143,7 +143,7 @@ export async function sendAdminBookingStatusUpdate(data: AdminNotificationData) 
     const resend = getResendClient()
     const { data: emailData, error } = await resend.emails.send({
       from: 'no-reply@chartedconsultants.com',
-      to: ['dakthi9@gmail.com'],
+      to: ['thi@thielts.com'],
       subject: `Booking Status Update - ${data.eventTitle}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
