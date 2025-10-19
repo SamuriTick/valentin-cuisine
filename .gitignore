@@ -34,3 +34,6 @@ yarn-error.log*
 .vercel
 
 /src/generated/prisma
+
+# Template folders (development templates - not part of main codebase)
+/templates

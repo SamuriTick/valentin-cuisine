@@ -147,7 +147,7 @@ export async function sendAdminBookingStatusUpdate(data: AdminNotificationData) 
       subject: `Booking Status Update - ${data.eventTitle}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
+          <h2 style="colo r: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
             Booking Status Update
           </h2>
           
