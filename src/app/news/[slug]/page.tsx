@@ -72,18 +72,6 @@ export default async function NewsPostPage({ params }: { params: { slug: string 
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section with Image */}
-      {post.imageUrl && (
-        <div className="relative h-64 md:h-96 bg-gray-900">
-          <img
-            src={post.imageUrl}
-            alt={post.title}
-            className="w-full h-full object-cover opacity-75"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        </div>
-      )}
-      
       <Container>
         <div className="py-8 md:py-16">
           {/* Breadcrumb */}
@@ -120,17 +108,17 @@ export default async function NewsPostPage({ params }: { params: { slug: string 
                     </span>
                   )}
                 </div>
-                
+
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   {post.title}
                 </h1>
-                
+
                 {post.excerpt && (
                   <p className="text-xl text-gray-600 mb-4">
                     {post.excerpt}
                   </p>
                 )}
-                
+
                 <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 pb-4 border-b">
                   {post.author && (
                     <span>By <strong className="text-gray-700">{post.author}</strong></span>
@@ -141,6 +129,17 @@ export default async function NewsPostPage({ params }: { params: { slug: string 
                   <span>{post.viewCount} views</span>
                 </div>
               </header>
+
+              {/* Featured Image - After Title, Before Content */}
+              {post.imageUrl && (
+                <div className="mb-8 max-h-64 md:max-h-96 overflow-hidden flex items-center justify-center">
+                  <img
+                    src={post.imageUrl}
+                    alt={post.title}
+                    className="w-full h-auto rounded-lg shadow-md object-contain max-h-64 md:max-h-96"
+                  />
+                </div>
+              )}
 
               {/* Post Content */}
               <div className="prose prose-lg max-w-none">
