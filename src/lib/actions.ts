@@ -165,13 +165,7 @@ export async function getNewsPost(slug: string) {
     if (!post) {
       return null
     }
-    
-    // Increment view count
-    await prisma.newsPost.update({
-      where: { id: post.id },
-      data: { viewCount: { increment: 1 } }
-    })
-    
+
     // Convert dates to strings for serialization
     return {
       ...post,

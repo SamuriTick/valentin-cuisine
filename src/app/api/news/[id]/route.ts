@@ -21,13 +21,7 @@ export async function GET(
           { status: 404 }
         )
       }
-      
-      // Increment view count
-      await prisma.newsPost.update({
-        where: { id: newsPost.id },
-        data: { viewCount: { increment: 1 } }
-      })
-      
+
       return NextResponse.json(newsPost)
     }
     
@@ -41,12 +35,6 @@ export async function GET(
         { status: 404 }
       )
     }
-    
-    // Increment view count
-    await prisma.newsPost.update({
-      where: { id },
-      data: { viewCount: { increment: 1 } }
-    })
 
     return NextResponse.json(newsPost)
   } catch (error) {

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Container from '@/components/Container'
 import Link from 'next/link'
 import { getNewsPost, getRelatedNews } from '@/lib/actions'
+import ViewTracker from '@/components/ViewTracker'
 
 export const dynamic = 'force-dynamic'
 
@@ -96,6 +97,7 @@ export default async function NewsPostPage({ params }: { params: { slug: string 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <article className="lg:col-span-2 bg-white rounded-lg shadow-md p-8">
+              <ViewTracker postId={post.id} slug={post.slug} />
               {/* Post Header */}
               <header className="mb-8">
                 <div className="flex flex-wrap items-center gap-2 mb-4">
