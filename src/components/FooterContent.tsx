@@ -120,8 +120,13 @@ export function FooterContent({ settings }: FooterContentProps) {
             </Link>
           </div>
           <p className="text-gray-500 text-xs">
-            © {new Date().getFullYear()} {settings.site_title}. 
+            © {new Date().getFullYear()} {settings.site_title}.
             Proudly serving the West Acton community.
+          </p>
+          <p className="text-gray-500 text-xs mt-2">
+            <Link href="/gdpr" className="hover:text-primary-600 transition">
+              GDPR & Privacy Policy
+            </Link>
           </p>
         </div>
       </div>
