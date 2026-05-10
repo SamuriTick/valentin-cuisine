@@ -3,7 +3,7 @@ services:
     image: valentin-cuisine:latest
     container_name: valentin_cuisine_app
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3026:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
