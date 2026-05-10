@@ -5,191 +5,103 @@ import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-interface AdminLayoutProps {
-  children: React.ReactNode
-}
-
 const navigation = [
-  { name: "Home", href: "/admin" },
-  { name: "Activities", href: "/admin/programs" },
-  { name: "Facilities", href: "/admin/facilities" },
-  { name: "News", href: "/admin/news" },
-  { name: "Testimonials", href: "/admin/testimonials" },
-  { name: "FAQ", href: "/admin/faq" },
+  { name: "Dashboard", href: "/admin" },
+  { name: "Posts", href: "/admin/posts" },
+  { name: "Products", href: "/admin/products" },
+  { name: "Pages", href: "/admin/pages" },
+  { name: "References", href: "/admin/references" },
+  { name: "Media", href: "/admin/media" },
+  { name: "Site Content", href: "/admin/content" },
 ]
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession()
   const pathname = usePathname()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setSidebarOpen(false)
-  }, [pathname])
+  useEffect(() => { setOpen(false) }, [pathname])
+
+  const Sidebar = () => (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#1E3A1E" }}>
+      <div style={{ padding: "24px 20px 16px", borderBottom: "1px solid #2D5A2D" }}>
+        <div style={{ fontFamily: "'Great Vibes', cursive", fontSize: "22px", color: "#B8962E", lineHeight: 1 }}>
+          Valentin&apos;s Cuisine
+        </div>
+        <div style={{ fontSize: "11px", color: "#7A7060", marginTop: "4px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          Admin Panel
+        </div>
+      </div>
+      <nav style={{ flex: 1, padding: "12px 12px", overflowY: "auto" }}>
+        {navigation.map((item) => {
+          const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href))
+          return (
+            <Link key={item.name} href={item.href} style={{
+              display: "block", padding: "9px 12px", marginBottom: "2px", borderRadius: "6px",
+              fontSize: "14px", fontWeight: active ? 600 : 400, textDecoration: "none",
+              background: active ? "#2D5A2D" : "transparent",
+              color: active ? "#F8F5EE" : "#B0A99A",
+            }}>
+              {item.name}
+            </Link>
+          )
+        })}
+      </nav>
+      <div style={{ padding: "16px 20px", borderTop: "1px solid #2D5A2D" }}>
+        <div style={{ fontSize: "13px", color: "#B0A99A", marginBottom: "6px" }}>
+          {session?.user?.email}
+        </div>
+        <button onClick={() => signOut({ callbackUrl: "/admin/login" })} style={{
+          fontSize: "12px", color: "#7A7060", background: "none", border: "none", cursor: "pointer", padding: 0,
+        }}>
+          Sign out
+        </button>
+        <br />
+        <Link href="/" target="_blank" style={{ fontSize: "12px", color: "#7A7060", textDecoration: "none" }}>
+          View site ↗
+        </Link>
+      </div>
+    </div>
+  )
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 flex z-40 md:hidden">
-          <div
-            className="fixed inset-0 bg-gray-600 bg-opacity-75"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-gray-800">
-            <div className="absolute top-0 right-0 -mr-12 pt-2">
-              <button
-                type="button"
-                className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <span className="sr-only">Close sidebar</span>
-                <svg
-                  className="h-6 w-6 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center flex-shrink-0 px-4">
-                <h1 className="text-lg font-heading font-bold text-white uppercase tracking-tight">
-                  WACC Admin
-                </h1>
-              </div>
-              <nav className="mt-5 px-2 space-y-1">
-                {navigation.map((item) => {
-                  const isActive = pathname === item.href
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setSidebarOpen(false)}
-                      className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                        isActive
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  )
-                })}
-              </nav>
-            </div>
-            <div className="flex-shrink-0 flex bg-gray-700 p-4">
-              <div className="flex items-center">
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-white">
-                    {session?.user?.name || session?.user?.email}
-                  </p>
-                  <button
-                    onClick={() => signOut()}
-                    className="text-xs text-gray-300 hover:text-white"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              </div>
-            </div>
+    <div style={{ display: "flex", height: "100vh", fontFamily: "'Nunito', sans-serif" }}>
+      {/* Desktop sidebar */}
+      <div className="admin-sidebar" style={{ width: "220px", flexShrink: 0, display: "flex", flexDirection: "column" }}>
+        <Sidebar />
+      </div>
+
+      {/* Mobile overlay */}
+      {open && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}>
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)" }} onClick={() => setOpen(false)} />
+          <div style={{ position: "relative", width: "220px", zIndex: 60 }}>
+            <Sidebar />
           </div>
         </div>
       )}
 
-      {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:flex-shrink-0">
-        <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 bg-gray-800">
-            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center flex-shrink-0 px-4">
-                <h1 className="text-lg font-heading font-bold text-white uppercase tracking-tight">
-                  WACC Admin
-                </h1>
-              </div>
-              <nav className="mt-5 flex-1 px-2 space-y-1">
-                {navigation.map((item) => {
-                  const isActive = pathname === item.href
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                        isActive
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  )
-                })}
-              </nav>
-            </div>
-            <div className="flex-shrink-0 flex bg-gray-700 p-4">
-              <div className="flex items-center">
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-white">
-                    {session?.user?.name || session?.user?.email}
-                  </p>
-                  <button
-                    onClick={() => signOut()}
-                    className="text-xs text-gray-300 hover:text-white"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="flex flex-col w-0 flex-1 overflow-hidden">
-        {/* Mobile header with menu button */}
-        <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-heading font-bold text-primary-600 uppercase tracking-tight">
-            WACC Admin
-          </h1>
-          <button
-            type="button"
-            className="h-10 w-10 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open menu</span>
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+      {/* Main */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", background: "#F8F5EE" }}>
+        {/* Mobile topbar */}
+        <div className="admin-topbar" style={{ display: "none", alignItems: "center", padding: "12px 16px", background: "#1E3A1E", gap: "12px" }}>
+          <button onClick={() => setOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", color: "#F8F5EE", fontSize: "20px" }}>
+            ☰
           </button>
+          <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "#B8962E" }}>Valentin&apos;s Cuisine</span>
         </div>
-
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              {children}
-            </div>
-          </div>
+        <main style={{ flex: 1, overflowY: "auto", padding: "32px 32px" }}>
+          {children}
         </main>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .admin-sidebar { display: none !important; }
+          .admin-topbar { display: flex !important; }
+          main { padding: 20px 16px !important; }
+        }
+      `}</style>
     </div>
   )
 }

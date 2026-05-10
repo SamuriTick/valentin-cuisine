@@ -94,6 +94,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File
     const altText = formData.get('altText') as string || ''
     const caption = formData.get('caption') as string || ''
+    const tags = formData.get('tags') as string || ''
 
     console.log('[MEDIA API] File upload attempt:', {
       fileName: file?.name,
@@ -114,15 +115,16 @@ export async function POST(request: NextRequest) {
     // Validate file type - SVG removed for security (XSS/XXE risks)
     const allowedTypes = [
       'image/jpeg',
-      'image/png', 
+      'image/png',
       'image/gif',
-      'image/webp'
+      'image/webp',
+      'application/pdf',
     ]
 
     if (!allowedTypes.includes(file.type)) {
       console.error('[MEDIA API] Invalid file type:', file.type)
       return NextResponse.json(
-        { error: 'Invalid file type. Allowed: JPG, PNG, GIF, WebP' },
+        { error: 'Invalid file type. Allowed: JPG, PNG, GIF, WebP, PDF' },
         { status: 400 }
       )
     }
@@ -145,8 +147,9 @@ export async function POST(request: NextRequest) {
     console.log('[MEDIA API] Reading file bytes for validation')
     const bytes = await file.arrayBuffer()
 
+    // PDFs skip magic number validation (broad signature variants)
     // Validate file signature (magic numbers) for security
-    if (!validateFileSignature(bytes, file.type)) {
+    if (file.type !== 'application/pdf' && !validateFileSignature(bytes, file.type)) {
       console.error('[MEDIA API] File signature validation failed:', {
         fileName: file.name,
         declaredType: file.type,
@@ -224,10 +227,11 @@ export async function POST(request: NextRequest) {
           filename: storageKey,
           originalName: file.name,
           filePath: fileUrl,
-          fileType: file.type,
+          fileType: file.type.startsWith('image/') ? 'image' : 'pdf',
           fileSize: file.size,
           altText: altText || null,
-          caption: caption || null
+          caption: caption || null,
+          tags: tags || null,
         }
       })
 
