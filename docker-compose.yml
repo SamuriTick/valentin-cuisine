@@ -1,37 +1,36 @@
 services:
   app:
     build: .
-    container_name: nextjs_wacc1
+    container_name: valentin_cuisine_app
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgres://wacc_user:kNiN4321@db:5432/wacc_cms_local
-      NEXTAUTH_SECRET: "your_very_secure_random_string_here"
+      DATABASE_URL: ${DATABASE_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       UPLOAD_PATH: /app/uploads
     volumes:
       - uploads_data:/app/uploads
     depends_on:
       - db
     networks:
-      - cms_network
+      - valentin_network
 
   db:
     image: postgres:14
-    container_name: cms_postgres
+    container_name: valentin_cuisine_postgres
     restart: always
     environment:
-      POSTGRES_USER: wacc_user
-      POSTGRES_PASSWORD: kNiN4321
-      POSTGRES_DB: wacc_cms_local
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - cms_db_data:/var/lib/postgresql/data
-      - ./wacc_cms_dump.sql:/docker-entrypoint-initdb.d/wacc_cms_dump.sql
+      - db_data:/var/lib/postgresql/data
     networks:
-      - cms_network
+      - valentin_network
 
 networks:
-  cms_network:
+  valentin_network:
 
 volumes:
-  cms_db_data:
+  db_data:
   uploads_data:
