@@ -67,6 +67,39 @@ model VerificationToken {
 
 // ── CONTENT ───────────────────────────────────────────────────────────────────
 
+// All editable site copy — homepage text, labels, descriptions
+// key examples: "hero.title", "about.body1", "site.tagline"
+model SiteContent {
+  id        Int      @id @default(autoincrement())
+  key       String
+  lang      String   @default("en")
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([key, lang])
+  @@map("site_content")
+}
+
+// Dynamic pages Valentin can create from admin
+// Rendered at /[slug] using a shared template
+// showInNav=true → appears in nav bar automatically
+model Page {
+  id         Int      @id @default(autoincrement())
+  title      String
+  slug       String   @unique
+  content    String
+  showTitle  Boolean  @default(true) @map("show_title")
+  showInNav  Boolean  @default(false) @map("show_in_nav")
+  navOrder   Int      @default(99) @map("nav_order")
+  topLevel   Boolean  @default(false) @map("top_level")
+  published  Boolean  @default(false)
+  deletedAt  DateTime? @map("deleted_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
 // category: recipe | news | achievement | experience | update
 // recipe + news + update  → /blog
 // achievement + experience → /credentials
