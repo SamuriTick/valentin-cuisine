@@ -29,7 +29,7 @@ cd "$PROJECT_DIR"
 
 # Step 4: Stop old containers
 echo ">>> Stopping old containers..."
-docker compose -f "$COMPOSE_FILE" down || true
+docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" down || true
 
 # Step 4.5: Force remove any existing containers with same names
 echo ">>> Cleaning up any existing containers..."

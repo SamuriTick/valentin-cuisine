@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: valentin-cuisine:latest
     container_name: valentin_cuisine_app
     ports:
       - "3000:3000"
