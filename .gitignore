@@ -37,3 +37,4 @@ yarn-error.log*
 
 # Template folders (development templates - not part of main codebase)
 /templates
+.resources/

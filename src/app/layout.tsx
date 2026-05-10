@@ -1,37 +1,16 @@
-// app/layout.tsx
-
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import Providers from "@/components/Providers";
-import ConditionalWrapper from "@/components/ConditionalWrapper";
-import { generateSEOMetadata } from "@/lib/seo";
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-});
-
-export async function generateMetadata(): Promise<Metadata> {
-  return generateSEOMetadata({
-    url: '/',
-    keywords: [
-      'community centre West Acton',
-      'hall hire Acton',
-      'community hub London',
-      'facilities rental',
-      'local events',
-      'community programs',
-      'meeting rooms Acton',
-      'West London venue'
-    ]
-  });
-}
+export const metadata: Metadata = {
+  title: "Valentin's Cuisine | Aspiring Baker & Pastry Chef — Putney, London",
+  description: "Custom cakes, pastries, and artisan food by Valentin Thang. Based in Putney, London. Weekend and school holiday availability.",
+  keywords: ["custom cakes London", "Putney baker", "artisan pastry", "cake orders London", "young chef London"],
+  openGraph: {
+    title: "Valentin's Cuisine",
+    description: "Custom cakes, pastries & artisan food by Valentin Thang — Putney, London",
+    type: "website",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -39,18 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="alternate icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className={`${inter.variable} font-sans bg-white text-gray-900`}>
-        <Providers>
-          <ConditionalWrapper>
-            {children}
-          </ConditionalWrapper>
-        </Providers>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

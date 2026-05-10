@@ -2,15 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html,
-  body {
-    background-color: #fff9ec;
-  }
+:root {
+  --green:  #1E3A1E;
+  --green2: #2D5A2D;
+  --gold:   #B8962E;
+  --cream:  #F8F5EE;
+  --warm:   #F0EBE0;
+  --white:  #FFFFFF;
+  --dark:   #181818;
+  --mid:    #3A3A3A;
+  --muted:  #7A7060;
+  --border: #DDD8CC;
 }
 
-em {
-  font-weight: bold;
-  color: black;
-  font-style: normal;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
 }
+
+.font-serif-display { font-family: 'DM Serif Display', serif; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-accent { font-family: 'Great Vibes', cursive; }
