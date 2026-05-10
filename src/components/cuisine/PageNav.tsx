@@ -2,14 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Lang, Tab, Translations } from './translations';
-
-interface Props {
-  t: Translations;
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  setTab?: (t: Tab) => void;
-}
+import { useState } from 'react';
+import { T, Lang } from './translations';
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -18,8 +12,10 @@ const NAV_LINKS = [
   { href: '/credentials', label: 'Credentials' },
 ];
 
-export function CuisineNav({ t, lang, setLang, setTab }: Props) {
+export function PageNav() {
   const pathname = usePathname();
+  const [lang, setLang] = useState<Lang>('en');
+  const t = T[lang];
 
   return (
     <nav style={{
@@ -43,11 +39,11 @@ export function CuisineNav({ t, lang, setLang, setTab }: Props) {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-          {/* Page links */}
           <div style={{ display: 'flex', gap: 4 }}>
             {NAV_LINKS.map(({ href, label }) => (
               <Link key={href} href={href} style={{
-                fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: pathname === href ? 700 : 500,
+                fontFamily: "'Nunito', sans-serif", fontSize: 11,
+                fontWeight: pathname === href ? 700 : 500,
                 letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
                 color: pathname === href ? 'var(--green)' : 'var(--muted)',
                 padding: '6px 12px',
@@ -58,7 +54,6 @@ export function CuisineNav({ t, lang, setLang, setTab }: Props) {
             ))}
           </div>
 
-          {/* Lang toggle */}
           <div style={{ display: 'flex', border: '1px solid var(--border)', overflow: 'hidden', borderRadius: 2 }}>
             {(['en', 'fr', 'vi'] as Lang[]).map(l => (
               <button key={l} onClick={() => setLang(l)} style={{

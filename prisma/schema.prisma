@@ -8,177 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Program {
-  id             Int               @id @default(autoincrement())
-  title          String
-  description    String?
-  category       String
-  ageGroup       String?           @map("age_group")
-  price          String?
-  bookingInfo    String?           @map("booking_info")
-  instructor     String?
-  contactEmail   String?           @map("contact_email")
-  contactPhone   String?           @map("contact_phone")
-  contactWebsite String?           @map("contact_website")
-  imageUrl       String?           @map("image_url")
-  active         Boolean           @default(true)
-  createdAt      DateTime          @default(now()) @map("created_at")
-  updatedAt      DateTime          @updatedAt @map("updated_at")
-  schedules      ProgramSchedule[]
+// ── AUTH ──────────────────────────────────────────────────────────────────────
 
-  @@map("programs")
-}
-
-model ProgramSchedule {
-  id          Int     @id @default(autoincrement())
-  programId   Int     @map("program_id")
-  dayOfWeek   String? @map("day_of_week")
-  startTime   String? @map("start_time")
-  endTime     String? @map("end_time")
-  description String?
-  active      Boolean @default(true)
-  program     Program @relation(fields: [programId], references: [id], onDelete: Cascade)
-
-  @@map("program_schedules")
-}
-
-model Facility {
-  id                   Int                    @id @default(autoincrement())
-  name                 String
-  subtitle             String?
-  description          String?
-  capacity             Int?
-  dimensions           String?
-  hourlyRate           Decimal?               @map("hourly_rate") @db.Decimal(8, 2)
-  features             Json?
-  imageUrl             String?                @map("image_url")
-  active               Boolean                @default(true)
-  createdAt            DateTime               @default(now()) @map("created_at")
-  updatedAt            DateTime               @updatedAt @map("updated_at")
-  booking_availability booking_availability[]
-  bookings             bookings[]
-
-  @@map("facilities")
-}
-
-model FacilityService {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  features    Json?
-  pricingInfo String? @map("pricing_info")
-  category    String?
-  active      Boolean @default(true)
-
-  @@map("facility_services")
-}
-
-model ContactInfo {
-  id           Int     @id @default(autoincrement())
-  type         String
-  label        String?
-  value        String
-  description  String?
-  displayOrder Int     @default(0) @map("display_order")
-  active       Boolean @default(true)
-
-  @@map("contact_info")
-}
-
-model OpeningHours {
-  id          Int     @id @default(autoincrement())
-  title       String
-  schedule    Json
-  description String?
-  type        String
-  active      Boolean @default(true)
-
-  @@map("opening_hours")
-}
-
-model SiteSetting {
-  id          Int      @id @default(autoincrement())
-  key         String   @unique
-  value       String?
-  type        String
-  description String?
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  @@map("site_settings")
-}
-
-model Testimonial {
-  id           Int      @id @default(autoincrement())
-  quote        String
-  authorName   String   @map("author_name")
-  authorTitle  String?  @map("author_title")
-  avatarUrl    String?  @map("avatar_url")
-  active       Boolean  @default(true)
-  displayOrder Int      @default(0) @map("display_order")
-  createdAt    DateTime @default(now()) @map("created_at")
-
-  @@map("testimonials")
-}
-
-model FaqItem {
-  id           Int      @id @default(autoincrement())
-  question     String
-  answer       String
-  category     String?
-  imageUrl     String?  @map("image_url")
-  displayOrder Int      @default(0) @map("display_order")
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now()) @map("created_at")
-
-  @@map("faq_items")
-}
-
-model MediaItem {
-  id             Int      @id @default(autoincrement())
-  filename       String
-  originalName   String   @map("original_name")
-  filePath       String   @map("file_path")
-  fileType       String   @map("file_type")
-  fileSize       Int?     @map("file_size")
-  altText        String?  @map("alt_text")
-  caption        String?
-  uploadedAt     DateTime @default(now()) @map("uploaded_at")
-  height         Int?
-  optimized_path String?
-  optimized_size Int?
-  thumbnail_path String?
-  thumbnail_size Int?
-  width          Int?
-
-  @@map("media_library")
-}
-
-model CommunityGroup {
-  id            Int       @id @default(autoincrement())
-  title         String
-  description   String?
-  active        Boolean   @default(true)
-  age_group     String?
-  category      String?   @default("Cultural & Social")
-  contact_email String?
-  contact_name  String?
-  contact_phone String?
-  created_at    DateTime? @default(now())
-  display_order Int       @default(0)
-  facebook_url  String?
-  featured      Boolean   @default(false)
-  fees          String?
-  image_url     String?
-  instagram_url String?
-  language      String?
-  meeting_day   String?
-  meeting_time  String?
-  member_count  Int?
+model User {
+  id            String    @id @default(cuid())
   name          String?
-  updated_at    DateTime?
-  website_url   String?
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  password      String?
+  role          String    @default("admin")
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  accounts      Account[]
+  sessions      Session[]
 
-  @@map("community_groups")
+  @@map("users")
 }
 
 model Account {
@@ -210,23 +56,6 @@ model Session {
   @@map("sessions")
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  password      String?
-  role          String    @default("admin")
-  active        Boolean   @default(true)
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  accounts      Account[]
-  sessions      Session[]
-
-  @@map("users")
-}
-
 model VerificationToken {
   identifier String
   token      String
@@ -236,69 +65,83 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-model booking_availability {
+// ── CONTENT ───────────────────────────────────────────────────────────────────
+
+// category: recipe | news | achievement | experience | update
+// recipe + news + update  → /blog
+// achievement + experience → /credentials
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  imageUrl    String?   @map("image_url")
+  category    String    @default("news")
+  tags        String?
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  publishedAt DateTime? @map("published_at")
+  viewCount   Int       @default(0) @map("view_count")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("posts")
+}
+
+// category: cake | pastry | bread | fermented | seasonal
+model Product {
   id           Int      @id @default(autoincrement())
-  facility_id  Int
-  day_of_week  Int
-  start_time   String
-  end_time     String
-  is_available Boolean  @default(true)
-  facilities   Facility @relation(fields: [facility_id], references: [id])
+  name         String
+  description  String?
+  price        String?
+  imageUrl     String?  @map("image_url")
+  category     String   @default("cake")
+  available    Boolean  @default(true)
+  featured     Boolean  @default(false)
+  orderNote    String?  @map("order_note")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  @@unique([facility_id, day_of_week])
+  @@map("products")
 }
 
-model bookings {
-  id                Int      @id @default(autoincrement())
-  facility_id       Int
-  customer_name     String
-  customer_email    String
-  customer_phone    String?
-  event_title       String
-  event_description String?
-  start_date_time   DateTime
-  end_date_time     DateTime
-  total_hours       Decimal  @db.Decimal(4, 2)
-  hourly_rate       Decimal? @db.Decimal(8, 2)
-  total_cost        Decimal? @db.Decimal(10, 2)
-  status            String   @default("pending")
-  notes             String?
-  created_at        DateTime @default(now())
-  updated_at        DateTime
-  facilities        Facility @relation(fields: [facility_id], references: [id])
+// Verified references — displayed as "References upon request"
+// Visitors can contact them directly to verify
+model Reference {
+  id           Int      @id @default(autoincrement())
+  name         String
+  role         String?
+  company      String?
+  phone        String?
+  email        String?
+  website      String?
+  quote        String?  // optional short endorsement if they provide one
+  active       Boolean  @default(true)
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("references")
 }
 
-model facility_gallery {
-  id            Int      @id @default(autoincrement())
-  title         String
-  description   String?
-  image_url     String
-  category      String   @default("general")
-  alt_text      String?
-  display_order Int      @default(0)
-  active        Boolean  @default(true)
-  featured      Boolean  @default(false)
-  created_at    DateTime @default(now())
-  updated_at    DateTime
-}
-
-model NewsPost {
-  id           Int       @id @default(autoincrement())
-  title        String
-  slug         String    @unique
-  excerpt      String?
-  content      String
-  imageUrl     String?   @map("image_url")
-  category     String    @default("general")
+// Handles gallery images + CV PDF uploads
+// fileType: image | pdf
+// tags: gallery | cv | certificate | press
+model MediaItem {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String   @map("original_name")
+  filePath     String   @map("file_path")
+  fileType     String   @map("file_type")
+  fileSize     Int?     @map("file_size")
+  altText      String?  @map("alt_text")
+  caption      String?
   tags         String?
-  author       String?
-  featured     Boolean   @default(false)
-  published    Boolean   @default(false)
-  publishedAt  DateTime? @map("published_at")
-  displayOrder Int       @default(0) @map("display_order")
-  viewCount    Int       @default(0) @map("view_count")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
+  featured     Boolean  @default(false)
+  width        Int?
+  height       Int?
+  uploadedAt   DateTime @default(now()) @map("uploaded_at")
 
-  @@map("news_posts")
+  @@map("media_library")
 }
