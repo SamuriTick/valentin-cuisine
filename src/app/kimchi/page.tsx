@@ -271,7 +271,7 @@ export default function KimchiPage() {
 
           <div className="bg-brand-light border border-brand-border rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">CO2 tip: don&rsquo;t overfill</p>
+              <p className="font-accent text-[clamp(18px,2.5vw,26px)] text-brand-teal mb-3 leading-none">CO2 tip: don&rsquo;t overfill</p>
               <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Fermenting kimchi produces CO2, which makes the liquid rise. If you fill the jar right to the top, it will overflow.
                 Leave a couple of centimetres of space at the top when you first open it. Press the cabbage below the brine level
@@ -279,7 +279,7 @@ export default function KimchiPage() {
               </p>
             </div>
             <div>
-              <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Fridge vs counter</p>
+              <p className="font-accent text-[clamp(18px,2.5vw,26px)] text-brand-teal mb-3 leading-none">Fridge vs counter</p>
               <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Leave it on the counter for a day or two to kickstart fermentation quickly, then move it to the fridge to slow it down.
                 In the fridge it keeps for 3 to 4 months. On the counter it will ferment much faster: check it daily.
@@ -294,7 +294,7 @@ export default function KimchiPage() {
         <ContainerStandard className="py-section grid grid-cols-1 md:grid-cols-2 gap-col-gap items-start">
 
           <div>
-            <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Get yours</p>
+            <p className="font-accent text-[clamp(22px,3vw,32px)] text-brand-teal mb-3 leading-none">Get yours</p>
             <h2 className="font-display font-light text-[clamp(26px,4vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
               <span className="font-semibold italic text-brand-teal">Place an order</span>
             </h2>
@@ -304,7 +304,7 @@ export default function KimchiPage() {
               {[
                 ['Fill in the form', 'Name, email, how many jars. Mention dietary needs or if you want to collect.'],
                 ['I confirm', 'I\'m a student: weekends and school holidays work best. I reply within 24 hours.'],
-                ['Collect or receive', 'SW London / Putney collection available, possible discount. Royal Mail delivery also possible: just ask.'],
+                ['Come collect or I ship it', 'Putney collection is easiest and I may be able to offer a small discount. Or I can ship it to you via Royal Mail: just mention which you prefer in the form.'],
               ].map(([title, body], i) => (
                 <div key={title} className="flex gap-4">
                   <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded flex items-center justify-center">
@@ -356,7 +356,7 @@ export default function KimchiPage() {
       {/* FAQs */}
       <section className="bg-white border-t border-brand-border">
         <ContainerStandard className="py-section">
-          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">You ask, I answer</p>
+          <p className="font-accent text-[clamp(22px,3vw,32px)] text-brand-teal mb-3 leading-none">You ask, I answer</p>
           <div className="w-12 h-px bg-brand-border mb-2" />
           <KimchiFAQs />
         </ContainerStandard>

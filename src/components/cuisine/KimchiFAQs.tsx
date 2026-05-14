@@ -38,26 +38,34 @@ const FAQS = [
 ];
 
 export function KimchiFAQs() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<Set<number>>(new Set());
+
+  function toggle(i: number) {
+    setOpen(prev => {
+      const next = new Set(prev);
+      next.has(i) ? next.delete(i) : next.add(i);
+      return next;
+    });
+  }
 
   return (
     <div className="divide-y divide-brand-border">
       {FAQS.map(({ q, a }, i) => (
         <div key={q}>
           <button
-            onClick={() => setOpen(open === i ? null : i)}
+            onClick={() => toggle(i)}
             className="w-full text-left flex items-center justify-between gap-6 py-6 group"
           >
             <span className="font-display font-light text-[clamp(22px,3vw,32px)] text-brand-dark leading-snug group-hover:text-brand-teal transition-colors duration-200">
               {q}
             </span>
-            <span className={`flex-shrink-0 w-6 h-6 rounded-full border border-brand-border flex items-center justify-center transition-colors duration-200 ${open === i ? 'bg-brand-teal border-brand-teal' : 'bg-white'}`}>
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className={`transition-transform duration-200 ${open === i ? 'rotate-45' : ''}`}>
-                <path d="M5 1v8M1 5h8" stroke={open === i ? '#fff' : '#b03060'} strokeWidth="1.5" strokeLinecap="round" />
+            <span className="flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className={`transition-transform duration-200 ${open.has(i) ? 'rotate-180' : ''}`}>
+                <path d="M5 7.5l5 5 5-5" stroke="#b03060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
           </button>
-          {open === i && (
+          {open.has(i) && (
             <p className="font-body text-base text-brand-muted leading-[1.85] pb-6 max-w-[720px]">
               {a}
             </p>
