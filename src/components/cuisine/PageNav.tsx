@@ -7,9 +7,6 @@ import { T, Lang } from './translations';
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/shop', label: 'Shop' },
-  { href: '/credentials', label: 'Credentials' },
 ];
 
 export function PageNav() {
@@ -63,7 +60,7 @@ export function PageNav() {
           </div>
 
           <Link href="/shop" className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
-            Order
+            Order Kim Chi
           </Link>
         </div>
 
@@ -115,7 +112,7 @@ export function PageNav() {
               onClick={() => setMenuOpen(false)}
               className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]"
             >
-              Order
+              Order Kim Chi
             </Link>
           </div>
         </div>

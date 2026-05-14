@@ -13,9 +13,6 @@ interface Props {
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/shop', label: 'Shop' },
-  { href: '/credentials', label: 'Credentials' },
 ];
 
 export function CuisineNav({ t, lang, setLang }: Props) {
