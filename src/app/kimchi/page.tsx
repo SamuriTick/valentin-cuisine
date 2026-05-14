@@ -118,7 +118,7 @@ export default function KimchiPage() {
               It&rsquo;s probably going to sell out in a few weeks.&rdquo;
             </p>
             <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
-              Valentin Thang, aged 15 &middot; Putney, London
+              Valentin Thang, aged 12 &middot; Putney, London
             </cite>
           </blockquote>
         </ContainerStandard>
@@ -232,7 +232,7 @@ export default function KimchiPage() {
               &ldquo;If you&rsquo;re depressed, buy kimchi. If you&rsquo;re lonely, buy kimchi.
               Just buy kimchi: because kimchi will make you happy.&rdquo;
             </p>
-            <cite className="font-body text-[11px] tracking-[1.8px] uppercase text-brand-muted not-italic">Valentin, aged 15</cite>
+            <cite className="font-body text-[11px] tracking-[1.8px] uppercase text-brand-muted not-italic">Valentin, aged 12</cite>
           </blockquote>
         </ContainerStandard>
       </section>
