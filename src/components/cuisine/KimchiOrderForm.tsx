@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 export function KimchiOrderForm() {
+  const PRICE_PER_JAR = 15;
   const [form, setForm] = useState({ name: '', email: '', jars: '1', dietary: '', details: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -12,14 +13,18 @@ export function KimchiOrderForm() {
     e.preventDefault();
     setStatus('sending');
     try {
+      const jars = Number(form.jars);
+      const total = jars * PRICE_PER_JAR;
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          occasion: `Kimchi order — ${form.jars} jar${Number(form.jars) > 1 ? 's' : ''}${form.dietary ? ` · dietary: ${form.dietary}` : ''}`,
+          occasion: `Kimchi order — ${jars} jar${jars > 1 ? 's' : ''} (£${total})${form.dietary ? ` · dietary: ${form.dietary}` : ''}`,
           details: form.details,
+          jars,
+          total,
         }),
       });
       setStatus(res.ok ? 'sent' : 'error');
@@ -32,7 +37,7 @@ export function KimchiOrderForm() {
     return (
       <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-lg text-center">
         <p className="font-body text-xl font-semibold text-brand-dark mb-2">Order sent!</p>
-        <p className="font-body text-sm text-brand-muted">Thanks {form.name} — Valentin will be in touch within 24 hours.</p>
+        <p className="font-body text-sm text-brand-muted">Thanks {form.name} — I&apos;ll be in touch within 24 hours.</p>
       </div>
     );
   }
@@ -76,8 +81,8 @@ export function KimchiOrderForm() {
             onChange={e => set('jars', e.target.value)}
             className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer"
           >
-            {['1', '2', '3', '4', '5+'].map(n => (
-              <option key={n} value={n}>{n} jar{n !== '1' ? 's' : ''} · £{n === '5+' ? '75+' : Number(n) * 15}</option>
+            {Array.from({ length: 10 }, (_, i) => String(i + 1)).map(n => (
+              <option key={n} value={n}>{n} jar{n !== '1' ? 's' : ''} · £{Number(n) * PRICE_PER_JAR}</option>
             ))}
           </select>
         </div>
