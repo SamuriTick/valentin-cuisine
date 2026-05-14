@@ -1,50 +1,63 @@
 'use client';
 
-import { Tab, Translations } from './translations';
+import { ContainerStandard } from './ContainerStandard';
+import { Translations } from './translations';
 
-interface Props {
-  t: Translations;
-  setTab: (t: Tab) => void;
-}
+interface Props { t: Translations }
 
-export function HeroSection({ t, setTab }: Props) {
+export function HeroSection({ t }: Props) {
   return (
-    <section id="hero" style={{
-      height: '100vh', minHeight: 600, maxHeight: 820,
-      background: 'linear-gradient(to bottom, rgba(24,24,24,0.15) 0%, rgba(24,24,24,0.70) 100%), url(/img/hero-valentin.jpg) center/cover no-repeat',
-      display: 'flex', alignItems: 'flex-end', paddingTop: 68,
-    }}>
-      <div style={{ maxWidth: 1160, width: '100%', margin: '0 auto', padding: '0 40px 72px' }}>
-        <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'rgba(255,255,255,0.80)', marginBottom: 16 }}>
-          {t.heroEyebrow}
-        </p>
-        <h1 style={{
-          fontFamily: "'Playfair Display', serif", fontSize: 'clamp(42px, 7vw, 62px)',
-          color: '#fff', lineHeight: 1.1, letterSpacing: -1, marginBottom: 20,
-        }}>
-          {t.heroTitle[0]}<br />
-          <em style={{ fontStyle: 'italic' }}>{t.heroTitle[1]}</em><br />
-          {t.heroTitle[2]}
-        </h1>
-        <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.72)', maxWidth: 420, lineHeight: 1.8, marginBottom: 32 }}>
-          {t.heroSub}
-        </p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button onClick={() => setTab('order')} style={{
-            background: '#fff', color: 'var(--dark)', fontSize: 11, fontWeight: 600,
-            letterSpacing: 1.5, textTransform: 'uppercase', padding: '13px 28px', border: 'none', cursor: 'pointer',
-          }}>
-            {t.heroCta}
-          </button>
-          <button onClick={() => setTab('about')} style={{
-            background: 'transparent', color: '#fff', fontSize: 11, fontWeight: 400,
-            letterSpacing: 1.5, textTransform: 'uppercase', padding: '13px 28px',
-            border: '1px solid rgba(255,255,255,0.40)', cursor: 'pointer',
-          }}>
-            {t.heroLearn}
-          </button>
-        </div>
-      </div>
-    </section>
+    <div className="bg-white pt-[72px]">
+      <section id="hero" className="md:min-h-[calc(100vh-72px)] md:flex md:items-center">
+        <ContainerStandard className="py-8 md:py-[clamp(12px,2vw,24px)] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[clamp(32px,5vw,64px)] items-center w-full">
+
+          {/* On mobile: image first, text second */}
+
+          {/* Photo */}
+          <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[700px] md:max-h-none">
+            <img
+              src="/valentin-hero.jpg"
+              alt="Valentin in the kitchen"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+          </div>
+
+          {/* Text */}
+          <div className="flex flex-col justify-center">
+            <p className="font-accent text-[clamp(14px,2.5vw,22px)] text-brand-teal mb-3 md:mb-4 leading-none">
+              {t.heroEyebrow}
+            </p>
+
+            <h1 className="font-display font-light text-[clamp(28px,3.5vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4 md:mb-6">
+              {t.heroTitle[0]}<br />
+              {t.heroTitle[1]}<br />
+              <span className="font-semibold italic text-brand-teal">{t.heroTitle[2]}</span>
+            </h1>
+
+            <div className="w-12 h-px bg-brand-border mb-4 md:mb-6" />
+
+            <p className="font-body text-sm text-brand-muted leading-[1.85] max-w-[380px] mb-6 md:mb-10">
+              {t.heroSub}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="#order"
+                className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white px-8 py-4 rounded no-underline text-center"
+              >
+                {t.heroCta}
+              </a>
+              <a
+                href="#about"
+                className="font-body text-[11px] font-normal tracking-[2.5px] uppercase px-8 py-4 rounded no-underline text-center border border-brand-border text-brand-muted bg-transparent"
+              >
+                {t.heroLearn}
+              </a>
+            </div>
+          </div>
+
+        </ContainerStandard>
+      </section>
+    </div>
   );
 }

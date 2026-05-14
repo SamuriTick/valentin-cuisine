@@ -17,20 +17,18 @@ export function TabsBar({ t, tab, setTab }: Props) {
   ];
 
   return (
-    <div style={{
-      position: 'sticky', top: 68, zIndex: 100,
-      background: 'var(--white)', borderBottom: '1px solid var(--border)', overflowX: 'auto',
-    }}>
-      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 40px', display: 'flex' }}>
+    <div className="sticky top-[68px] z-[100] bg-white border-b border-brand-border overflow-x-auto">
+      <div className="max-w-[860px] mx-auto px-[clamp(24px,8vw,80px)] flex">
         {tabs.map(([key, label]) => (
-          <button key={key} onClick={() => setTab(key)} style={{
-            padding: '16px 24px', fontFamily: "'Nunito', sans-serif", fontSize: 11,
-            fontWeight: tab === key ? 600 : 400, letterSpacing: 1.5, textTransform: 'uppercase',
-            color: tab === key ? 'var(--green)' : 'var(--muted)',
-            background: 'none', border: 'none',
-            borderBottom: `2px solid ${tab === key ? 'var(--green)' : 'transparent'}`,
-            cursor: 'pointer', marginBottom: -1, transition: 'all 0.2s',
-          }}>
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`font-body text-[11px] tracking-[1.5px] uppercase px-[clamp(12px,3vw,24px)] py-[clamp(12px,2vw,16px)] bg-transparent border-0 cursor-pointer transition-all duration-200 -mb-px border-b-2 ${
+              tab === key
+                ? 'font-semibold text-brand-teal border-brand-teal'
+                : 'font-normal text-brand-muted border-transparent'
+            }`}
+          >
             {label}
           </button>
         ))}

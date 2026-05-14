@@ -15,67 +15,111 @@ const NAV_LINKS = [
 export function PageNav() {
   const pathname = usePathname();
   const [lang, setLang] = useState<Lang>('en');
+  const [menuOpen, setMenuOpen] = useState(false);
   const t = T[lang];
 
   return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-      background: 'var(--white)', borderBottom: '2px solid var(--gold)',
-      boxShadow: '0 2px 24px rgba(184,150,46,0.10)',
-    }}>
-      <div style={{
-        maxWidth: 1160, margin: '0 auto', padding: '0 40px',
-        height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      }}>
-        <Link href="/" style={{
-          fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--green)',
-          textDecoration: 'none', letterSpacing: 2, textTransform: 'uppercase',
-          display: 'flex', flexDirection: 'column', lineHeight: 1.1,
-        }}>
+    <nav className="fixed top-0 left-0 right-0 z-[200] bg-white border-b-2 border-brand-gold shadow-[0_2px_24px_rgba(184,150,46,0.10)]">
+      <div className="max-w-[1160px] mx-auto px-[clamp(16px,4vw,40px)] h-[68px] flex items-center justify-between">
+
+        {/* Logo */}
+        <Link href="/" className="font-serif-display text-[clamp(18px,4vw,24px)] text-brand-teal no-underline tracking-[2px] uppercase flex flex-col leading-[1.1]">
           {t.tagline}
-          <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: 11, fontStyle: 'italic', color: 'var(--gold)', letterSpacing: 1, fontWeight: 400 }}>
+          <span className="font-body text-[11px] italic text-brand-gold tracking-[1px] font-normal">
             {t.taglineSub}
           </span>
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-          <div style={{ display: 'flex', gap: 4 }}>
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-7">
+          <div className="flex gap-1">
             {NAV_LINKS.map(({ href, label }) => (
-              <Link key={href} href={href} style={{
-                fontFamily: "'Nunito', sans-serif", fontSize: 11,
-                fontWeight: pathname === href ? 700 : 500,
-                letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
-                color: pathname === href ? 'var(--green)' : 'var(--muted)',
-                padding: '6px 12px',
-                borderBottom: `2px solid ${pathname === href ? 'var(--green)' : 'transparent'}`,
-              }}>
+              <Link
+                key={href}
+                href={href}
+                className={`font-body text-[11px] tracking-[1.5px] uppercase no-underline px-3 py-[6px] border-b-2 transition-colors duration-200 ${
+                  pathname === href
+                    ? 'font-bold text-brand-teal border-brand-teal'
+                    : 'font-medium text-brand-muted border-transparent'
+                }`}
+              >
                 {label}
               </Link>
             ))}
           </div>
 
-          <div style={{ display: 'flex', border: '1px solid var(--border)', overflow: 'hidden', borderRadius: 2 }}>
+          <div className="flex border border-brand-border overflow-hidden rounded-[2px]">
             {(['en', 'fr', 'vi'] as Lang[]).map(l => (
-              <button key={l} onClick={() => setLang(l)} style={{
-                padding: '5px 10px', fontFamily: "'Nunito', sans-serif", fontSize: 10, fontWeight: 700,
-                letterSpacing: 1.5, textTransform: 'uppercase',
-                background: lang === l ? 'var(--green)' : 'none',
-                color: lang === l ? '#fff' : 'var(--muted)', border: 'none', cursor: 'pointer',
-              }}>
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`px-[10px] py-[5px] font-body text-[10px] font-bold tracking-[1.5px] uppercase border-0 cursor-pointer ${
+                  lang === l ? 'bg-brand-teal text-white' : 'bg-transparent text-brand-muted'
+                }`}
+              >
                 {l.toUpperCase()}
               </button>
             ))}
           </div>
 
-          <Link href="/shop" style={{
-            fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 1.5,
-            textTransform: 'uppercase', color: 'var(--white)', background: 'var(--green)',
-            textDecoration: 'none', padding: '8px 18px', borderRadius: 2,
-          }}>
+          <Link href="/shop" className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
             Order
           </Link>
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label="Toggle menu"
+        >
+          <span className={`block w-[22px] h-[2px] bg-brand-teal transition-all duration-200 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+          <span className={`block w-[22px] h-[2px] bg-brand-teal transition-all duration-200 ${menuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-[22px] h-[2px] bg-brand-teal transition-all duration-200 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+        </button>
       </div>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className="flex md:hidden flex-col gap-1 bg-white border-t border-brand-border px-[clamp(16px,4vw,40px)] pt-4 pb-6">
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              className={`font-body text-[13px] tracking-[1.5px] uppercase no-underline py-[10px] border-b border-brand-border ${
+                pathname === href ? 'font-bold text-brand-teal' : 'font-medium text-brand-muted'
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+
+          <div className="flex items-center gap-3 mt-4">
+            <div className="flex border border-brand-border overflow-hidden rounded-[2px]">
+              {(['en', 'fr', 'vi'] as Lang[]).map(l => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-[10px] py-[5px] font-body text-[10px] font-bold tracking-[1.5px] uppercase border-0 cursor-pointer ${
+                    lang === l ? 'bg-brand-teal text-white' : 'bg-transparent text-brand-muted'
+                  }`}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <Link
+              href="/shop"
+              onClick={() => setMenuOpen(false)}
+              className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]"
+            >
+              Order
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

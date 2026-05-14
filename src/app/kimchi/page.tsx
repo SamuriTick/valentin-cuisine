@@ -1,0 +1,428 @@
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
+import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
+
+export const metadata: Metadata = {
+  title: "Valentin's Kimchi · Hand-Made in Putney, London",
+  description: 'Spicy, tangy, umami-rich kimchi made fresh to order. Blended (not layered) for deeper flavour. £15 for 2kg in a glass jar. SW London collection or Royal Mail.',
+};
+
+const TASTE_PROFILE = [
+  { label: 'Spicy', desc: 'The kick has to be there: that\'s non-negotiable. It\'ll attack your mouth a little.' },
+  { label: 'Umami', desc: 'Dried Vietnamese shrimp adds a depth you won\'t get from fermented shrimp. The secret.' },
+  { label: 'Salty', desc: 'Fish sauce, soy sauce, and brine from the fermentation itself.' },
+  { label: 'Sweet', desc: 'Just a tiny bit. Barely there, but you\'d miss it if it wasn\'t.' },
+];
+
+const PAIRINGS = [
+  {
+    label: 'Bulgogi beef',
+    desc: 'Bulgogi is sweet. Kimchi is spicy and salty. The spice cuts through the sweetness. Best combination.',
+  },
+  {
+    label: 'Egg & rice (for beginners)',
+    desc: 'Never tried Asian food? Start here. Kimchi + a fried egg + plain rice. Gets you into soy sauce and fish sauce while keeping it familiar.',
+  },
+  {
+    label: 'Sunday roast',
+    desc: 'Yorkshire pudding, roast potatoes, kimchi on the side. I think you should try it. I\'m probably right.',
+  },
+  {
+    label: 'Sausages',
+    desc: 'Another good British entry point. Savoury + spicy. Works.',
+  },
+  {
+    label: 'Kimchi fried rice',
+    desc: 'Use the older kimchi for this: the sour, funky stuff. Chop it up, fry with rice and egg. Perfect one-pan meal.',
+  },
+  {
+    label: 'Fresh mackerel',
+    desc: 'I caught mackerel in Weymouth, came home, cooked it in butter with leftover kimchi sauce, ate it on rice with an egg. Still one of the best things I\'ve eaten.',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'How long does it keep?',
+    a: '3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).',
+  },
+  {
+    q: 'Is it ready to eat when I get it?',
+    a: 'Yes. But you\'re getting it 2 to 3 days old, which is good. One week old is noticeably better: the fermentation has properly kicked in. I prefer it at least a week in. Leave it in the fridge, it\'ll keep improving.',
+  },
+  {
+    q: 'What\'s different about this recipe?',
+    a: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum\'s fridge instead of fermented shrimp. More umami, more depth.',
+  },
+  {
+    q: 'Do you deliver?',
+    a: 'SW London collection (Putney) is the easiest option: I may be able to offer a small discount for this. Royal Mail delivery is possible but not guaranteed, depends on logistics. Mention what you need in the form and I\'ll let you know.',
+  },
+  {
+    q: 'Can I get a vegan version?',
+    a: 'Yes. The standard recipe uses fish sauce and soy sauce. For vegan, I remove the fish sauce and any other meat products. Pescetarians are fine with the standard recipe.',
+  },
+  {
+    q: 'Help: my jar is overflowing.',
+    a: 'That\'s the fermentation working. Kimchi releases CO2 as it ferments and the liquid rises. Don\'t fill the jar completely to the top: leave a bit of room. If it\'s already bubbling over, open the lid carefully, let the gas escape, press the cabbage down below the brine, and seal it again.',
+  },
+  {
+    q: 'I\'ve eaten all the cabbage but there\'s sauce left. What do I do?',
+    a: 'Cook with it. The kimchi sauce works brilliantly with beef, with fish (mackerel especially), cooked in a pan with butter and served over rice. Don\'t throw it away.',
+  },
+  {
+    q: 'Why does making it make you cry?',
+    a: 'Lots of onions. Also garlic and ginger. When I blend the paste, the fumes are intense. My eyes are genuinely dying. The result is worth it.',
+  },
+];
+
+export default function KimchiPage() {
+  return (
+    <div className="bg-brand-light min-h-screen font-body">
+
+      {/* Nav */}
+      <nav className="fixed top-0 left-0 right-0 z-[200] bg-white border-b border-brand-border">
+        <ContainerStandard className="h-[72px] flex items-center justify-between">
+          <Link href="/" className="font-display text-[22px] font-normal italic text-brand-dark no-underline tracking-[0.5px]">
+            Valentin&rsquo;s Cuisine
+          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/" className="hidden sm:block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted no-underline">
+              Home
+            </Link>
+            <a href="#order" className="font-body text-[11px] font-bold tracking-[2px] uppercase text-white bg-brand-teal no-underline px-5 py-2.5 rounded">
+              Order · £15
+            </a>
+          </div>
+        </ContainerStandard>
+      </nav>
+
+      {/* Hero */}
+      <section className="pt-[72px] min-h-[92vh] flex items-center bg-hero-kimchi">
+        <ContainerStandard className="py-[clamp(48px,8vw,96px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(40px,6vw,80px)]">
+
+          <div className="flex flex-col justify-center">
+            <p className="font-accent text-[clamp(18px,3vw,24px)] text-brand-gold mb-4">
+              Hand-made in Putney, London
+            </p>
+            <h1 className="font-display font-normal text-[clamp(64px,12vw,108px)] text-white leading-none tracking-[-2px] mb-3">
+              Kim<em className="italic text-brand-gold">chi.</em>
+            </h1>
+            <p className="font-body text-[clamp(14px,2vw,16px)] text-white/70 leading-[1.85] max-w-[420px] mb-8">
+              Spicy, salty, umami-rich fermented cabbage. Not your standard recipe: blended,
+              not layered, with a Vietnamese twist that makes it better.
+              Goes with <span className="font-semibold text-white/90">literally everything</span>.
+            </p>
+            <div className="flex items-baseline gap-3 mb-10">
+              <span className="font-display text-[clamp(40px,6vw,56px)] text-white leading-none">£15</span>
+              <span className="font-body text-sm text-white/50 tracking-[1px]">for 2kg · glass jar · no microplastics</span>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-gold text-brand-dark no-underline px-8 py-4 rounded text-center">
+                Order Now
+              </a>
+              <a href="#about" className="font-body text-[11px] font-normal tracking-[2.5px] uppercase no-underline px-8 py-4 rounded text-center border text-white/75 border-white/25">
+                The Story
+              </a>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center min-h-[280px]">
+            <div className="flex flex-col items-center justify-center bg-white/5 border border-white/10 backdrop-blur-sm rounded-[40%_40%_30%_30%_/_20%_20%_10%_10%] w-[clamp(180px,35vw,280px)] h-[clamp(220px,42vw,340px)]">
+              <span className="text-[clamp(60px,12vw,90px)] leading-none">🫙</span>
+              <p className="font-display text-[clamp(14px,2.5vw,18px)] text-white/85 mt-4 tracking-[1px]">Kimchi</p>
+              <p className="font-body text-[11px] text-white/40 tracking-[1.5px] uppercase mt-1">2KG · Glass Jar</p>
+            </div>
+          </div>
+
+        </ContainerStandard>
+      </section>
+
+      {/* From Valentin */}
+      <section id="about" className="bg-brand-dark scroll-mt-[72px]">
+        <ContainerStandard className="py-[clamp(40px,6vw,72px)]">
+          <blockquote className="max-w-[680px] mx-auto text-center">
+            <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-white/90 leading-[1.55] tracking-tight mb-6">
+              &ldquo;I haven&rsquo;t been making kimchi for a while because I&rsquo;m a kid
+              and I&rsquo;m still in school. But now I have time, so buy my kimchi.
+              It&rsquo;s probably going to sell out in a few weeks.&rdquo;
+            </p>
+            <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
+              Valentin Thang, aged 15 · Putney, London
+            </cite>
+          </blockquote>
+        </ContainerStandard>
+      </section>
+
+      {/* Taste profile */}
+      <section className="bg-white border-t border-brand-border">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">What it tastes like</p>
+          <h2 className="font-display font-light text-[clamp(28px,4vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
+            Four things happening<br />
+            <span className="font-semibold italic text-brand-teal">at once.</span>
+          </h2>
+          <div className="w-10 h-px bg-brand-border mt-5 mb-10" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {TASTE_PROFILE.map(({ label, desc }) => (
+              <div key={label} className="bg-brand-light border border-brand-border rounded-lg p-6 hover:bg-brand-green-light transition-colors duration-200">
+                <p className="font-body text-base font-bold text-brand-dark mb-2 tracking-tight">{label}</p>
+                <div className="w-6 h-px bg-brand-border mb-3" />
+                <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </ContainerStandard>
+      </section>
+
+      {/* The recipe */}
+      <section className="bg-brand-green-light border-t border-brand-border">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(32px,5vw,64px)] items-start">
+
+          <div>
+            <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">The recipe</p>
+            <h2 className="font-display font-light text-[clamp(26px,4vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-5">
+              Not traditional.<br />
+              <span className="font-semibold italic text-brand-teal">Better.</span>
+            </h2>
+            <div className="w-10 h-px bg-brand-border mb-6" />
+            <p className="font-body text-sm text-brand-muted leading-[1.85] mb-4">
+              Most kimchi recipes use a tapioca base and layer the paste into the cabbage. I blend everything together: no tapioca, no layering. The sauce gets deeper into the vegetable. The flavour is more even, more intense all the way through.
+            </p>
+            <p className="font-body text-sm text-brand-muted leading-[1.85] mb-4">
+              The secret ingredient: dried Vietnamese shrimp, from the back of my mum&rsquo;s fridge. She&rsquo;s Vietnamese, so as I always say: <em>&ldquo;as all Asian people do, they have the most random stuff in their fridge.&rdquo;</em> I swapped out the fermented shrimp for the dried version. More umami, deeper saltiness, better flavour.
+            </p>
+            <p className="font-body text-sm text-brand-muted leading-[1.85] mb-6">
+              I tested it against the fermented shrimp version. The dried shrimp won. That&rsquo;s now the recipe.
+            </p>
+            <p className="font-body text-sm text-brand-muted leading-[1.85]">
+              Two to three years making it. About a year selling it. A lot of people like it. Now I have time again.
+            </p>
+          </div>
+
+          <div className="bg-white border border-brand-border rounded-lg p-6 md:p-8">
+            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">What&rsquo;s in it</p>
+            {[
+              ['Napa cabbage', 'One whole big head per 2kg jar'],
+              ['Gochugaru + chilli blend', 'Blended smooth into the paste'],
+              ['Garlic & ginger', 'Also blended. Will make your eyes water.'],
+              ['Lots of onions', 'A lot of onions. You have been warned.'],
+              ['Soy sauce', 'Salt and depth'],
+              ['Fish sauce', 'Umami base (omit for vegan)'],
+              ['Dried Vietnamese shrimp', 'The secret. Replaces fermented shrimp: more umami'],
+              ['Vinegar', 'Balances the fermentation'],
+            ].map(([name, note]) => (
+              <div key={name} className="flex flex-col py-3 border-b border-brand-border last:border-0">
+                <p className="font-body text-sm font-semibold text-brand-dark">{name}</p>
+                <p className="font-body text-[12px] text-brand-muted mt-0.5">{note}</p>
+              </div>
+            ))}
+          </div>
+
+        </ContainerStandard>
+      </section>
+
+      {/* Goes with everything */}
+      <section className="bg-white border-t border-brand-border">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none text-center">Versatile by nature</p>
+          <h2 className="font-display font-light text-[clamp(26px,4vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0 text-center">
+            Kimchi goes with <span className="font-semibold italic text-brand-teal">anything savoury.</span>
+          </h2>
+          <div className="w-10 h-px bg-brand-border mx-auto mt-5 mb-10" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {PAIRINGS.map(({ label, desc }) => (
+              <div key={label} className="bg-brand-light border border-brand-border rounded-lg p-5 hover:bg-brand-green-light transition-colors duration-200">
+                <p className="font-body text-sm font-bold text-brand-dark mb-2">{label}</p>
+                <div className="w-6 h-px bg-brand-border mb-2.5" />
+                <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 bg-brand-dark rounded-lg px-6 py-6 md:px-8 md:py-7 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            <div className="md:col-span-2">
+              <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Pro tip: leftover kimchi sauce</p>
+              <p className="font-body text-[13px] text-white/70 leading-[1.75]">
+                Eaten all the cabbage but still have sauce left? Don&rsquo;t throw it away. Cook it with beef or fish.
+                Mackerel works especially well: fry in butter, add the kimchi sauce, serve on rice with a fried egg.
+                I tested this after a fishing trip to Weymouth. Still one of the best things I&rsquo;ve eaten.
+              </p>
+            </div>
+            <div className="bg-white/10 border border-white/10 rounded-lg p-5 text-center">
+              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal mb-2">The formula</p>
+              <p className="font-display text-[28px] font-normal text-white leading-snug">
+                Sauce + fish<br />+ butter + rice
+              </p>
+            </div>
+          </div>
+
+          <blockquote className="mt-8 mx-auto max-w-[520px] bg-brand-light border border-brand-border rounded-lg px-6 py-5 text-center">
+            <p className="font-body text-sm italic text-brand-dark leading-[1.8] mb-2">
+              &ldquo;If you&rsquo;re depressed, buy kimchi. If you&rsquo;re lonely, buy kimchi.
+              Just buy kimchi: because kimchi will make you happy.&rdquo;
+            </p>
+            <cite className="font-body text-[11px] tracking-[1.8px] uppercase text-brand-muted not-italic">Valentin, aged 15</cite>
+          </blockquote>
+        </ContainerStandard>
+      </section>
+
+      {/* Storage */}
+      <section className="bg-brand-dark">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+            <div className="md:col-span-1">
+              <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Storage guide</p>
+              <h2 className="font-display font-light text-[clamp(24px,3.5vw,36px)] text-white leading-[1.1] tracking-[-1px]">
+                The longer,<br />
+                <span className="font-semibold italic text-brand-teal">the better.</span>
+              </h2>
+              <div className="w-10 h-px bg-white/20 mt-5 mb-5" />
+              <p className="font-body text-[13px] text-white/55 leading-[1.75]">
+                Kimchi ferments over time. The flavour deepens, the tang increases.
+                What starts as fresh and crunchy slowly becomes something more complex
+               : and more useful in the kitchen.
+              </p>
+            </div>
+            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                ['Days 1-3 (fresh)', 'Clean, crunchy, mild tang. Perfectly good to eat right away.'],
+                ['1 week', 'Fermentation kicks in. Flavour deepens noticeably. My preferred stage.'],
+                ['1-3 months', 'Sour, complex, intensely flavoured. Excellent for cooking.'],
+                ['3+ months', 'Funky and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don\'t throw it out.'],
+              ].map(([stage, note]) => (
+                <div key={stage} className="bg-white/5 border border-white/10 rounded-lg p-5">
+                  <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mb-2">{stage}</p>
+                  <p className="font-body text-[13px] text-white/65 leading-[1.7]">{note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">CO2 tip: don&rsquo;t overfill</p>
+              <p className="font-body text-[13px] text-white/60 leading-[1.75]">
+                Fermenting kimchi produces CO2, which makes the liquid rise. If you fill the jar right to the top, it will overflow.
+                Leave a couple of centimetres of space at the top when you first open it. Press the cabbage below the brine level
+                and seal it again. If it bubbles over, just open the lid briefly to release the gas.
+              </p>
+            </div>
+            <div>
+              <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Fridge vs counter</p>
+              <p className="font-body text-[13px] text-white/60 leading-[1.75]">
+                Leave it on the counter for a day or two to kickstart fermentation quickly, then move it to the fridge to slow it down.
+                In the fridge it keeps for 3 to 4 months. On the counter it will ferment much faster: check it daily.
+              </p>
+            </div>
+          </div>
+        </ContainerStandard>
+      </section>
+
+      {/* Order */}
+      <section id="order" className="bg-brand-light border-t border-brand-border scroll-mt-[72px]">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(32px,5vw,64px)] items-start">
+
+          <div>
+            <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Get yours</p>
+            <h2 className="font-display font-light text-[clamp(26px,4vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
+              <span className="font-semibold italic text-brand-teal">Place an order</span>
+            </h2>
+            <div className="w-10 h-px bg-brand-border mt-5 mb-6" />
+
+            <div className="space-y-5 mb-8">
+              {[
+                ['Fill in the form', 'Name, email, how many jars. Mention dietary needs or if you want to collect.'],
+                ['Valentin confirms', 'He\'s a student: weekends and school holidays work best. He replies within 24 hours.'],
+                ['Collect or receive', 'SW London / Putney collection available, possible discount. Royal Mail delivery also possible: just ask.'],
+              ].map(([title, body], i) => (
+                <div key={title} className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded flex items-center justify-center">
+                    <span className="font-display text-xl font-normal text-brand-teal leading-none">{i + 1}</span>
+                  </div>
+                  <div>
+                    <p className="font-body text-sm font-semibold text-brand-dark mb-1">{title}</p>
+                    <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-5 mb-6">
+              <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Pricing</p>
+              <div className="flex items-baseline gap-3">
+                <p className="font-display text-[48px] font-normal text-brand-dark leading-none">£15</p>
+                <p className="font-body text-[13px] text-brand-muted">per 2kg jar</p>
+              </div>
+              <p className="font-body text-[12px] text-brand-muted mt-2">One whole nappa cabbage · glass jar · no microplastics</p>
+            </div>
+
+            <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-4">
+              <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-3">Dietary options</p>
+              <div className="space-y-2">
+                {[
+                  ['Standard', 'Fish sauce, soy sauce, dried shrimp: full recipe'],
+                  ['Pescetarian', 'Same as standard: all fish-based, no meat'],
+                  ['Vegan', 'Fish sauce and meat products removed: just ask'],
+                ].map(([diet, note]) => (
+                  <div key={diet} className="flex gap-3 items-start">
+                    <span className="font-body text-[11px] font-bold tracking-[1px] uppercase text-brand-teal w-[90px] flex-shrink-0 pt-[1px]">{diet}</span>
+                    <span className="font-body text-[13px] text-brand-muted leading-[1.6]">{note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Order form</p>
+            <KimchiOrderForm />
+
+            <div className="mt-8 pt-8 border-t border-brand-border">
+              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">Common questions</p>
+              <div className="divide-y divide-brand-border">
+                {FAQS.map(({ q, a }) => (
+                  <div key={q} className="py-5">
+                    <p className="font-body text-sm font-semibold text-brand-dark mb-2 leading-snug">{q}</p>
+                    <p className="font-body text-[13px] text-brand-muted leading-[1.75]">{a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </ContainerStandard>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="bg-brand-dark text-center">
+        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+          <h2 className="font-display font-light text-[clamp(32px,6vw,60px)] text-white leading-snug tracking-tight mb-4">
+            Just get the kimchi.
+          </h2>
+          <p className="font-body text-sm text-white/45 tracking-[1px] mb-10">
+            £15 · 2kg · Glass jar · Made fresh to order · SW London
+          </p>
+          <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-gold text-brand-dark no-underline px-10 py-4 rounded inline-block">
+            Order Now
+          </a>
+        </ContainerStandard>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-brand-deeper text-center py-10">
+        <ContainerStandard>
+          <Link href="/" className="font-display font-light text-[22px] italic text-white/70 no-underline">
+            Valentin&rsquo;s Cuisine
+          </Link>
+          <div className="w-10 h-px bg-white/10 mx-auto my-5" />
+          <p className="font-body text-[11px] tracking-[1.5px] uppercase text-white/30">
+            Putney, London &middot; Made with love
+          </p>
+        </ContainerStandard>
+      </footer>
+
+    </div>
+  );
+}

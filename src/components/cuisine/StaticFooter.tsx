@@ -1,14 +1,10 @@
 export function StaticFooter() {
   return (
-    <footer style={{
-      background: 'var(--green)', color: 'rgba(255,255,255,0.60)',
-      padding: '32px 40px', textAlign: 'center',
-      fontFamily: "'Nunito', sans-serif", fontSize: 12, letterSpacing: 1,
-    }}>
-      <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 8 }}>
+    <footer className="bg-brand-teal text-white/60 px-10 py-8 text-center font-body text-[12px] tracking-[1px]">
+      <p className="font-accent text-[22px] text-brand-gold mb-2">
         Valentin&apos;s Cuisine
       </p>
-      <p>© 2025 Valentin&apos;s Cuisine · Putney, London</p>
+      <p>&copy; 2025 Valentin&apos;s Cuisine &middot; Putney, London</p>
     </footer>
   );
 }

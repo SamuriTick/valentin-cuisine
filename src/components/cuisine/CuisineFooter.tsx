@@ -1,20 +1,32 @@
 'use client';
 
+import { ContainerStandard } from './ContainerStandard';
 import { Translations } from './translations';
 
 interface Props { t: Translations }
 
 export function CuisineFooter({ t }: Props) {
   return (
-    <footer style={{
-      background: 'var(--green)', color: 'rgba(255,255,255,0.60)',
-      padding: '32px 40px', textAlign: 'center',
-      fontFamily: "'Nunito', sans-serif", fontSize: 12, letterSpacing: 1,
-    }}>
-      <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 8 }}>
-        {t.tagline}
-      </p>
-      <p>{t.footerLine}</p>
+    <footer className="bg-white border-t border-brand-border text-center py-12 md:py-16">
+      <ContainerStandard>
+
+        <p className="font-display font-light italic text-[clamp(22px,3.5vw,36px)] text-brand-dark mb-4 leading-none tracking-tight">
+          Valentin&rsquo;s Cuisine
+        </p>
+
+        <div className="w-14 h-px mx-auto mb-5 bg-brand-border" />
+
+        <p className="font-body text-[11px] tracking-[2px] uppercase mb-7 text-brand-muted">
+          {t.taglineSub}
+        </p>
+
+        <div className="w-full h-px mb-7 bg-brand-border" />
+
+        <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted leading-loose">
+          {t.footerLine} &middot; Made with love
+        </p>
+
+      </ContainerStandard>
     </footer>
   );
 }

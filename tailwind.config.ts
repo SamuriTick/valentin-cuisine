@@ -14,6 +14,19 @@ const config: Config = {
     extend: {
       colors: {
         trueGray: colors.neutral,
+        brand: {
+          dark: '#1a1a1a',
+          teal: '#b03060',
+          light: '#fffef5',
+          'green-light': '#fdf2f6',
+          border: '#ece8df',
+          muted: '#8a8070',
+          'bg-dark': '#1a1a1a',
+          gold: '#f0c94a',
+          deeper: '#0a0500',
+          'card-dark': '#2a2a2a',
+          'card-border': '#3a3a3a',
+        },
         primary: {
           50: '#f0f9f3',
           100: '#dcf2e1',
@@ -39,6 +52,9 @@ const config: Config = {
           800: '#28653a',
           900: '#235430',
         },
+      },
+      backgroundImage: {
+        'hero-kimchi': 'linear-gradient(150deg, #0a0500 0%, #2b0f00 45%, #0d2b1a 100%)',
       },
       typography: {
         DEFAULT: {
@@ -79,6 +95,10 @@ const config: Config = {
       sans: ["Inter", "system-ui", ...defaultTheme.fontFamily.sans],
       heading: ["Inter", "system-ui", ...defaultTheme.fontFamily.sans],
       stock: [defaultTheme.fontFamily.sans],
+      display: ["'Cormorant Garamond'", "serif"],
+      body: ["'Nunito'", "sans-serif"],
+      'serif-display': ["'DM Serif Display'", "serif"],
+      accent: ["'Great Vibes'", "cursive"],
     },
     letterSpacing: {
       tighter: '-0.02em',

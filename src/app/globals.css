@@ -1,30 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --green:  #1E3A1E;
-  --green2: #2D5A2D;
-  --gold:   #B8962E;
-  --cream:  #F8F5EE;
-  --warm:   #F0EBE0;
-  --white:  #FFFFFF;
-  --dark:   #181818;
-  --mid:    #3A3A3A;
-  --muted:  #7A7060;
-  --border: #DDD8CC;
+  --cream:     #fffef5;
+  --charcoal:  #1a1a1a;
+  --teal:      #b03060;
+  --muted:     #8a8070;
+  --highlight: #f0c94a;
+  --white:     #ffffff;
+  --border:    #ece8df;
+  --warm:      #fdf2f6;
+
+  /* Legacy aliases */
+  --green:  #b03060;
+  --green2: #8f254d;
+  --gold:   #f0c94a;
+  --dark:   #1a1a1a;
+  --mid:    #4a4040;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
+  overflow-x: hidden;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
-  color: var(--dark);
+  color: var(--charcoal);
 }
 
+.font-cormorant { font-family: 'Cormorant Garamond', serif; }
 .font-serif-display { font-family: 'DM Serif Display', serif; }
 .font-playfair { font-family: 'Playfair Display', serif; }
 .font-accent { font-family: 'Great Vibes', cursive; }
