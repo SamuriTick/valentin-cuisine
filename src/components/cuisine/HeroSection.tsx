@@ -42,13 +42,13 @@ export function HeroSection({ t }: Props) {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="#order"
+                href="/kimchi"
                 className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white px-8 py-4 rounded no-underline text-center"
               >
                 {t.heroCta}
               </a>
               <a
-                href="#about"
+                href="/contact"
                 className="font-body text-[11px] font-normal tracking-[2.5px] uppercase px-8 py-4 rounded no-underline text-center border border-brand-border text-brand-muted bg-transparent"
               >
                 {t.heroLearn}

@@ -59,7 +59,7 @@ export function PageNav() {
             ))}
           </div>
 
-          <Link href="/shop" className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
+          <Link href="/kimchi" className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
             Order Kim Chi
           </Link>
         </div>
@@ -108,7 +108,7 @@ export function PageNav() {
             </div>
 
             <Link
-              href="/shop"
+              href="/kimchi"
               onClick={() => setMenuOpen(false)}
               className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]"
             >

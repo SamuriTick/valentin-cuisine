@@ -8,6 +8,7 @@ import { AboutTab } from '@/components/cuisine/AboutTab';
 import { SpecialtiesTab } from '@/components/cuisine/SpecialtiesTab';
 import { GalleryTab } from '@/components/cuisine/GalleryTab';
 import { OrderTab } from '@/components/cuisine/OrderTab';
+import { MentoringSection } from '@/components/cuisine/MentoringSection';
 import { CuisineFooter } from '@/components/cuisine/CuisineFooter';
 
 export default function Home() {
@@ -21,7 +22,8 @@ export default function Home() {
       <AboutTab t={t} />
       <SpecialtiesTab t={t} />
       <GalleryTab />
-      <OrderTab t={t} />
+      <MentoringSection />
+      <OrderTab />
       <CuisineFooter t={t} />
     </>
   );
