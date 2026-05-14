@@ -161,7 +161,7 @@ export function OrderTab() {
                 </button>
 
                 <p className="font-body text-[12px] text-brand-muted text-center leading-[1.6]">
-                  I will message you when something is available. That is it.
+                  I won&apos;t spam you, I promise. I&apos;ll just message when I actually have something ready.
                 </p>
               </form>
             )}
