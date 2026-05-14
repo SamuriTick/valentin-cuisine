@@ -99,45 +99,47 @@ export default function KimchiPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-[72px] min-h-[92vh] flex items-center bg-hero-kimchi">
-        <ContainerStandard className="py-[clamp(48px,8vw,96px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(40px,6vw,80px)]">
+      <div className="bg-white pt-[72px]">
+        <section className="md:min-h-[calc(100vh-72px)] md:flex md:items-center">
+          <ContainerStandard className="py-10 md:py-[clamp(12px,2vw,24px)] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[clamp(32px,5vw,64px)] items-center w-full">
 
-          <div className="flex flex-col justify-center">
-            <p className="font-accent text-[clamp(18px,3vw,24px)] text-brand-gold mb-4">
-              Hand-made in Putney, London
-            </p>
-            <h1 className="font-display font-normal text-[clamp(64px,12vw,108px)] text-white leading-none tracking-[-2px] mb-3">
-              Kim<em className="italic text-brand-gold">chi.</em>
-            </h1>
-            <p className="font-body text-[clamp(14px,2vw,16px)] text-white/70 leading-[1.85] max-w-[420px] mb-8">
-              Spicy, salty, umami-rich fermented cabbage. Not your standard recipe: blended,
-              not layered, with a Vietnamese twist that makes it better.
-              Goes with <span className="font-semibold text-white/90">literally everything</span>.
-            </p>
-            <div className="flex items-baseline gap-3 mb-10">
-              <span className="font-display text-[clamp(40px,6vw,56px)] text-white leading-none">£15</span>
-              <span className="font-body text-sm text-white/50 tracking-[1px]">for 2kg · glass jar · no microplastics</span>
+            {/* Visual - top on mobile, right on desktop */}
+            <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[600px] md:max-h-none bg-brand-light border border-brand-border flex items-center justify-center">
+              <div className="text-center px-8">
+                <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>
+                <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-gold text-brand-dark no-underline px-8 py-4 rounded text-center">
-                Order Now
-              </a>
-              <a href="#about" className="font-body text-[11px] font-normal tracking-[2.5px] uppercase no-underline px-8 py-4 rounded text-center border text-white/75 border-white/25">
-                The Story
-              </a>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-center min-h-[280px]">
-            <div className="flex flex-col items-center justify-center bg-white/5 border border-white/10 backdrop-blur-sm rounded-[40%_40%_30%_30%_/_20%_20%_10%_10%] w-[clamp(180px,35vw,280px)] h-[clamp(220px,42vw,340px)]">
-              <span className="text-[clamp(60px,12vw,90px)] leading-none">🫙</span>
-              <p className="font-display text-[clamp(14px,2.5vw,18px)] text-white/85 mt-4 tracking-[1px]">Kimchi</p>
-              <p className="font-body text-[11px] text-white/40 tracking-[1.5px] uppercase mt-1">2KG · Glass Jar</p>
+            {/* Text */}
+            <div className="flex flex-col justify-center">
+              <p className="font-accent text-[clamp(16px,2.5vw,22px)] text-brand-teal mb-3 md:mb-4 leading-none">Hand-made in Putney, London</p>
+              <h1 className="font-display font-light text-[clamp(36px,5vw,64px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4 md:mb-6">
+                Spicy. Salty.<br />
+                <span className="font-semibold italic text-brand-teal">Umami-rich.</span>
+              </h1>
+              <div className="w-12 h-px bg-brand-border mb-5" />
+              <p className="font-body text-sm text-brand-muted leading-[1.85] mb-6 max-w-[420px]">
+                Not your standard recipe: blended, not layered, with a Vietnamese twist.
+                Made fresh to order. Goes with literally everything.
+              </p>
+              <div className="flex items-baseline gap-2 mb-8">
+                <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">£15</span>
+                <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">for 2kg · glass jar · no microplastics</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-8 py-4 rounded text-center hover:opacity-85 transition-opacity duration-200">
+                  Order Now
+                </a>
+                <a href="#about" className="font-body text-[11px] font-normal tracking-[2.5px] uppercase no-underline px-8 py-4 rounded text-center border border-brand-border text-brand-muted hover:border-brand-teal hover:text-brand-teal transition-colors duration-200">
+                  The Story
+                </a>
+              </div>
             </div>
-          </div>
 
-        </ContainerStandard>
-      </section>
+          </ContainerStandard>
+        </section>
+      </div>
 
       {/* From Valentin */}
       <section id="about" className="bg-brand-dark scroll-mt-[72px]">
