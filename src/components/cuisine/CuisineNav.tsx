@@ -52,12 +52,12 @@ export function CuisineNav({ t, lang, setLang }: Props) {
             </Link>
           ))}
           <span style={{ width: 1, height: 16, background: '#ece8df', display: 'inline-block' }} />
-          <Link href="/shop" style={{
+          <Link href="/kimchi" style={{
             fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 600,
             letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
             color: '#b03060', transition: 'opacity 0.2s',
           }}>
-            Order
+            Order Kimchi
           </Link>
         </div>
 
@@ -93,12 +93,12 @@ export function CuisineNav({ t, lang, setLang }: Props) {
               {label}
             </Link>
           ))}
-          <Link href="/shop" onClick={() => setMenuOpen(false)} style={{
+          <Link href="/kimchi" onClick={() => setMenuOpen(false)} style={{
             fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 600,
             letterSpacing: 1.5, textTransform: 'uppercase', color: '#b03060',
             textDecoration: 'none', display: 'inline-block', marginTop: 20,
           }}>
-            Order
+            Order Kimchi
           </Link>
           <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
             {(['en', 'fr', 'vi'] as Lang[]).map(l => (

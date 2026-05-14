@@ -1,10 +1,16 @@
-import { PageNav } from '@/components/cuisine/PageNav';
-import { StaticFooter } from '@/components/cuisine/StaticFooter';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
+import { StaticFooter } from '@/components/cuisine/StaticFooter';
+import { PageNav } from '@/components/cuisine/PageNav';
 
+export const metadata: Metadata = {
+  title: "Shop · Valentin's Cuisine",
+  description: 'Order custom cakes, kimchi, pastries and sourdough from Valentin. Based in Putney, London. Available weekends and school holidays.',
+};
 
-
+export const dynamic = 'force-dynamic';
 
 const CATEGORIES = ['cake', 'pastry', 'bread', 'fermented', 'seasonal'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -15,10 +21,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   seasonal: 'Seasonal',
 };
 
-export const dynamic = 'force-dynamic';
-
 export default async function ShopPage({ searchParams }: { searchParams: { category?: string } }) {
-  
   const activeCategory = searchParams.category || 'all';
 
   const products = await prisma.product.findMany({
@@ -30,95 +33,133 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
   });
 
   return (
-    <>
+    <div className="bg-brand-light min-h-screen font-body">
+
       <PageNav />
-      <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
 
-        {/* Header */}
-        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
-          <div style={{ maxWidth: 1160, margin: '0 auto' }}>
-            <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 12 }}>Order Online</p>
-            <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--dark)', marginBottom: 6 }}>Shop</h1>
-            <div style={{ width: 32, height: 1, background: 'var(--gold)', margin: '18px 0 16px' }} />
-            <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 28, lineHeight: 1.7 }}>
-              Available weekends & school holidays · Orders confirmed within 24 hours
-            </p>
+      {/* Header */}
+      <div className="bg-white pt-[68px] border-b border-brand-border">
+        <ContainerStandard className="py-14 md:py-20">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Putney, London</p>
+          <h1 className="font-display font-light text-[clamp(36px,5vw,56px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
+            Made fresh,<br />
+            <span className="font-semibold italic text-brand-teal">to order.</span>
+          </h1>
+          <div className="w-12 h-px bg-brand-border mt-5 mb-5" />
+          <p className="font-body text-sm text-brand-muted leading-[1.85] mb-8 max-w-[480px]">
+            Available weekends and school holidays. Orders confirmed within 24 hours.
+          </p>
 
-            {/* Category filter */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {['all', ...CATEGORIES].map(cat => (
-                <Link key={cat} href={cat === 'all' ? '/shop' : `/shop?category=${cat}`} style={{
-                  padding: '6px 16px', fontSize: 11, fontWeight: 600, letterSpacing: 1.5,
-                  textTransform: 'uppercase', textDecoration: 'none', borderRadius: 2,
-                  background: activeCategory === cat ? 'var(--green)' : 'var(--warm)',
-                  color: activeCategory === cat ? '#fff' : 'var(--muted)',
-                  border: '1px solid var(--border)',
-                }}>
-                  {cat === 'all' ? 'All' : CATEGORY_LABELS[cat]}
-                </Link>
-              ))}
-            </div>
+          {/* Category filter */}
+          <div className="flex flex-wrap gap-2">
+            {['all', ...CATEGORIES].map(cat => (
+              <Link
+                key={cat}
+                href={cat === 'all' ? '/shop' : `/shop?category=${cat}`}
+                className={`font-body text-[11px] font-bold tracking-[1.5px] uppercase no-underline px-4 py-2 rounded border transition-colors duration-200 ${
+                  activeCategory === cat
+                    ? 'bg-brand-teal text-white border-brand-teal'
+                    : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'
+                }`}
+              >
+                {cat === 'all' ? 'All' : CATEGORY_LABELS[cat]}
+              </Link>
+            ))}
           </div>
-        </div>
+        </ContainerStandard>
+      </div>
 
-        {/* Products grid */}
-        <div style={{ maxWidth: 1160, margin: '0 auto', padding: 'clamp(32px, 5vw, 48px) clamp(16px, 5vw, 40px) 80px' }}>
-          {products.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--muted)' }}>
-                Products coming soon
-              </p>
-              <p style={{ fontSize: 14, color: 'var(--muted)', marginTop: 12 }}>
-                In the meantime, <Link href="/#order" style={{ color: 'var(--green)' }}>send a custom order</Link>
-              </p>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 1, background: 'var(--border)', border: '1px solid var(--border)' }}>
-              {products.map(product => (
-                <div key={product.id} style={{ background: 'var(--white)' }}>
-                  {product.imageUrl ? (
-                    <div style={{ overflow: 'hidden', aspectRatio: '4/3' }}>
-                      <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                    </div>
-                  ) : (
-                    <div style={{ aspectRatio: '4/3', background: 'var(--warm)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: 'var(--border)' }}>V</span>
-                    </div>
+      {/* Products */}
+      <ContainerStandard className="py-12 md:py-16">
+        {products.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="font-display font-light text-[clamp(24px,3vw,36px)] text-brand-dark mb-3">
+              Coming soon
+            </p>
+            <div className="w-10 h-px bg-brand-border mx-auto mb-5" />
+            <p className="font-body text-sm text-brand-muted mb-6">
+              In the meantime, send a custom order.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-block font-body text-[11px] font-bold tracking-[2px] uppercase text-white bg-brand-teal no-underline px-8 py-3 rounded hover:opacity-85 transition-opacity duration-200"
+            >
+              Get in Touch
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {products.map(product => (
+              <div key={product.id} className="bg-white border border-brand-border rounded-lg overflow-hidden hover:border-brand-teal transition-colors duration-200">
+
+                {product.imageUrl ? (
+                  <div className="overflow-hidden aspect-[4/3]">
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover block"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-[4/3] bg-brand-light flex items-center justify-center">
+                    <p className="font-display text-[72px] font-light text-brand-border leading-none">V</p>
+                  </div>
+                )}
+
+                <div className="p-6">
+                  <p className="font-body text-[10px] tracking-[2px] uppercase text-brand-teal mb-2">
+                    {CATEGORY_LABELS[product.category] || product.category}
+                    {product.featured && ' · Featured'}
+                  </p>
+                  <h2 className="font-display font-light text-[20px] text-brand-dark leading-[1.3] mb-2">
+                    {product.name}
+                  </h2>
+                  {product.description && (
+                    <p className="font-body text-[13px] text-brand-muted leading-[1.7] mb-4">{product.description}</p>
                   )}
-                  <div style={{ padding: '20px 24px 24px' }}>
-                    <p style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
-                      {CATEGORY_LABELS[product.category] || product.category}
-                      {product.featured && ' · Featured'}
-                    </p>
-                    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: 'var(--dark)', marginBottom: 8, lineHeight: 1.3 }}>
-                      {product.name}
-                    </h2>
-                    {product.description && (
-                      <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 16 }}>{product.description}</p>
-                    )}
-                    {product.orderNote && (
-                      <p style={{ fontSize: 12, color: 'var(--mid)', fontStyle: 'italic', marginBottom: 16 }}>{product.orderNote}</p>
-                    )}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-                      <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 20, color: 'var(--green)' }}>
-                        {product.price || 'Price on request'}
-                      </span>
-                      <Link href={`mailto:valentin.thang@gmail.com?subject=Order: ${encodeURIComponent(product.name)}`} style={{
-                        fontSize: 10, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase',
-                        color: 'var(--white)', background: 'var(--green)',
-                        textDecoration: 'none', padding: '8px 14px', borderRadius: 2,
-                      }}>
-                        Order
-                      </Link>
-                    </div>
+                  {product.orderNote && (
+                    <p className="font-body text-[12px] text-brand-muted italic mb-4">{product.orderNote}</p>
+                  )}
+                  <div className="flex items-center justify-between pt-4 border-t border-brand-border">
+                    <span className="font-display text-[22px] font-light text-brand-dark leading-none">
+                      {product.price || 'Ask for price'}
+                    </span>
+                    <Link
+                      href={`/contact`}
+                      className="font-body text-[10px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-4 py-2 rounded hover:opacity-85 transition-opacity duration-200"
+                    >
+                      Order
+                    </Link>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+
+              </div>
+            ))}
+          </div>
+        )}
+      </ContainerStandard>
+
+      {/* Bottom CTA */}
+      <section className="bg-white border-t border-brand-border text-center">
+        <ContainerStandard className="py-12">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Something specific in mind?</p>
+          <h2 className="font-display font-light text-[clamp(26px,3.5vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
+            Custom orders <span className="font-semibold italic text-brand-teal">welcome.</span>
+          </h2>
+          <div className="w-12 h-px bg-brand-border mx-auto mt-5 mb-5" />
+          <p className="font-body text-sm text-brand-muted mb-8 max-w-[420px] mx-auto leading-[1.85]">
+            Tell me the flavour, the size, the occasion. I will handle the rest.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-block font-body text-[11px] font-bold tracking-[2.5px] uppercase text-white bg-brand-teal no-underline px-10 py-4 rounded hover:opacity-85 transition-opacity duration-200"
+          >
+            Get in Touch
+          </Link>
+        </ContainerStandard>
+      </section>
+
       <StaticFooter />
-    </>
+    </div>
   );
 }

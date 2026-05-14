@@ -7,7 +7,7 @@ export const T = {
     taglineSub: 'Baker & Pastry Chef, aged 13',
     heroEyebrow: 'Putney, London',
     heroTitle: ['Anyone can cook,', 'but only the', 'fearless can be great'],
-    heroSub: "I'm 13, I live in Putney, and I bake to order. Cakes, pastries, kimchi, sourdough — made fresh, with a lot of care. Available weekends and school holidays.",
+    heroSub: "I'm 13, I live in Putney, and I bake to order. Cakes, pastries, kimchi, sourdough, made fresh with a lot of care. Available weekends and school holidays.",
     heroCta: 'Order Kimchi',
     heroLearn: 'Get in Touch',
     navAbout: 'About',
