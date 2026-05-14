@@ -26,10 +26,6 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 
-RUN mkdir -p /app/uploads
-ENV UPLOAD_PATH=/app/uploads
-
 EXPOSE 3000
-VOLUME ["/app/uploads"]
 
 CMD ["npm", "start"]
