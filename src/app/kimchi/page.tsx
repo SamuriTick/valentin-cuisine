@@ -396,28 +396,30 @@ export default function KimchiPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-brand-dark text-center">
+      <section className="bg-brand-light border-t border-brand-border text-center">
         <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
-          <h2 className="font-display font-light text-[clamp(32px,6vw,60px)] text-white leading-snug tracking-tight mb-4">
-            Just get the kimchi.
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Order today</p>
+          <h2 className="font-display font-light text-[clamp(28px,4vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
+            Just get the <span className="font-semibold italic text-brand-teal">kimchi.</span>
           </h2>
-          <p className="font-body text-sm text-white/45 tracking-[1px] mb-10">
-            £15 · 2kg · Glass jar · Made fresh to order · SW London
+          <div className="w-12 h-px bg-brand-border mx-auto mt-5 mb-5" />
+          <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-8">
+            £15 &middot; 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
           </p>
-          <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-gold text-brand-dark no-underline px-10 py-4 rounded inline-block">
+          <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-10 py-4 rounded inline-block hover:opacity-85 transition-opacity duration-200">
             Order Now
           </a>
         </ContainerStandard>
       </section>
 
       {/* Footer */}
-      <footer className="bg-brand-deeper text-center py-10">
+      <footer className="bg-white border-t border-brand-border text-center py-12">
         <ContainerStandard>
-          <Link href="/" className="font-display font-light text-[22px] italic text-white/70 no-underline">
+          <Link href="/" className="font-display font-light italic text-[clamp(22px,3.5vw,36px)] text-brand-dark no-underline leading-none tracking-tight">
             Valentin&rsquo;s Cuisine
           </Link>
-          <div className="w-10 h-px bg-white/10 mx-auto my-5" />
-          <p className="font-body text-[11px] tracking-[1.5px] uppercase text-white/30">
+          <div className="w-14 h-px bg-brand-border mx-auto mt-4 mb-4" />
+          <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">
             Putney, London &middot; Made with love
           </p>
         </ContainerStandard>
