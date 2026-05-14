@@ -1,0 +1,8 @@
+https://www.massaliachefprive.com/chef-a-domicile-traiteur -O ./mirror-massalia -%e0 -r1 -r1 -n -w
+File generated automatically on Thu, 14 May 2026 10:23:54, do NOT edit
+
+To update a mirror, just launch httrack without any parameters
+The existing cache will be used (and modified)
+To have other options, retype all parameters and launch HTTrack
+To continue an interrupted mirror, just launch httrack without any parameters
+

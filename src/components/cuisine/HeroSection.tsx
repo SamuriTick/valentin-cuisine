@@ -9,7 +9,7 @@ export function HeroSection({ t }: Props) {
   return (
     <div className="bg-white pt-[72px]">
       <section id="hero" className="md:min-h-[calc(100vh-72px)] md:flex md:items-center">
-        <ContainerStandard className="py-8 md:py-[clamp(12px,2vw,24px)] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[clamp(32px,5vw,64px)] items-center w-full">
+        <ContainerStandard className="py-8 md:py-hero grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-col-gap items-center w-full">
 
           {/* On mobile: image first, text second */}
 

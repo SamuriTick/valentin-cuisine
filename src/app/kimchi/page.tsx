@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
+import { KimchiFAQs } from '@/components/cuisine/KimchiFAQs';
 
 export const metadata: Metadata = {
   title: "Valentin's Kimchi · Hand-Made in Putney, London",
@@ -42,40 +43,6 @@ const PAIRINGS = [
   },
 ];
 
-const FAQS = [
-  {
-    q: 'How long does it keep?',
-    a: '3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).',
-  },
-  {
-    q: 'Is it ready to eat when I get it?',
-    a: 'Yes. But you\'re getting it 2 to 3 days old, which is good. One week old is noticeably better: the fermentation has properly kicked in. I prefer it at least a week in. Leave it in the fridge, it\'ll keep improving.',
-  },
-  {
-    q: 'What\'s different about this recipe?',
-    a: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum\'s fridge instead of fermented shrimp. More umami, more depth.',
-  },
-  {
-    q: 'Do you deliver?',
-    a: 'SW London collection (Putney) is the easiest option: I may be able to offer a small discount for this. Royal Mail delivery is possible but not guaranteed, depends on logistics. Mention what you need in the form and I\'ll let you know.',
-  },
-  {
-    q: 'Can I get a vegan version?',
-    a: 'Yes. The standard recipe uses fish sauce and soy sauce. For vegan, I remove the fish sauce and any other meat products. Pescetarians are fine with the standard recipe.',
-  },
-  {
-    q: 'Help: my jar is overflowing.',
-    a: 'That\'s the fermentation working. Kimchi releases CO2 as it ferments and the liquid rises. Don\'t fill the jar completely to the top: leave a bit of room. If it\'s already bubbling over, open the lid carefully, let the gas escape, press the cabbage down below the brine, and seal it again.',
-  },
-  {
-    q: 'I\'ve eaten all the cabbage but there\'s sauce left. What do I do?',
-    a: 'Cook with it. The kimchi sauce works brilliantly with beef, with fish (mackerel especially), cooked in a pan with butter and served over rice. Don\'t throw it away.',
-  },
-  {
-    q: 'Why does making it make you cry?',
-    a: 'Lots of onions. Also garlic and ginger. When I blend the paste, the fumes are intense. My eyes are genuinely dying. The result is worth it.',
-  },
-];
 
 export default function KimchiPage() {
   return (
@@ -101,7 +68,7 @@ export default function KimchiPage() {
       {/* Hero */}
       <div className="bg-white pt-[72px]">
         <section className="md:min-h-[calc(100vh-72px)] md:flex md:items-center">
-          <ContainerStandard className="py-10 md:py-[clamp(12px,2vw,24px)] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[clamp(32px,5vw,64px)] items-center w-full">
+          <ContainerStandard className="py-10 md:py-hero grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-col-gap items-center w-full">
 
             {/* Visual - top on mobile, right on desktop */}
             <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[600px] md:max-h-none bg-brand-light border border-brand-border flex items-center justify-center">
@@ -113,7 +80,7 @@ export default function KimchiPage() {
 
             {/* Text */}
             <div className="flex flex-col justify-center">
-              <p className="font-accent text-[clamp(16px,2.5vw,22px)] text-brand-teal mb-3 md:mb-4 leading-none">Hand-made in Putney, London</p>
+              <p className="font-accent text-[clamp(22px,3.5vw,32px)] text-brand-teal mb-3 md:mb-4 leading-none">Hand-made in Putney, London</p>
               <h1 className="font-display font-light text-[clamp(36px,5vw,64px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4 md:mb-6">
                 Spicy. Salty.<br />
                 <span className="font-semibold italic text-brand-teal">Umami-rich.</span>
@@ -142,16 +109,16 @@ export default function KimchiPage() {
       </div>
 
       {/* From Valentin */}
-      <section id="about" className="bg-brand-dark scroll-mt-[72px]">
-        <ContainerStandard className="py-[clamp(40px,6vw,72px)]">
+      <section id="about" className="bg-brand-light border-t border-brand-border scroll-mt-[72px]">
+        <ContainerStandard className="py-section-sm">
           <blockquote className="max-w-[680px] mx-auto text-center">
-            <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-white/90 leading-[1.55] tracking-tight mb-6">
+            <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-brand-dark leading-[1.55] tracking-tight mb-6">
               &ldquo;I haven&rsquo;t been making kimchi for a while because I&rsquo;m a kid
               and I&rsquo;m still in school. But now I have time, so buy my kimchi.
               It&rsquo;s probably going to sell out in a few weeks.&rdquo;
             </p>
             <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
-              Valentin Thang, aged 15 · Putney, London
+              Valentin Thang, aged 15 &middot; Putney, London
             </cite>
           </blockquote>
         </ContainerStandard>
@@ -159,7 +126,7 @@ export default function KimchiPage() {
 
       {/* Taste profile */}
       <section className="bg-white border-t border-brand-border">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+        <ContainerStandard className="py-section">
           <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">What it tastes like</p>
           <h2 className="font-display font-light text-[clamp(28px,4vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
             Four things happening<br />
@@ -180,7 +147,7 @@ export default function KimchiPage() {
 
       {/* The recipe */}
       <section className="bg-brand-green-light border-t border-brand-border">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(32px,5vw,64px)] items-start">
+        <ContainerStandard className="py-section grid grid-cols-1 md:grid-cols-2 gap-col-gap items-start">
 
           <div>
             <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">The recipe</p>
@@ -227,7 +194,7 @@ export default function KimchiPage() {
 
       {/* Goes with everything */}
       <section className="bg-white border-t border-brand-border">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+        <ContainerStandard className="py-section">
           <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none text-center">Versatile by nature</p>
           <h2 className="font-display font-light text-[clamp(26px,4vw,40px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0 text-center">
             Kimchi goes with <span className="font-semibold italic text-brand-teal">anything savoury.</span>
@@ -243,18 +210,18 @@ export default function KimchiPage() {
             ))}
           </div>
 
-          <div className="mt-10 bg-brand-dark rounded-lg px-6 py-6 md:px-8 md:py-7 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div className="mt-10 bg-brand-light border border-brand-border rounded-lg px-6 py-6 md:px-8 md:py-7 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-2">
               <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Pro tip: leftover kimchi sauce</p>
-              <p className="font-body text-[13px] text-white/70 leading-[1.75]">
+              <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Eaten all the cabbage but still have sauce left? Don&rsquo;t throw it away. Cook it with beef or fish.
                 Mackerel works especially well: fry in butter, add the kimchi sauce, serve on rice with a fried egg.
                 I tested this after a fishing trip to Weymouth. Still one of the best things I&rsquo;ve eaten.
               </p>
             </div>
-            <div className="bg-white/10 border border-white/10 rounded-lg p-5 text-center">
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal mb-2">The formula</p>
-              <p className="font-display text-[28px] font-normal text-white leading-snug">
+            <div className="bg-white border border-brand-border rounded-lg p-5 text-center">
+              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-2">The formula</p>
+              <p className="font-display font-light text-[28px] text-brand-dark leading-snug">
                 Sauce + fish<br />+ butter + rice
               </p>
             </div>
@@ -271,20 +238,20 @@ export default function KimchiPage() {
       </section>
 
       {/* Storage */}
-      <section className="bg-brand-dark">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+      <section className="bg-brand-green-light border-t border-brand-border">
+        <ContainerStandard className="py-section">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             <div className="md:col-span-1">
               <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Storage guide</p>
-              <h2 className="font-display font-light text-[clamp(24px,3.5vw,36px)] text-white leading-[1.1] tracking-[-1px]">
+              <h2 className="font-display font-light text-[clamp(24px,3.5vw,36px)] text-brand-dark leading-[1.1] tracking-[-1px]">
                 The longer,<br />
                 <span className="font-semibold italic text-brand-teal">the better.</span>
               </h2>
-              <div className="w-10 h-px bg-white/20 mt-5 mb-5" />
-              <p className="font-body text-[13px] text-white/55 leading-[1.75]">
+              <div className="w-10 h-px bg-brand-border mt-5 mb-5" />
+              <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Kimchi ferments over time. The flavour deepens, the tang increases.
                 What starts as fresh and crunchy slowly becomes something more complex
-               : and more useful in the kitchen.
+                and more useful in the kitchen.
               </p>
             </div>
             <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -294,18 +261,18 @@ export default function KimchiPage() {
                 ['1-3 months', 'Sour, complex, intensely flavoured. Excellent for cooking.'],
                 ['3+ months', 'Funky and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don\'t throw it out.'],
               ].map(([stage, note]) => (
-                <div key={stage} className="bg-white/5 border border-white/10 rounded-lg p-5">
+                <div key={stage} className="bg-brand-light border border-brand-border rounded-lg p-5">
                   <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mb-2">{stage}</p>
-                  <p className="font-body text-[13px] text-white/65 leading-[1.7]">{note}</p>
+                  <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{note}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-brand-light border border-brand-border rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">CO2 tip: don&rsquo;t overfill</p>
-              <p className="font-body text-[13px] text-white/60 leading-[1.75]">
+              <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Fermenting kimchi produces CO2, which makes the liquid rise. If you fill the jar right to the top, it will overflow.
                 Leave a couple of centimetres of space at the top when you first open it. Press the cabbage below the brine level
                 and seal it again. If it bubbles over, just open the lid briefly to release the gas.
@@ -313,7 +280,7 @@ export default function KimchiPage() {
             </div>
             <div>
               <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Fridge vs counter</p>
-              <p className="font-body text-[13px] text-white/60 leading-[1.75]">
+              <p className="font-body text-[13px] text-brand-muted leading-[1.75]">
                 Leave it on the counter for a day or two to kickstart fermentation quickly, then move it to the fridge to slow it down.
                 In the fridge it keeps for 3 to 4 months. On the counter it will ferment much faster: check it daily.
               </p>
@@ -324,7 +291,7 @@ export default function KimchiPage() {
 
       {/* Order */}
       <section id="order" className="bg-brand-light border-t border-brand-border scroll-mt-[72px]">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(32px,5vw,64px)] items-start">
+        <ContainerStandard className="py-section grid grid-cols-1 md:grid-cols-2 gap-col-gap items-start">
 
           <div>
             <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Get yours</p>
@@ -336,7 +303,7 @@ export default function KimchiPage() {
             <div className="space-y-5 mb-8">
               {[
                 ['Fill in the form', 'Name, email, how many jars. Mention dietary needs or if you want to collect.'],
-                ['Valentin confirms', 'He\'s a student: weekends and school holidays work best. He replies within 24 hours.'],
+                ['I confirm', 'I\'m a student: weekends and school holidays work best. I reply within 24 hours.'],
                 ['Collect or receive', 'SW London / Putney collection available, possible discount. Royal Mail delivery also possible: just ask.'],
               ].map(([title, body], i) => (
                 <div key={title} className="flex gap-4">
@@ -360,7 +327,13 @@ export default function KimchiPage() {
               <p className="font-body text-[12px] text-brand-muted mt-2">One whole nappa cabbage · glass jar · no microplastics</p>
             </div>
 
-            <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-4">
+          </div>
+
+          <div>
+            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Order form</p>
+            <KimchiOrderForm />
+
+            <div className="mt-6 bg-brand-green-light border border-brand-border rounded-lg px-5 py-4">
               <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-3">Dietary options</p>
               <div className="space-y-2">
                 {[
@@ -377,29 +350,21 @@ export default function KimchiPage() {
             </div>
           </div>
 
-          <div>
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Order form</p>
-            <KimchiOrderForm />
+        </ContainerStandard>
+      </section>
 
-            <div className="mt-8 pt-8 border-t border-brand-border">
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">Common questions</p>
-              <div className="divide-y divide-brand-border">
-                {FAQS.map(({ q, a }) => (
-                  <div key={q} className="py-5">
-                    <p className="font-body text-sm font-semibold text-brand-dark mb-2 leading-snug">{q}</p>
-                    <p className="font-body text-[13px] text-brand-muted leading-[1.75]">{a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
+      {/* FAQs */}
+      <section className="bg-white border-t border-brand-border">
+        <ContainerStandard className="py-section">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">You ask, I answer</p>
+          <div className="w-12 h-px bg-brand-border mb-2" />
+          <KimchiFAQs />
         </ContainerStandard>
       </section>
 
       {/* Bottom CTA */}
       <section className="bg-brand-light border-t border-brand-border text-center">
-        <ContainerStandard className="py-[clamp(48px,7vw,80px)]">
+        <ContainerStandard className="py-section">
           <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Order today</p>
           <h2 className="font-display font-light text-[clamp(28px,4vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
             Just get the <span className="font-semibold italic text-brand-teal">kimchi.</span>

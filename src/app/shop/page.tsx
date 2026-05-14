@@ -35,7 +35,7 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
       <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
 
         {/* Header */}
-        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: '56px 40px 40px' }}>
+        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
           <div style={{ maxWidth: 1160, margin: '0 auto' }}>
             <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 12 }}>Order Online</p>
             <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--dark)', marginBottom: 6 }}>Shop</h1>
@@ -62,7 +62,7 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
         </div>
 
         {/* Products grid */}
-        <div style={{ maxWidth: 1160, margin: '0 auto', padding: '48px 40px 80px' }}>
+        <div style={{ maxWidth: 1160, margin: '0 auto', padding: 'clamp(32px, 5vw, 48px) clamp(16px, 5vw, 40px) 80px' }}>
           {products.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
               <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--muted)' }}>

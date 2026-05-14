@@ -44,7 +44,7 @@ export default async function CredentialsPage() {
       <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
 
         {/* Header */}
-        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: '56px 40px 40px' }}>
+        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
           <div style={{ maxWidth: 1160, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'flex-end', gap: 24 }}>
             <div>
               <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 12 }}>Valentin Thang</p>
@@ -68,7 +68,7 @@ export default async function CredentialsPage() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 1160, margin: '0 auto', padding: '56px 40px 80px', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr]" style={{ maxWidth: 1160, margin: '0 auto', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 80px', gap: 'clamp(40px, 5vw, 64px)', alignItems: 'start' }}>
 
           {/* Timeline */}
           <div>
@@ -76,9 +76,10 @@ export default async function CredentialsPage() {
               Experience & Achievements
             </h2>
             <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: 52, top: 0, bottom: 0, width: 1, background: 'var(--border)' }} />
+              <div className="hidden md:block" style={{ position: 'absolute', left: 52, top: 0, bottom: 0, width: 1, background: 'var(--border)' }} />
+              <div className="block md:hidden" style={{ position: 'absolute', left: 30, top: 0, bottom: 0, width: 1, background: 'var(--border)' }} />
               {ACHIEVEMENTS.map((item, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '104px 1fr', gap: 24, marginBottom: 36 }}>
+                <div key={i} className="grid grid-cols-[60px_1fr] md:grid-cols-[104px_1fr]" style={{ gap: 24, marginBottom: 36 }}>
                   <div style={{ textAlign: 'right', paddingTop: 4 }}>
                     <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 16, color: 'var(--green)' }}>{item.year}</span>
                   </div>

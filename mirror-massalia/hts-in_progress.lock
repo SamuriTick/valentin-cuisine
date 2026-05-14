@@ -1,0 +1,7 @@
+Mirror in progress since Thu, 14 May 2026 10:23:54 .. please wait!
+httrack https://www.massaliachefprive.com/chef-a-domicile-traiteur -O ./mirror-massalia -%e0 -r1 -r1 -n -w 
+To pause the engine: create an empty file named 'hts-stop.lock'
+PID=4329
+UID=501
+GID=501
+START=1778750634

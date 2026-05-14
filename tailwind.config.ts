@@ -56,6 +56,12 @@ const config: Config = {
       backgroundImage: {
         'hero-kimchi': 'linear-gradient(150deg, #0a0500 0%, #2b0f00 45%, #0d2b1a 100%)',
       },
+      spacing: {
+        'section':    'clamp(48px, 7vw, 80px)',
+        'section-sm': 'clamp(40px, 6vw, 72px)',
+        'hero':       'clamp(12px, 2vw, 24px)',
+        'col-gap':    'clamp(32px, 5vw, 64px)',
+      },
       typography: {
         DEFAULT: {
           css: {

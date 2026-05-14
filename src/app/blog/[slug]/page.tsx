@@ -24,12 +24,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Hero image */}
         {post.imageUrl && (
-          <div style={{ height: 400, overflow: 'hidden' }}>
+          <div style={{ height: 'clamp(200px, 40vw, 400px)', overflow: 'hidden' }}>
             <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </div>
         )}
 
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '56px 40px 96px' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) clamp(64px, 8vw, 96px)' }}>
           {/* Breadcrumb */}
           <p style={{ fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 32 }}>
             <Link href="/blog" style={{ color: 'var(--green)', textDecoration: 'none' }}>Blog</Link>

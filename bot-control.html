@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentin Bot Control</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f5; color: #333; }
+    header { background: #1a1a2e; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    header h1 { font-size: 18px; font-weight: 600; }
+    .status { width: 10px; height: 10px; border-radius: 50%; background: #ccc; }
+    .status.online { background: #4caf50; }
+    .container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; max-width: 1100px; margin: auto; }
+    .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .card h2 { font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .messages { height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .msg { padding: 10px 12px; border-radius: 8px; font-size: 14px; line-height: 1.4; }
+    .msg.incoming { background: #f0f4ff; border-left: 3px solid #4a6cf7; }
+    .msg.outgoing { background: #f0fff4; border-left: 3px solid #4caf50; align-self: flex-end; }
+    .msg .meta { font-size: 11px; color: #999; margin-bottom: 4px; }
+    .msg .text { color: #333; }
+    .send-box { margin-top: 12px; display: flex; gap: 8px; }
+    .send-box input, .send-box select { flex: 1; padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+    .send-box input:focus, .send-box select:focus { border-color: #4a6cf7; }
+    button { padding: 9px 18px; background: #4a6cf7; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; white-space: nowrap; }
+    button:hover { background: #3a5ce7; }
+    button.danger { background: #e53935; }
+    button.danger:hover { background: #c62828; }
+    .chats { display: flex; flex-direction: column; gap: 6px; }
+    .chat-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8f8f8; border-radius: 6px; font-size: 14px; }
+    .chat-item .name { font-weight: 500; }
+    .chat-item .id { font-size: 12px; color: #999; }
+    .chat-item button { padding: 5px 10px; font-size: 12px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .info-item { background: #f8f8f8; border-radius: 6px; padding: 12px; }
+    .info-item .label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+    .info-item .value { font-size: 15px; font-weight: 600; margin-top: 4px; }
+    .empty { color: #bbb; font-size: 13px; text-align: center; padding: 40px 0; }
+    .col-full { grid-column: 1 / -1; }
+    #log { height: 120px; overflow-y: auto; font-size: 12px; color: #666; font-family: monospace; background: #f8f8f8; padding: 8px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="status" id="statusDot"></div>
+  <h1>Valentin Cuisine — Bot Control</h1>
+  <span id="botName" style="font-size:13px;color:#aaa;margin-left:auto;"></span>
+</header>
+
+<div class="container">
+
+  <!-- Messages -->
+  <div class="card">
+    <h2>Incoming Messages</h2>
+    <div class="messages" id="messages">
+      <div class="empty" id="emptyMsg">No messages yet — polling...</div>
+    </div>
+    <div class="send-box" style="margin-top:12px;">
+      <input type="text" id="sendText" placeholder="Type a reply..." />
+      <input type="text" id="sendChatId" placeholder="chat_id" style="max-width:120px;" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Known chats + bot info -->
+  <div class="card">
+    <h2>Bot Info</h2>
+    <div class="info-grid" id="botInfo">
+      <div class="info-item"><div class="label">Username</div><div class="value" id="biUsername">—</div></div>
+      <div class="info-item"><div class="label">Bot ID</div><div class="value" id="biId">—</div></div>
+      <div class="info-item"><div class="label">Messages received</div><div class="value" id="biCount">0</div></div>
+      <div class="info-item"><div class="label">Last update</div><div class="value" id="biLast">—</div></div>
+    </div>
+
+    <h2 style="margin-top:16px;">Known Chats</h2>
+    <div class="chats" id="chats">
+      <div class="empty">Chats appear here as people message the bot</div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button onclick="poll()" style="flex:1;">Refresh Now</button>
+      <button onclick="clearMessages()" class="danger" style="flex:1;">Clear Log</button>
+    </div>
+  </div>
+
+  <!-- Activity log -->
+  <div class="card col-full">
+    <h2>Activity Log</h2>
+    <div id="log"></div>
+  </div>
+
+</div>
+
+<script>
+  const TOKEN = '8520006904:AAFfuOu97TlSFmRHpvjteY3eh121V3r3Bcg';
+  const API = `https://api.telegram.org/bot${TOKEN}`;
+
+  let offset = 0;
+  let msgCount = 0;
+  let knownChats = {};
+  let allMessages = [];
+
+  function log(msg) {
+    const el = document.getElementById('log');
+    const t = new Date().toLocaleTimeString();
+    el.innerHTML += `<div>[${t}] ${msg}</div>`;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function setStatus(online) {
+    const dot = document.getElementById('statusDot');
+    dot.className = 'status' + (online ? ' online' : '');
+  }
+
+  async function getMe() {
+    try {
+      const r = await fetch(`${API}/getMe`);
+      const d = await r.json();
+      if (d.ok) {
+        document.getElementById('biUsername').textContent = '@' + d.result.username;
+        document.getElementById('biId').textContent = d.result.id;
+        document.getElementById('botName').textContent = '@' + d.result.username;
+        setStatus(true);
+        log(`Connected as @${d.result.username}`);
+      }
+    } catch (e) {
+      setStatus(false);
+      log(`Connection failed: ${e.message}`);
+    }
+  }
+
+  async function poll() {
+    try {
+      const r = await fetch(`${API}/getUpdates?offset=${offset}&timeout=5`);
+      const d = await r.json();
+      if (!d.ok) { log(`API error: ${d.description}`); return; }
+
+      for (const update of d.result) {
+        offset = update.update_id + 1;
+        const msg = update.message || update.edited_message;
+        if (!msg) continue;
+
+        msgCount++;
+        document.getElementById('biCount').textContent = msgCount;
+        document.getElementById('biLast').textContent = new Date().toLocaleTimeString();
+
+        const chatId = msg.chat.id;
+        const name = msg.chat.first_name || msg.chat.title || 'Unknown';
+        knownChats[chatId] = { name, username: msg.chat.username };
+        renderChats();
+
+        allMessages.push({ from: name, chatId, text: msg.text || '[media]', time: new Date().toLocaleTimeString() });
+        renderMessages();
+
+        log(`Msg from ${name} (${chatId}): ${msg.text}`);
+      }
+    } catch (e) {
+      setStatus(false);
+      log(`Poll error: ${e.message}`);
+    }
+  }
+
+  function renderMessages() {
+    const el = document.getElementById('messages');
+    document.getElementById('emptyMsg')?.remove();
+    el.innerHTML = allMessages.map(m => `
+      <div class="msg incoming">
+        <div class="meta">${m.from} · ${m.chatId} · ${m.time}</div>
+        <div class="text">${m.text}</div>
+      </div>
+    `).join('');
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function renderChats() {
+    const el = document.getElementById('chats');
+    el.innerHTML = Object.entries(knownChats).map(([id, c]) => `
+      <div class="chat-item">
+        <div>
+          <div class="name">${c.name}${c.username ? ' (@' + c.username + ')' : ''}</div>
+          <div class="id">${id}</div>
+        </div>
+        <button onclick="document.getElementById('sendChatId').value='${id}'">Select</button>
+      </div>
+    `).join('');
+  }
+
+  async function sendMessage() {
+    const text = document.getElementById('sendText').value.trim();
+    const chatId = document.getElementById('sendChatId').value.trim();
+    if (!text || !chatId) { log('Enter text and chat_id'); return; }
+
+    try {
+      const r = await fetch(`${API}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text })
+      });
+      const d = await r.json();
+      if (d.ok) {
+        log(`Sent to ${chatId}: ${text}`);
+        document.getElementById('sendText').value = '';
+      } else {
+        log(`Send failed: ${d.description}`);
+      }
+    } catch (e) {
+      log(`Send error: ${e.message}`);
+    }
+  }
+
+  function clearMessages() {
+    allMessages = [];
+    document.getElementById('messages').innerHTML = '<div class="empty">Cleared</div>';
+    document.getElementById('biCount').textContent = 0;
+  }
+
+  document.getElementById('sendText').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  getMe();
+  poll();
+  setInterval(poll, 3000);
+</script>
+</body>
+</html>
