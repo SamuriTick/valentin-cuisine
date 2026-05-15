@@ -3,6 +3,8 @@ import { ContactForm } from '@/components/cuisine/ContactForm';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 import { getContentMap } from '@/lib/siteContent';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Get in Touch · Valentin's Cuisine",
   description: "Order food, ask a question, or reach out about mentoring Valentin. Based in Putney, London.",

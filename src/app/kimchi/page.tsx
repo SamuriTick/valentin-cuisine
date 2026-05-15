@@ -4,6 +4,8 @@ import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
 import { KimchiFAQs } from '@/components/cuisine/KimchiFAQs';
 import { getContentMap } from '@/lib/siteContent';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Valentin's Kimchi · Hand-Made in Putney, London",
   description: 'Spicy, tangy, umami-rich kimchi made fresh to order. Blended (not layered) for deeper flavour. £15 for 2kg in a glass jar. SW London collection or Royal Mail.',
