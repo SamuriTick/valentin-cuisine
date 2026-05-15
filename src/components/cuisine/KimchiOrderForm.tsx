@@ -37,7 +37,7 @@ export function KimchiOrderForm() {
     return (
       <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-lg text-center">
         <p className="font-body text-xl font-semibold text-brand-dark mb-2">Order sent!</p>
-        <p className="font-body text-sm text-brand-muted">Thanks {form.name} — I&apos;ll be in touch within 24 hours.</p>
+        <p className="font-body text-sm text-brand-muted">Thanks {form.name}, I&apos;ll be in touch within 24 hours.</p>
       </div>
     );
   }

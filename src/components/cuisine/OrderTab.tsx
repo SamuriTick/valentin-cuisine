@@ -2,8 +2,20 @@
 
 import { useState } from 'react';
 import { ContainerStandard } from './ContainerStandard';
+import { Translations } from './translations';
+import { useEditContext } from '@/components/admin/visual/EditContext';
+import { EditableText } from '@/components/admin/visual/EditableText';
 
-export function OrderTab() {
+interface Props { t?: Translations }
+
+export function OrderTab({ t: tProp }: Props = {}) {
+  const editCtx = useEditContext()
+  const editMode = editCtx?.editMode ?? false
+
+  const save = (key: string) => async (value: string) => {
+    await editCtx?.onFieldUpdate(key, value)
+  }
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -35,6 +47,13 @@ export function OrderTab() {
     }
   }
 
+  const eyebrow = tProp?.orderEyebrowAlt ?? 'Be first to know'
+  const title   = tProp?.orderTitleAlt   ?? 'Join the list'
+  const body    = tProp?.orderBodyAlt    ?? "I am 13 and still in school, so I can only take orders in school holidays. If you join the list, you will be the first to know when I have time to bake and when stock is ready. No spam, just a message when something is available."
+  const bullet1 = tProp?.orderBullet1   ?? 'First in line when kimchi, cakes, or sourdough is ready'
+  const bullet2 = tProp?.orderBullet2   ?? 'A heads-up when school holidays are coming'
+  const bullet3 = tProp?.orderBullet3   ?? 'I only message when I actually have something ready'
+
   return (
     <div id="order" className="bg-brand-light border-t border-brand-border scroll-mt-[72px]">
       <ContainerStandard className="py-12 md:py-16">
@@ -43,25 +62,29 @@ export function OrderTab() {
 
           {/* Left */}
           <div>
-            <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Be first to know</p>
+            <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">
+              <EditableText value={eyebrow} onSave={save('order.eyebrow')} editMode={editMode} as="span" />
+            </p>
             <h2 className="font-display font-light text-[clamp(28px,3.5vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
-              <span className="font-semibold italic text-brand-teal">Join the list</span>
+              <span className="font-semibold italic text-brand-teal">
+                <EditableText value={title} onSave={save('order.title')} editMode={editMode} as="span" />
+              </span>
             </h2>
             <div className="w-12 h-px bg-brand-border mt-5 mb-5" />
             <p className="font-body text-sm text-brand-muted leading-[1.85]">
-              I am 13 and still in school, so I can only take orders in school holidays.
-              If you join the list, you will be the first to know when I have time to bake
-              and when stock is ready. No spam, just a message when something is available.
+              <EditableText value={body} onSave={save('order.body')} editMode={editMode} as="span" multiline />
             </p>
             <div className="mt-6 space-y-3">
-              {[
-                "First in line when kimchi, cakes, or sourdough is ready",
-                "A heads-up when school holidays are coming",
-                "I only message when I actually have something ready",
-              ].map(line => (
-                <div key={line} className="flex items-start gap-3">
+              {([
+                [bullet1, 'order.bullet1'],
+                [bullet2, 'order.bullet2'],
+                [bullet3, 'order.bullet3'],
+              ] as [string, string][]).map(([line, key]) => (
+                <div key={key} className="flex items-start gap-3">
                   <span className="mt-[6px] w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0" />
-                  <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{line}</p>
+                  <p className="font-body text-[13px] text-brand-muted leading-[1.7]">
+                    <EditableText value={line} onSave={save(key)} editMode={editMode} as="span" multiline />
+                  </p>
                 </div>
               ))}
             </div>
@@ -153,6 +176,7 @@ export function OrderTab() {
                 <button
                   type="submit"
                   disabled={status === 'sending'}
+                  onClick={e => { if (editMode) e.preventDefault() }}
                   className={`w-full font-body text-[11px] font-bold tracking-[2.5px] uppercase text-white py-4 px-8 rounded transition-opacity duration-200 hover:opacity-85 ${
                     status === 'sending' ? 'bg-brand-muted cursor-not-allowed' : 'bg-brand-teal cursor-pointer'
                   }`}

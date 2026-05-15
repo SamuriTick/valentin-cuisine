@@ -27,33 +27,49 @@ export default function AdminLogin() {
   return (
     <div style={{
       minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      background: "#1E3A1E", fontFamily: "'Nunito', sans-serif",
+      background: "#faf8f5", fontFamily: "'Nunito', sans-serif",
     }}>
-      <div style={{ width: "100%", maxWidth: "380px", padding: "0 16px" }}>
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ fontFamily: "'Great Vibes', cursive", fontSize: "36px", color: "#B8962E" }}>
+      <div style={{ width: "100%", maxWidth: "400px", padding: "0 20px" }}>
+
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
+          <div style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 32, fontWeight: 400, fontStyle: "italic",
+            color: "#b03060", letterSpacing: 0.5, marginBottom: 6,
+          }}>
             Valentin&apos;s Cuisine
           </div>
-          <div style={{ fontSize: "12px", color: "#7A7060", marginTop: "4px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+          <div style={{
+            fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase",
+            color: "rgba(26,26,26,0.4)",
+          }}>
             Admin
           </div>
         </div>
 
+        {/* Card */}
         <form onSubmit={handleSubmit} style={{
-          background: "#F8F5EE", borderRadius: "12px", padding: "32px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
+          background: "#fff", borderRadius: 12, padding: 36,
+          border: "1px solid #ece8df",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
         }}>
+
           {error && (
             <div style={{
               background: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C",
-              padding: "10px 14px", borderRadius: "6px", fontSize: "13px", marginBottom: "20px",
+              padding: "10px 14px", borderRadius: 6, fontSize: 13, marginBottom: 20,
             }}>
               {error}
             </div>
           )}
 
-          <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#3A3A3A", marginBottom: "6px" }}>
+          <div style={{ marginBottom: 18 }}>
+            <label style={{
+              display: "block", fontSize: 11, fontWeight: 700,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              color: "rgba(26,26,26,0.5)", marginBottom: 8,
+            }}>
               Email
             </label>
             <input
@@ -63,14 +79,19 @@ export default function AdminLogin() {
               required
               autoFocus
               style={{
-                width: "100%", padding: "10px 12px", border: "1px solid #DDD8CC",
-                borderRadius: "6px", fontSize: "14px", background: "#fff", boxSizing: "border-box",
+                width: "100%", padding: "11px 14px", border: "1px solid #ece8df",
+                borderRadius: 6, fontSize: 14, background: "#faf8f5",
+                boxSizing: "border-box", outline: "none", color: "#1a1a1a",
               }}
             />
           </div>
 
-          <div style={{ marginBottom: "24px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#3A3A3A", marginBottom: "6px" }}>
+          <div style={{ marginBottom: 28 }}>
+            <label style={{
+              display: "block", fontSize: 11, fontWeight: 700,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              color: "rgba(26,26,26,0.5)", marginBottom: 8,
+            }}>
               Password
             </label>
             <input
@@ -79,20 +100,30 @@ export default function AdminLogin() {
               onChange={e => setPassword(e.target.value)}
               required
               style={{
-                width: "100%", padding: "10px 12px", border: "1px solid #DDD8CC",
-                borderRadius: "6px", fontSize: "14px", background: "#fff", boxSizing: "border-box",
+                width: "100%", padding: "11px 14px", border: "1px solid #ece8df",
+                borderRadius: 6, fontSize: 14, background: "#faf8f5",
+                boxSizing: "border-box", outline: "none", color: "#1a1a1a",
               }}
             />
           </div>
 
-          <button type="submit" disabled={loading} style={{
-            width: "100%", padding: "11px", background: loading ? "#7A7060" : "#1E3A1E",
-            color: "#F8F5EE", border: "none", borderRadius: "6px", fontSize: "14px",
-            fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", letterSpacing: "0.04em",
-          }}>
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%", padding: "12px", background: loading ? "#1a1a1a80" : "#1a1a1a",
+              color: "#fff", border: "none", borderRadius: 6, fontSize: 11,
+              fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
+
+        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(26,26,26,0.3)", marginTop: 24, letterSpacing: "0.08em" }}>
+          Valentin&apos;s Cuisine · Admin
+        </p>
       </div>
     </div>
   )

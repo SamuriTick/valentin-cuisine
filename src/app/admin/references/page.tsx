@@ -106,8 +106,8 @@ export default function ReferencesPage() {
 
       {editing && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
-          <div style={{ background: "#F8F5EE", borderRadius: "12px", padding: "28px", width: "100%", maxWidth: "520px", maxHeight: "90vh", overflowY: "auto" }}>
-            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1E3A1E", marginBottom: "20px" }}>
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "28px", width: "100%", maxWidth: "520px", maxHeight: "90vh", overflowY: "auto" }}>
+            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a1a1a", marginBottom: "20px" }}>
               {(editing as any).isNew ? "Add reference" : "Edit reference"}
             </h2>
 

@@ -52,7 +52,7 @@ export default function MediaPage() {
 
   const filtered = filter === "all" ? items : items.filter(i => (i.tags || "").includes(filter))
 
-  const tagOptions = ["all", "gallery", "cv", "certificate", "press"]
+  const tagOptions = ["all", "gallery"]
 
   return (
     <div>
@@ -70,8 +70,8 @@ export default function MediaPage() {
         {tagOptions.map(t => (
           <button key={t} onClick={() => setFilter(t)} style={{
             padding: "5px 14px", borderRadius: "99px", fontSize: "13px", cursor: "pointer",
-            background: filter === t ? "#1E3A1E" : "#fff", color: filter === t ? "#F8F5EE" : "#3A3A3A",
-            border: "1px solid", borderColor: filter === t ? "#1E3A1E" : "#DDD8CC",
+            background: filter === t ? "#1a1a1a" : "#fff", color: filter === t ? "#fff" : "#1a1a1a",
+            border: "1px solid", borderColor: filter === t ? "#1a1a1a" : "#e8e3dc",
           }}>
             {t}
           </button>
@@ -94,7 +94,7 @@ export default function MediaPage() {
                 )}
               </div>
               <div style={{ padding: "10px 12px" }}>
-                <div style={{ fontSize: "12px", color: "#3A3A3A", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div style={{ fontSize: "12px", color: "#1a1a1a", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {item.originalName}
                 </div>
                 <div style={{ fontSize: "11px", color: "#7A7060", marginTop: "2px" }}>

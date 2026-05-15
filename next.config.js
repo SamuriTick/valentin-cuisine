@@ -7,7 +7,11 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'cdn.chartedconsultants.com',
-                port: "",
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'assets.chartedconsultants.com',
                 pathname: '/**',
             },
             {

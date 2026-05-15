@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { s, FormRow, CheckRow } from "./AdminUI"
 import Link from "next/link"
+import { TipTapEditor } from "@/components/editor/TipTapEditor"
 
 const CATEGORIES = ["recipe", "news", "update", "achievement", "experience"]
 
@@ -16,6 +17,7 @@ export default function PostForm({ post }: { post: any }) {
     slug: post?.slug ?? "",
     excerpt: post?.excerpt ?? "",
     content: post?.content ?? "",
+    contentJson: post?.contentJson ?? null,
     imageUrl: post?.imageUrl ?? "",
     category: post?.category ?? "news",
     tags: post?.tags ?? "",
@@ -99,8 +101,11 @@ export default function PostForm({ post }: { post: any }) {
 
         <FormRow>
           <label style={s.label}>Content</label>
-          <textarea style={{ ...s.textarea, minHeight: "240px" }} value={form.content} onChange={e => set("content", e.target.value)} />
-          <div style={{ fontSize: "11px", color: "#7A7060", marginTop: "4px" }}>Supports Markdown.</div>
+          <TipTapEditor
+            content={form.contentJson}
+            onChange={(json, html) => setForm(f => ({ ...f, contentJson: json, content: html }))}
+            placeholder="Write your post…"
+          />
         </FormRow>
 
         <FormRow>

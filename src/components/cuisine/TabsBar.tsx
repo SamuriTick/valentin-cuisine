@@ -1,25 +1,24 @@
 'use client';
 
-import { Tab, Translations } from './translations';
+import { Tab } from './translations';
 
 interface Props {
-  t: Translations;
   tab: Tab;
   setTab: (t: Tab) => void;
 }
 
-export function TabsBar({ t, tab, setTab }: Props) {
-  const tabs: [Tab, string][] = [
-    ['about', t.navAbout],
-    ['specialties', t.navSpecialties],
-    ['gallery', t.navGallery],
-    ['order', t.navOrder],
-  ];
+const TABS: [Tab, string][] = [
+  ['about', 'About'],
+  ['specialties', 'Specialties'],
+  ['gallery', 'Media'],
+  ['order', 'Order'],
+];
 
+export function TabsBar({ tab, setTab }: Props) {
   return (
     <div className="sticky top-[68px] z-[100] bg-white border-b border-brand-border overflow-x-auto">
       <div className="max-w-[860px] mx-auto px-[clamp(24px,8vw,80px)] flex">
-        {tabs.map(([key, label]) => (
+        {TABS.map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}

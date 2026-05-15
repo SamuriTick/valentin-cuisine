@@ -8,8 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
-
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -65,10 +63,6 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-// ── CONTENT ───────────────────────────────────────────────────────────────────
-
-// All editable site copy — homepage text, labels, descriptions
-// key examples: "hero.title", "about.body1", "site.tagline"
 model SiteContent {
   id        Int      @id @default(autoincrement())
   key       String
@@ -80,29 +74,23 @@ model SiteContent {
   @@map("site_content")
 }
 
-// Dynamic pages Valentin can create from admin
-// Rendered at /[slug] using a shared template
-// showInNav=true → appears in nav bar automatically
 model Page {
-  id         Int      @id @default(autoincrement())
-  title      String
-  slug       String   @unique
-  content    String
-  showTitle  Boolean  @default(true) @map("show_title")
-  showInNav  Boolean  @default(false) @map("show_in_nav")
-  navOrder   Int      @default(99) @map("nav_order")
-  topLevel   Boolean  @default(false) @map("top_level")
-  published  Boolean  @default(false)
-  deletedAt  DateTime? @map("deleted_at")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id        Int       @id @default(autoincrement())
+  title     String
+  slug      String    @unique
+  content   String
+  showTitle Boolean   @default(true) @map("show_title")
+  showInNav Boolean   @default(false) @map("show_in_nav")
+  navOrder  Int       @default(99) @map("nav_order")
+  topLevel  Boolean   @default(false) @map("top_level")
+  published Boolean   @default(false)
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("pages")
 }
 
-// category: recipe | news | achievement | experience | update
-// recipe + news + update  → /blog
-// achievement + experience → /credentials
 model Post {
   id          Int       @id @default(autoincrement())
   title       String
@@ -122,7 +110,6 @@ model Post {
   @@map("posts")
 }
 
-// category: cake | pastry | bread | fermented | seasonal
 model Product {
   id           Int      @id @default(autoincrement())
   name         String
@@ -140,8 +127,6 @@ model Product {
   @@map("products")
 }
 
-// Verified references — displayed as "References upon request"
-// Visitors can contact them directly to verify
 model Reference {
   id           Int      @id @default(autoincrement())
   name         String
@@ -150,7 +135,7 @@ model Reference {
   phone        String?
   email        String?
   website      String?
-  quote        String?  // optional short endorsement if they provide one
+  quote        String?
   active       Boolean  @default(true)
   displayOrder Int      @default(0) @map("display_order")
   createdAt    DateTime @default(now()) @map("created_at")
@@ -158,9 +143,6 @@ model Reference {
   @@map("references")
 }
 
-// Handles gallery images + CV PDF uploads
-// fileType: image | pdf
-// tags: gallery | cv | certificate | press
 model MediaItem {
   id           Int      @id @default(autoincrement())
   filename     String
@@ -170,27 +152,34 @@ model MediaItem {
   fileSize     Int?     @map("file_size")
   altText      String?  @map("alt_text")
   caption      String?
-  tags         String?
-  featured     Boolean  @default(false)
-  width        Int?
-  height       Int?
   uploadedAt   DateTime @default(now()) @map("uploaded_at")
+  height       Int?
+  width        Int?
+  featured     Boolean  @default(false)
+  tags         String?
 
   @@map("media_library")
 }
 
-// type: contact | kimchi_order | waiting_list
-model Submission {
-  id        Int      @id @default(autoincrement())
-  type      String
-  name      String
-  email     String
-  details   String?
-  jars      Int?
-  total     Int?
-  dietary   String?
-  location  String?
-  createdAt DateTime @default(now()) @map("created_at")
+model EmailCampaign {
+  id             Int      @id @default(autoincrement())
+  subject        String
+  body           String
+  recipientCount Int      @default(0) @map("recipient_count")
+  sentAt         DateTime @default(now()) @map("sent_at")
 
-  @@map("submissions")
+  @@map("email_campaigns")
 }
+
+model WaitingListSignup {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  location    String?
+  wantsToTry  String?  @map("wants_to_try")
+  optIn       Boolean  @default(false) @map("opt_in")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("waiting_list_signups")
+}
+

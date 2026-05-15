@@ -13,6 +13,8 @@ interface Props {
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
+  { href: '/kimchi', label: 'Kimchi' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export function CuisineNav({ t, lang, setLang }: Props) {
@@ -53,9 +55,10 @@ export function CuisineNav({ t, lang, setLang }: Props) {
           ))}
           <span style={{ width: 1, height: 16, background: '#ece8df', display: 'inline-block' }} />
           <Link href="/kimchi" style={{
-            fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 600,
+            fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 700,
             letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
-            color: '#b03060', transition: 'opacity 0.2s',
+            background: '#b03060', color: '#fff', padding: '6px 14px', borderRadius: 4,
+            transition: 'opacity 0.2s',
           }}>
             Order Kimchi
           </Link>
@@ -94,26 +97,14 @@ export function CuisineNav({ t, lang, setLang }: Props) {
             </Link>
           ))}
           <Link href="/kimchi" onClick={() => setMenuOpen(false)} style={{
-            fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 600,
-            letterSpacing: 1.5, textTransform: 'uppercase', color: '#b03060',
+            fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700,
+            letterSpacing: 1.5, textTransform: 'uppercase', color: '#fff',
             textDecoration: 'none', display: 'inline-block', marginTop: 20,
+            background: '#b03060', padding: '10px 20px', borderRadius: 4,
+            textAlign: 'center',
           }}>
             Order Kimchi
           </Link>
-          <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
-            {(['en', 'fr', 'vi'] as Lang[]).map(l => (
-              <button key={l} onClick={() => setLang(l)} style={{
-                padding: '5px 12px', fontFamily: "'Nunito', sans-serif", fontSize: 10, fontWeight: 600,
-                letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', borderRadius: 4,
-                background: lang === l ? '#1a1a1a' : 'transparent',
-                color: lang === l ? '#fff' : 'rgba(26,26,26,0.4)',
-                border: `1px solid ${lang === l ? '#1a1a1a' : '#ece8df'}`,
-                transition: 'all 0.2s',
-              }}>
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
         </div>
       )}
     </nav>

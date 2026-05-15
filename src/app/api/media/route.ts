@@ -33,11 +33,17 @@ function validateFileSignature(buffer: ArrayBuffer, mimeType: string): boolean {
   }
 }
 
-// GET /api/media - Get all media items
-export async function GET() {
+// GET /api/media - Get all media items (supports ?fileType=image&limit=48)
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url)
+    const fileType = searchParams.get('fileType')
+    const limit = searchParams.get('limit')
+
     const mediaItems = await prisma.mediaItem.findMany({
-      orderBy: { uploadedAt: 'desc' }
+      where: fileType ? { fileType } : undefined,
+      orderBy: { uploadedAt: 'desc' },
+      take: limit ? parseInt(limit) : undefined,
     })
 
     return NextResponse.json(mediaItems)

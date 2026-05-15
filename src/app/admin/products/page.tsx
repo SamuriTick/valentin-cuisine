@@ -20,6 +20,7 @@ export default async function ProductsPage() {
             No products yet. <Link href="/admin/products/new" style={{ color: "#B8962E" }}>Create one</Link>
           </div>
         ) : (
+          <div className="admin-table-wrap">
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead style={s.tableHead}>
               <tr>
@@ -50,6 +51,7 @@ export default async function ProductsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
