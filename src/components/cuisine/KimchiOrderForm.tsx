@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export function KimchiOrderForm() {
   const PRICE_PER_JAR = 15;
-  const [form, setForm] = useState({ name: '', email: '', jars: '1', dietary: '', details: '' });
+  const [form, setForm] = useState({ name: '', email: '', jars: '1', dietary: '', delivery: '', address: '', details: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   function set(k: string, v: string) { setForm(f => ({ ...f, [k]: v })); }
@@ -21,7 +21,7 @@ export function KimchiOrderForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          occasion: `Kimchi order — ${jars} jar${jars > 1 ? 's' : ''} (£${total})${form.dietary ? ` · dietary: ${form.dietary}` : ''}`,
+          occasion: `Kimchi order — ${jars} jar${jars > 1 ? 's' : ''} (£${total})${form.dietary ? ` · dietary: ${form.dietary}` : ''}${form.delivery ? ` · ${form.delivery}` : ''}${form.address ? ` · address: ${form.address}` : ''}`,
           details: form.details,
           jars,
           total,
@@ -73,40 +73,81 @@ export function KimchiOrderForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">How many jars?</label>
-          <select
-            value={form.jars}
-            onChange={e => set('jars', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer"
-          >
-            {Array.from({ length: 10 }, (_, i) => String(i + 1)).map(n => (
-              <option key={n} value={n}>{n} jar{n !== '1' ? 's' : ''} · £{Number(n) * PRICE_PER_JAR}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Dietary needs</label>
-          <input
-            type="text"
-            placeholder="Vegan, pescetarian, etc."
-            value={form.dietary}
-            onChange={e => set('dietary', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50"
-          />
+      <div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">How many jars?</label>
+        <select
+          value={form.jars}
+          onChange={e => set('jars', e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer"
+        >
+          {Array.from({ length: 10 }, (_, i) => String(i + 1)).map(n => (
+            <option key={n} value={n}>{n} jar{n !== '1' ? 's' : ''} · £{Number(n) * PRICE_PER_JAR}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Dietary needs</label>
+        <div className="flex flex-wrap gap-2">
+          {['None', 'Pescetarian', 'Vegetarian', 'Vegan', 'Gluten-free', 'Dairy-free', 'Nut allergy'].map(opt => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => set('dietary', form.dietary === opt ? '' : opt)}
+              className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${
+                form.dietary === opt
+                  ? 'bg-brand-teal text-white border-brand-teal'
+                  : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
         </div>
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">
-          Anything else? (collection vs delivery, timing, etc.)
-        </label>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Collection or delivery?</label>
+        <div className="flex flex-wrap gap-2">
+          {['Collection (SW London)', 'Royal Mail delivery', 'Not sure yet'].map(opt => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => set('delivery', form.delivery === opt ? '' : opt)}
+              className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${
+                form.delivery === opt
+                  ? 'bg-brand-teal text-white border-brand-teal'
+                  : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {form.delivery === 'Royal Mail delivery' && (
+        <div>
+          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Delivery address *</label>
+          <textarea
+            required
+            rows={3}
+            placeholder="Full name, street, city, postcode"
+            value={form.address}
+            onChange={e => set('address', e.target.value)}
+            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50"
+          />
+        </div>
+      )}
+
+      <div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Anything else?</label>
         <textarea
-          rows={4}
+          rows={3}
+          placeholder="Timing, special requests..."
           value={form.details}
           onChange={e => set('details', e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y"
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50"
         />
       </div>
 

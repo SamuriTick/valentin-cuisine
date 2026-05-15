@@ -1,5 +1,4 @@
-import { PageNav } from '@/components/cuisine/PageNav';
-import { StaticFooter } from '@/components/cuisine/StaticFooter';
+
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
@@ -19,8 +18,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <>
-      <PageNav />
-      <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
+      <div style={{ paddingTop: 72, minHeight: '100vh', background: 'var(--cream)' }}>
 
         {/* Hero image */}
         {post.imageUrl && (
@@ -53,13 +51,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div style={{ width: 32, height: 1, background: 'var(--gold)', margin: '24px 0 40px' }} />
 
           {post.excerpt && (
-            <p style={{ fontSize: 18, color: 'var(--mid)', lineHeight: 1.8, marginBottom: 40, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 14, color: 'var(--mid)', lineHeight: 1.8, marginBottom: 40, fontStyle: 'italic' }}>
               {post.excerpt}
             </p>
           )}
 
           {/* Content */}
-          <div style={{ fontSize: 16, color: 'var(--mid)', lineHeight: 1.9 }}
+          <div style={{ fontSize: 14, color: 'var(--mid)', lineHeight: 1.9 }}
             dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }}
           />
 
@@ -86,7 +84,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
         </div>
       </div>
-      <StaticFooter />
+
     </>
   );
 }

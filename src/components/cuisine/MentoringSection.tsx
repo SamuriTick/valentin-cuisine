@@ -34,7 +34,7 @@ export function MentoringSection() {
                 { label: 'Connections', body: "I am 13 and I do not know many people yet. I am trying to change that." },
               ].map(({ label, body }) => (
                 <div key={label} className="flex gap-4">
-                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0" />
+                  <span className="mt-[6px] w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0" />
                   <div>
                     <p className="font-body text-sm font-semibold text-brand-dark mb-1">{label}</p>
                     <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{body}</p>
@@ -46,7 +46,7 @@ export function MentoringSection() {
               href="/contact"
               className="inline-block font-body text-[11px] font-bold tracking-[2px] uppercase text-white bg-brand-teal no-underline px-8 py-3 rounded hover:opacity-85 transition-opacity duration-200"
             >
-              Get in Touch
+              Mentor Me
             </Link>
           </div>
 

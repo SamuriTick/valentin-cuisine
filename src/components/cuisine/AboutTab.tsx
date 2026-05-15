@@ -60,7 +60,7 @@ export function AboutTab({ t }: Props) {
       {/* Section 3 · Story cards */}
       <div className="bg-brand-light border-t border-brand-border">
         <ContainerStandard className="py-10 md:py-12">
-          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none text-center">Highlights</p>
+          <p className="font-accent text-[clamp(22px,3vw,36px)] text-brand-teal mb-3 leading-none text-center">Highlights</p>
           <div className="w-12 h-px bg-brand-border mx-auto mb-8" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {([

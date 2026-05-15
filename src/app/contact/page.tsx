@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ContactForm } from '@/components/cuisine/ContactForm';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 
+
 export const metadata: Metadata = {
   title: "Get in Touch · Valentin's Cuisine",
   description: "Order food, ask a question, or reach out about mentoring Valentin. Based in Putney, London.",
@@ -11,18 +12,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="bg-brand-light min-h-screen font-body">
-
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-[200] bg-white border-b border-brand-border">
-        <ContainerStandard className="h-[72px] flex items-center justify-between">
-          <Link href="/" className="font-display text-[22px] font-normal italic text-brand-dark no-underline tracking-[0.5px]">
-            Valentin&rsquo;s Cuisine
-          </Link>
-          <Link href="/" className="hidden sm:block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted no-underline">
-            Home
-          </Link>
-        </ContainerStandard>
-      </nav>
 
       {/* Header */}
       <div className="bg-white pt-[72px] border-b border-brand-border">
@@ -55,7 +44,7 @@ export default function ContactPage() {
                 ].map(({ label, body }) => (
                   <div key={label} className="bg-white border border-brand-border rounded-lg px-5 py-4">
                     <p className="font-body text-sm font-semibold text-brand-dark mb-1">{label}</p>
-                    <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{body}</p>
+                    <p className="font-body text-sm text-brand-muted leading-[1.7]">{body}</p>
                   </div>
                 ))}
               </div>
@@ -81,19 +70,6 @@ export default function ContactPage() {
 
         </ContainerStandard>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-brand-border text-center py-12">
-        <ContainerStandard>
-          <Link href="/" className="font-display font-light italic text-[clamp(22px,3.5vw,36px)] text-brand-dark no-underline leading-none tracking-tight">
-            Valentin&rsquo;s Cuisine
-          </Link>
-          <div className="w-14 h-px bg-brand-border mx-auto mt-4 mb-4" />
-          <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">
-            Putney, London &middot; Made with love
-          </p>
-        </ContainerStandard>
-      </footer>
 
     </div>
   );

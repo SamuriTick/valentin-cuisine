@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { NavWrapper } from "@/components/cuisine/NavWrapper";
+import { FooterWrapper } from "@/components/cuisine/FooterWrapper";
 
 export const metadata: Metadata = {
   title: "Valentin's Cuisine | Aspiring Baker & Pastry Chef — Putney, London",
@@ -22,7 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <NavWrapper />
+        {children}
+        <FooterWrapper />
+      </body>
     </html>
   );
 }

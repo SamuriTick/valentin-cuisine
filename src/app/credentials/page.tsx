@@ -1,5 +1,4 @@
-import { PageNav } from '@/components/cuisine/PageNav';
-import { StaticFooter } from '@/components/cuisine/StaticFooter';
+
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 
@@ -9,8 +8,7 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 const ACHIEVEMENTS = [
-  { year: '2026', title: 'Mémoire Saïgon', role: 'Kitchen & Front-of-House Assistant', location: 'Wales', desc: 'Prep, plating, serving during busy periods in a Vietnamese restaurant.' },
-  { year: '2025', title: 'Self-Employed Baking Business', role: 'Founder', location: 'Putney, London', desc: 'Weekly custom cake orders — handling design, baking, customer communication and delivery.' },
+{ year: '2025', title: 'Self-Employed Baking Business', role: 'Founder', location: 'Putney, London', desc: 'Weekly custom cake orders — handling design, baking, customer communication and delivery.' },
   { year: '2025', title: 'Kingston Youth Councillor', role: 'Elected Member', location: 'Kingston, London', desc: 'Elected to represent young people in Kingston upon Thames.' },
   { year: '2024', title: 'Thermomix West London', role: 'Cooking Workshop Organiser', location: 'Clapham Junction', desc: 'Organised Easter cooking event for children; animated 3-course class for 10 children.' },
   { year: '2024', title: 'WOW Banh Mi', role: 'Kitchen Assistant & Barista', location: 'Manchester', desc: 'Fast-paced kitchen service — 10% boost in customer satisfaction.' },
@@ -40,8 +38,7 @@ export default async function CredentialsPage() {
 
   return (
     <>
-      <PageNav />
-      <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
+      <div style={{ paddingTop: 72, minHeight: '100vh', background: 'var(--cream)' }}>
 
         {/* Header */}
         <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
@@ -53,7 +50,7 @@ export default async function CredentialsPage() {
               </h1>
               <div style={{ width: 32, height: 1, background: 'var(--gold)', margin: '18px 0 16px' }} />
               <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.7 }}>
-                Aspiring Baker & Pastry Chef · Putney, London · English · French · Vietnamese
+                Aspiring Baker & Pastry Chef, 13 · Putney, London · English · French · Vietnamese
               </p>
             </div>
             {cvFile && (
@@ -92,7 +89,7 @@ export default async function CredentialsPage() {
                     <p style={{ fontSize: 11, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>
                       {item.role} {item.location && `· ${item.location}`}
                     </p>
-                    {item.desc && <p style={{ fontSize: 13, color: 'var(--mid)', lineHeight: 1.7 }}>{item.desc}</p>}
+                    {item.desc && <p style={{ fontSize: 14, color: 'var(--mid)', lineHeight: 1.7 }}>{item.desc}</p>}
                   </div>
                 </div>
               ))}
@@ -119,7 +116,7 @@ export default async function CredentialsPage() {
             <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--dark)', marginBottom: 8 }}>
               References
             </h2>
-            <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 28, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 28, fontStyle: 'italic' }}>
               Available upon request — contact directly to verify
             </p>
 
@@ -131,7 +128,7 @@ export default async function CredentialsPage() {
               <div key={ref.id} style={{ marginBottom: 24, padding: '20px 24px', background: 'var(--white)', border: '1px solid var(--border)' }}>
                 {ref.quote && (
                   <blockquote style={{ borderLeft: '2px solid var(--gold)', paddingLeft: 14, marginBottom: 14 }}>
-                    <p style={{ fontSize: 13, color: 'var(--mid)', fontStyle: 'italic', lineHeight: 1.7 }}>"{ref.quote}"</p>
+                    <p style={{ fontSize: 14, color: 'var(--mid)', fontStyle: 'italic', lineHeight: 1.7 }}>"{ref.quote}"</p>
                   </blockquote>
                 )}
                 <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: 16, color: 'var(--dark)' }}>{ref.name}</p>
@@ -139,12 +136,12 @@ export default async function CredentialsPage() {
                   {ref.role}{ref.company && ` · ${ref.company}`}
                 </p>
                 {ref.phone && (
-                  <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
+                  <p style={{ fontSize: 14, color: 'var(--muted)', marginTop: 8 }}>
                     <a href={`tel:${ref.phone}`} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{ref.phone}</a>
                   </p>
                 )}
                 {ref.website && (
-                  <p style={{ fontSize: 12, marginTop: 4 }}>
+                  <p style={{ fontSize: 14, marginTop: 4 }}>
                     <a href={ref.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--green)' }}>{ref.website}</a>
                   </p>
                 )}
@@ -167,7 +164,7 @@ export default async function CredentialsPage() {
           </div>
         </div>
       </div>
-      <StaticFooter />
+
     </>
   );
 }

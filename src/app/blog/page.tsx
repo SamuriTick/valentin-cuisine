@@ -1,5 +1,4 @@
-import { PageNav } from '@/components/cuisine/PageNav';
-import { StaticFooter } from '@/components/cuisine/StaticFooter';
+
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 
@@ -35,8 +34,7 @@ export default async function BlogPage({
 
   return (
     <>
-      <PageNav />
-      <div style={{ paddingTop: 68, minHeight: '100vh', background: 'var(--cream)' }}>
+      <div style={{ paddingTop: 72, minHeight: '100vh', background: 'var(--cream)' }}>
 
         {/* Header */}
         <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
@@ -91,7 +89,7 @@ export default async function BlogPage({
                         {post.title}
                       </h2>
                       {post.excerpt && (
-                        <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7 }}>{post.excerpt}</p>
+                        <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.7 }}>{post.excerpt}</p>
                       )}
                       <p style={{ marginTop: 16, fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--green)' }}>
                         Read →
@@ -104,7 +102,7 @@ export default async function BlogPage({
           )}
         </div>
       </div>
-      <StaticFooter />
+
     </>
   );
 }

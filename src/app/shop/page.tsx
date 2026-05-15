@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
-import { StaticFooter } from '@/components/cuisine/StaticFooter';
-import { PageNav } from '@/components/cuisine/PageNav';
+
 
 export const metadata: Metadata = {
   title: "Shop · Valentin's Cuisine",
@@ -35,7 +34,6 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
   return (
     <div className="bg-brand-light min-h-screen font-body">
 
-      <PageNav />
 
       {/* Header */}
       <div className="bg-white pt-[68px] border-b border-brand-border">
@@ -115,10 +113,10 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
                     {product.name}
                   </h2>
                   {product.description && (
-                    <p className="font-body text-[13px] text-brand-muted leading-[1.7] mb-4">{product.description}</p>
+                    <p className="font-body text-sm text-brand-muted leading-[1.7] mb-4">{product.description}</p>
                   )}
                   {product.orderNote && (
-                    <p className="font-body text-[12px] text-brand-muted italic mb-4">{product.orderNote}</p>
+                    <p className="font-body text-sm text-brand-muted italic mb-4">{product.orderNote}</p>
                   )}
                   <div className="flex items-center justify-between pt-4 border-t border-brand-border">
                     <span className="font-display text-[22px] font-light text-brand-dark leading-none">
@@ -159,7 +157,7 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
         </ContainerStandard>
       </section>
 
-      <StaticFooter />
+
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { ContainerStandard } from './ContainerStandard';
 
 export function GalleryTab() {
   return (
-    <div id="gallery" className="bg-brand-dark scroll-mt-[72px]">
+    <div id="gallery" className="scroll-mt-[72px]" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d1a2e 40%, #1a2a1a 100%)' }}>
       <ContainerStandard className="py-12 md:py-16">
 
         <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none text-center">Behind the scenes</p>
@@ -27,16 +27,7 @@ export function GalleryTab() {
         </div>
 
         <p className="text-center mt-8 font-body text-[13px] text-brand-muted italic">
-          Photos coming soon &middot; Follow{' '}
-          <a
-            href="https://instagram.com/valentincuisine"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-teal no-underline"
-          >
-            @valentincuisine
-          </a>{' '}
-          on Instagram
+          Photos coming soon
         </p>
 
       </ContainerStandard>

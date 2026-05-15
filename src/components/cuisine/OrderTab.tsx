@@ -60,7 +60,7 @@ export function OrderTab() {
                 "I only message when I actually have something ready",
               ].map(line => (
                 <div key={line} className="flex items-start gap-3">
-                  <span className="mt-[3px] w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0" />
+                  <span className="mt-[6px] w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0" />
                   <p className="font-body text-[13px] text-brand-muted leading-[1.7]">{line}</p>
                 </div>
               ))}
@@ -135,8 +135,8 @@ export function OrderTab() {
                       onChange={e => set('optIn', e.target.checked)}
                       className="sr-only"
                     />
-                    <div className={`w-4 h-4 rounded border transition-colors duration-200 flex items-center justify-center ${
-                      form.optIn ? 'bg-brand-teal border-brand-teal' : 'bg-white border-brand-border group-hover:border-brand-teal'
+                    <div className={`w-4 h-4 rounded border-2 transition-colors duration-200 flex items-center justify-center ${
+                      form.optIn ? 'bg-brand-teal border-brand-teal' : 'bg-brand-light border-brand-muted/40 group-hover:border-brand-teal'
                     }`}>
                       {form.optIn && (
                         <svg width="10" height="8" viewBox="0 0 10 8" fill="none">

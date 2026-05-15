@@ -29,12 +29,18 @@ export function SpecialtiesTab({ t }: Props) {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 text-center flex flex-wrap gap-3 justify-center">
           <a
-            href="#order"
+            href="/kimchi"
             className="inline-block font-body text-[11px] font-bold tracking-[2.5px] uppercase text-white bg-brand-teal px-10 py-4 rounded no-underline transition-opacity duration-200 hover:opacity-85"
           >
-            {t.heroCta}
+            Order Kimchi
+          </a>
+          <a
+            href="/contact"
+            className="inline-block font-body text-[11px] font-bold tracking-[2.5px] uppercase text-brand-teal bg-white border border-brand-teal px-10 py-4 rounded no-underline transition-opacity duration-200 hover:opacity-85"
+          >
+            Order anything else
           </a>
         </div>
 
