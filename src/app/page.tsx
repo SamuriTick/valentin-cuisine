@@ -1,5 +1,7 @@
 import { getContentMap, mergeContent } from '@/lib/siteContent';
 import { prisma } from '@/lib/prisma';
+
+export const dynamic = 'force-dynamic';
 import { HeroSection } from '@/components/cuisine/HeroSection';
 import { AboutTab } from '@/components/cuisine/AboutTab';
 import { SpecialtiesTab } from '@/components/cuisine/SpecialtiesTab';
