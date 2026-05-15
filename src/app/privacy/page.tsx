@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 
 export const metadata: Metadata = {
-  title: "Privacy Policy · Valentin's Cuisine",
+  title: 'Privacy Policy',
   description: "How Valentin's Cuisine handles your personal information.",
+  robots: { index: false, follow: false },
 };
 
 const SECTIONS = [

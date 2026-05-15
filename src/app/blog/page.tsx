@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
@@ -10,6 +11,16 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: "Recipes, updates, and stories from Valentin's kitchen in Putney, London.",
+  openGraph: {
+    title: "Blog · Valentin's Cuisine",
+    description: "Recipes, updates, and stories from Valentin's kitchen in Putney, London.",
+    type: 'website',
+  },
+};
 
 export default async function BlogPage({
   searchParams,

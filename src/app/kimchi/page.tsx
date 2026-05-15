@@ -7,8 +7,18 @@ import { getContentMap } from '@/lib/siteContent';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Valentin's Kimchi · Hand-Made in Putney, London",
+  title: "Hand-Made Kimchi — Putney, London",
   description: 'Spicy, tangy, umami-rich kimchi made fresh to order. Blended (not layered) for deeper flavour. £15 for 2kg in a glass jar. SW London collection or Royal Mail.',
+  openGraph: {
+    title: "Valentin's Hand-Made Kimchi — Putney, London",
+    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £15 for 2kg in a glass jar.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Valentin's Hand-Made Kimchi — Putney, London",
+    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £15 for 2kg in a glass jar.',
+  },
 };
 
 const TASTE_PROFILE = [
@@ -67,8 +77,24 @@ export default async function KimchiPage() {
     desc:  map[`kimchi.taste.${i}.desc`]  ?? item.desc,
   }))
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: "Valentin's Hand-Made Kimchi",
+    description: heroDesc,
+    brand: { '@type': 'Brand', name: "Valentin's Cuisine" },
+    offers: {
+      '@type': 'Offer',
+      price: '15.00',
+      priceCurrency: 'GBP',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Person', name: 'Valentin Thang' },
+    },
+  }
+
   return (
     <div className="bg-brand-light min-h-screen font-body">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
 
       {/* Hero */}
       <div className="bg-white pt-[72px]">

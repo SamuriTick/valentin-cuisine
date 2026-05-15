@@ -1,9 +1,37 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await prisma.post.findUnique({
+    where: { slug: params.slug, published: true },
+    select: { title: true, excerpt: true, imageUrl: true, publishedAt: true },
+  })
+
+  if (!post) return { title: 'Post Not Found' }
+
+  return {
+    title: post.title,
+    description: post.excerpt ?? undefined,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      type: 'article',
+      ...(post.imageUrl && { images: [{ url: post.imageUrl, alt: post.title }] }),
+      ...(post.publishedAt && { publishedTime: post.publishedAt.toISOString() }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      ...(post.imageUrl && { images: [post.imageUrl] }),
+    },
+  }
+}
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await prisma.post.findUnique({
@@ -14,8 +42,23 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   const CATEGORY_LABELS: Record<string, string> = { recipe: 'Recipe', news: 'News', update: 'Update' };
 
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://valentincuisine.com'
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt ?? undefined,
+    author: { '@type': 'Person', name: 'Valentin Thang' },
+    publisher: { '@type': 'Person', name: 'Valentin Thang' },
+    url: `${BASE_URL}/blog/${post.slug}`,
+    ...(post.imageUrl && { image: post.imageUrl }),
+    ...(post.publishedAt && { datePublished: post.publishedAt.toISOString() }),
+    ...(post.updatedAt && { dateModified: post.updatedAt.toISOString() }),
+  }
+
   return (
     <div className="bg-brand-light min-h-screen font-body">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
       {/* Hero image */}
       {post.imageUrl && (

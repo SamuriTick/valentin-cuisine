@@ -6,8 +6,13 @@ import { getContentMap } from '@/lib/siteContent';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Get in Touch · Valentin's Cuisine",
+  title: 'Get in Touch',
   description: "Order food, ask a question, or reach out about mentoring Valentin. Based in Putney, London.",
+  openGraph: {
+    title: "Get in Touch · Valentin's Cuisine",
+    description: 'Order food, ask a question, or reach out about mentoring Valentin. Based in Putney, London.',
+    type: 'website',
+  },
 };
 
 const FOOD_DEFAULTS = [
