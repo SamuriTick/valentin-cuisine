@@ -15,6 +15,7 @@ export default async function Home() {
     prisma.mediaItem.findMany({
       where: { fileType: 'image' },
       orderBy: { uploadedAt: 'asc' },
+      take: 12,
       select: { id: true, filePath: true, altText: true },
     }),
   ])
