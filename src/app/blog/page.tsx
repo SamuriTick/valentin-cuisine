@@ -1,9 +1,6 @@
-
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-
-
-
+import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 
 const BLOG_CATEGORIES = ['recipe', 'news', 'update'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -19,7 +16,6 @@ export default async function BlogPage({
 }: {
   searchParams: { category?: string };
 }) {
-  
   const activeCategory = searchParams.category || 'all';
 
   const posts = await prisma.post.findMany({
@@ -33,76 +29,79 @@ export default async function BlogPage({
   });
 
   return (
-    <>
-      <div style={{ paddingTop: 72, minHeight: '100vh', background: 'var(--cream)' }}>
+    <div className="bg-brand-light min-h-screen font-body">
 
-        {/* Header */}
-        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: 'clamp(40px, 6vw, 56px) clamp(16px, 5vw, 40px) 40px' }}>
-          <div style={{ maxWidth: 1160, margin: '0 auto' }}>
-            <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: 22, color: 'var(--gold)', marginBottom: 12 }}>Cooking Diary</p>
-            <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--dark)', marginBottom: 6 }}>
-              Blog
-            </h1>
-            <div style={{ width: 32, height: 1, background: 'var(--gold)', margin: '18px 0 28px' }} />
-
-            {/* Category filter */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {['all', ...BLOG_CATEGORIES].map(cat => (
-                <Link key={cat} href={cat === 'all' ? '/blog' : `/blog?category=${cat}`} style={{
-                  padding: '6px 16px', fontSize: 11, fontWeight: 600, letterSpacing: 1.5,
-                  textTransform: 'uppercase', textDecoration: 'none', borderRadius: 2,
-                  background: activeCategory === cat ? 'var(--green)' : 'var(--warm)',
-                  color: activeCategory === cat ? '#fff' : 'var(--muted)',
-                  border: '1px solid var(--border)',
-                }}>
-                  {cat === 'all' ? 'All' : CATEGORY_LABELS[cat]}
-                </Link>
-              ))}
-            </div>
+      {/* Header */}
+      <div className="bg-white pt-[72px] border-b border-brand-border">
+        <ContainerStandard className="py-16 md:py-20">
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">Cooking Diary</p>
+          <h1 className="font-display font-light text-[clamp(36px,5vw,60px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4">
+            From the <span className="font-semibold italic text-brand-teal">kitchen.</span>
+          </h1>
+          <div className="w-12 h-px bg-brand-border mb-6" />
+          <div className="flex gap-2 flex-wrap">
+            {['all', ...BLOG_CATEGORIES].map(cat => (
+              <Link
+                key={cat}
+                href={cat === 'all' ? '/blog' : `/blog?category=${cat}`}
+                style={{
+                  display: 'inline-block', padding: '6px 16px', borderRadius: 99,
+                  fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 600,
+                  letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none',
+                  background: activeCategory === cat ? '#1a1a1a' : '#fff',
+                  color: activeCategory === cat ? '#fff' : 'rgba(26,26,26,0.5)',
+                  border: activeCategory === cat ? '1px solid #1a1a1a' : '1px solid #e8e3dc',
+                  transition: 'all 0.15s',
+                }}
+              >
+                {cat === 'all' ? 'All' : CATEGORY_LABELS[cat]}
+              </Link>
+            ))}
           </div>
-        </div>
-
-        {/* Posts grid */}
-        <div style={{ maxWidth: 1160, margin: '0 auto', padding: 'clamp(32px, 5vw, 48px) clamp(16px, 5vw, 40px) 80px' }}>
-          {posts.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--muted)' }}>
-                Posts coming soon
-              </p>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 1, background: 'var(--border)', border: '1px solid var(--border)' }}>
-              {posts.map(post => (
-                <Link key={post.id} href={`/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
-                  <div style={{ background: 'var(--white)', padding: 0, transition: 'background 0.2s' }}>
-                    {post.imageUrl && (
-                      <div style={{ overflow: 'hidden', aspectRatio: '16/9' }}>
-                        <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      </div>
-                    )}
-                    <div style={{ padding: '24px 28px 28px' }}>
-                      <p style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 10 }}>
-                        {CATEGORY_LABELS[post.category] || post.category}
-                        {post.publishedAt && ` · ${new Date(post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`}
-                      </p>
-                      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: 'var(--dark)', marginBottom: 10, lineHeight: 1.3 }}>
-                        {post.title}
-                      </h2>
-                      {post.excerpt && (
-                        <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.7 }}>{post.excerpt}</p>
-                      )}
-                      <p style={{ marginTop: 16, fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--green)' }}>
-                        Read →
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
+        </ContainerStandard>
       </div>
 
-    </>
+      {/* Posts */}
+      <ContainerStandard className="py-12 md:py-16">
+        {posts.length === 0 ? (
+          <div className="py-24 text-center">
+            <p className="font-display font-light text-[clamp(22px,3vw,32px)] text-brand-muted">Posts coming soon.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map(post => (
+              <Link key={post.id} href={`/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
+                <article className="bg-white border border-brand-border rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
+                  {post.imageUrl && (
+                    <div style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
+                      <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                  )}
+                  <div className="p-6 flex flex-col flex-1">
+                    <p className="font-body text-[10px] tracking-[2px] uppercase text-brand-teal mb-3">
+                      {CATEGORY_LABELS[post.category] || post.category}
+                      {post.publishedAt && (
+                        <span className="text-brand-muted ml-2">
+                          · {new Date(post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      )}
+                    </p>
+                    <h2 className="font-display font-light text-[clamp(20px,2vw,26px)] text-brand-dark leading-[1.25] mb-3 flex-1">
+                      {post.title}
+                    </h2>
+                    {post.excerpt && (
+                      <p className="font-body text-sm text-brand-muted leading-[1.75] mb-4">{post.excerpt}</p>
+                    )}
+                    <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mt-auto">
+                      Read →
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        )}
+      </ContainerStandard>
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
 import { KimchiFAQs } from '@/components/cuisine/KimchiFAQs';
+import { getContentMap } from '@/lib/siteContent';
 
 export const metadata: Metadata = {
   title: "Valentin's Kimchi · Hand-Made in Putney, London",
@@ -43,7 +44,24 @@ const PAIRINGS = [
 ];
 
 
-export default function KimchiPage() {
+export default async function KimchiPage() {
+  const map = await getContentMap()
+
+  const heroEyebrow = map['kimchi.hero.eyebrow'] ?? 'Hand-made in Putney, London'
+  const heroTitle1  = map['kimchi.hero.title1']  ?? 'Spicy. Salty.'
+  const heroTitle2  = map['kimchi.hero.title2']  ?? 'Umami-rich.'
+  const heroDesc    = map['kimchi.hero.desc']    ?? "Not your standard recipe: blended, not layered, with a Vietnamese twist. Made fresh to order. Goes with literally everything."
+  const heroPrice   = map['kimchi.hero.price']   ?? '£15'
+  const heroPriceSub = map['kimchi.hero.price_sub'] ?? 'for 2kg · glass jar · no microplastics'
+  const valentinQuote = map['kimchi.quote'] ?? "I haven't been making kimchi for a while because I'm a kid and I'm still in school. But now I have time, so buy my kimchi. It's probably going to sell out in a few weeks."
+  const tasteEyebrow = map['kimchi.taste.eyebrow'] ?? 'What it tastes like'
+  const tasteTitle1 = map['kimchi.taste.title1'] ?? 'Four things happening'
+  const tasteTitle2 = map['kimchi.taste.title2'] ?? 'at once.'
+  const taste = TASTE_PROFILE.map((item, i) => ({
+    label: map[`kimchi.taste.${i}.label`] ?? item.label,
+    desc:  map[`kimchi.taste.${i}.desc`]  ?? item.desc,
+  }))
+
   return (
     <div className="bg-brand-light min-h-screen font-body">
 
@@ -62,19 +80,18 @@ export default function KimchiPage() {
 
             {/* Text */}
             <div className="flex flex-col justify-center">
-              <p className="font-accent text-[clamp(22px,3.5vw,32px)] text-brand-teal mb-3 md:mb-4 leading-none">Hand-made in Putney, London</p>
+              <p className="font-accent text-[clamp(22px,3.5vw,32px)] text-brand-teal mb-3 md:mb-4 leading-none">{heroEyebrow}</p>
               <h1 className="font-display font-light text-[clamp(36px,5vw,64px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4 md:mb-6">
-                Spicy. Salty.<br />
-                <span className="font-semibold italic text-brand-teal">Umami-rich.</span>
+                {heroTitle1}<br />
+                <span className="font-semibold italic text-brand-teal">{heroTitle2}</span>
               </h1>
               <div className="w-12 h-px bg-brand-border mb-5" />
               <p className="font-body text-base text-brand-muted leading-[1.85] mb-6 max-w-[420px]">
-                Not your standard recipe: blended, not layered, with a Vietnamese twist.
-                Made fresh to order. Goes with literally everything.
+                {heroDesc}
               </p>
               <div className="flex items-baseline gap-2 mb-8">
-                <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">£15</span>
-                <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">for 2kg · glass jar · no microplastics</span>
+                <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">{heroPrice}</span>
+                <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">{heroPriceSub}</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-8 py-4 rounded text-center hover:opacity-85 transition-opacity duration-200">
@@ -95,9 +112,7 @@ export default function KimchiPage() {
         <ContainerStandard className="py-section-sm">
           <blockquote className="max-w-[680px] mx-auto text-center">
             <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-brand-dark leading-[1.55] tracking-tight mb-6">
-              &ldquo;I haven&rsquo;t been making kimchi for a while because I&rsquo;m a kid
-              and I&rsquo;m still in school. But now I have time, so buy my kimchi.
-              It&rsquo;s probably going to sell out in a few weeks.&rdquo;
+              &ldquo;{valentinQuote}&rdquo;
             </p>
             <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
               Valentin Thang, aged 13 &middot; Putney, London
@@ -109,14 +124,14 @@ export default function KimchiPage() {
       {/* Taste profile */}
       <section className="bg-white border-t border-brand-border">
         <ContainerStandard className="py-section">
-          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">What it tastes like</p>
+          <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">{tasteEyebrow}</p>
           <h2 className="font-display font-light text-[clamp(28px,4vw,44px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-0">
-            Four things happening<br />
-            <span className="font-semibold italic text-brand-teal">at once.</span>
+            {tasteTitle1}<br />
+            <span className="font-semibold italic text-brand-teal">{tasteTitle2}</span>
           </h2>
           <div className="w-10 h-px bg-brand-border mt-5 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {TASTE_PROFILE.map(({ label, desc }) => (
+            {taste.map(({ label, desc }) => (
               <div key={label} className="bg-brand-light border border-brand-border rounded-lg p-6 hover:bg-brand-green-light transition-colors duration-200">
                 <p className="font-body text-base font-bold text-brand-dark mb-2 tracking-tight">{label}</p>
                 <div className="w-6 h-px bg-brand-border mb-3" />

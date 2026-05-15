@@ -65,7 +65,7 @@ export default function ProductForm({ product }: { product: any }) {
           <input style={s.input} value={form.name} onChange={e => set("name", e.target.value)} />
         </FormRow>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+        <div className="admin-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
           <FormRow>
             <label style={s.label}>Category</label>
             <select style={s.select} value={form.category} onChange={e => set("category", e.target.value)}>
