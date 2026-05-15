@@ -160,6 +160,12 @@ export default function VisualContentEditor() {
 
   const kimchiContent: KimchiContent = {
     heroImage:   content['kimchi.hero.image']   ?? KIMCHI_DEFAULTS.heroImage,
+    heroImageCrop: (() => {
+      const raw = content['kimchi.hero.image.crop']
+      if (!raw) return undefined
+      const parts = raw.split(' ').map(Number)
+      return { x: parts[0] ?? 50, y: parts[1] ?? 50, zoom: parts[2] ?? 1 }
+    })(),
     heroEyebrow: content['kimchi.hero.eyebrow'] ?? KIMCHI_DEFAULTS.heroEyebrow,
     heroTitle1:  content['kimchi.hero.title1']  ?? KIMCHI_DEFAULTS.heroTitle1,
     heroTitle2:  content['kimchi.hero.title2']  ?? KIMCHI_DEFAULTS.heroTitle2,

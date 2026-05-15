@@ -50,6 +50,8 @@ export default async function KimchiPage() {
   const map = await getContentMap()
 
   const heroImage   = map['kimchi.hero.image']   ?? ''
+  const heroCropRaw = map['kimchi.hero.image.crop']
+  const heroCrop    = heroCropRaw ? (() => { const p = heroCropRaw.split(' ').map(Number); return { x: p[0] ?? 50, y: p[1] ?? 50, zoom: p[2] ?? 1 } })() : null
   const heroEyebrow = map['kimchi.hero.eyebrow'] ?? 'Hand-made in Putney, London'
   const heroTitle1  = map['kimchi.hero.title1']  ?? 'Spicy. Salty.'
   const heroTitle2  = map['kimchi.hero.title2']  ?? 'Umami-rich.'
@@ -76,7 +78,16 @@ export default async function KimchiPage() {
             {/* Visual - top on mobile, right on desktop */}
             <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[600px] md:max-h-none bg-brand-light border border-brand-border flex items-center justify-center">
               {heroImage ? (
-                <img src={heroImage} alt="Kimchi" className="w-full h-full object-cover" />
+                <img
+                  src={heroImage}
+                  alt="Kimchi"
+                  className="w-full h-full object-cover"
+                  style={heroCrop ? {
+                    objectPosition: `${heroCrop.x}% ${heroCrop.y}%`,
+                    transform: heroCrop.zoom > 1 ? `scale(${heroCrop.zoom})` : undefined,
+                    transformOrigin: `${heroCrop.x}% ${heroCrop.y}%`,
+                  } : undefined}
+                />
               ) : (
                 <div className="text-center px-8">
                   <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>

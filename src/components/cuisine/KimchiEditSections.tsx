@@ -7,6 +7,7 @@ import { EditableImage } from '@/components/admin/visual/EditableImage'
 
 export interface KimchiContent {
   heroImage: string
+  heroImageCrop?: { x: number; y: number; zoom: number }
   heroEyebrow: string
   heroTitle1: string
   heroTitle2: string
@@ -40,7 +41,9 @@ export function KimchiEditSections({ t }: Props) {
                 alt="Kimchi hero"
                 className="w-full h-full object-cover"
                 editMode={editMode}
+                crop={t.heroImageCrop}
                 onSave={async url => { await editCtx?.onFieldUpdate('kimchi.hero.image', url) }}
+                onCropSave={async crop => { await editCtx?.onFieldUpdate('kimchi.hero.image.crop', `${crop.x} ${crop.y} ${crop.zoom}`) }}
               />
             ) : (
               <div className="relative w-full h-full flex items-center justify-center">
@@ -55,6 +58,7 @@ export function KimchiEditSections({ t }: Props) {
                     className="w-full h-full object-cover"
                     editMode={editMode}
                     onSave={async url => { await editCtx?.onFieldUpdate('kimchi.hero.image', url) }}
+                    onCropSave={async crop => { await editCtx?.onFieldUpdate('kimchi.hero.image.crop', `${crop.x} ${crop.y} ${crop.zoom}`) }}
                   />
                 )}
               </div>
