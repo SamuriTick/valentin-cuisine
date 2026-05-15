@@ -7,6 +7,7 @@ import { EditableText } from '@/components/admin/visual/EditableText'
 
 export interface ContactContent {
   heroEyebrow: string
+  heroTitlePrefix: string
   heroTitle: string
   heroDesc: string
   foodItems: { label: string; body: string }[]
@@ -30,7 +31,7 @@ export function ContactEditSections({ t }: Props) {
             <EditableText value={t.heroEyebrow} onSave={save('contact.hero.eyebrow')} editMode={editMode} as="span" />
           </p>
           <h1 className="font-display font-light text-[clamp(36px,5vw,60px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4">
-            Get in{' '}
+            <EditableText value={t.heroTitlePrefix} onSave={save('contact.hero.title_prefix')} editMode={editMode} as="span" />{' '}
             <span className="font-semibold italic text-brand-teal">
               <EditableText value={t.heroTitle} onSave={save('contact.hero.title')} editMode={editMode} as="span" />
             </span>

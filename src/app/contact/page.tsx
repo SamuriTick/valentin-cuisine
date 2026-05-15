@@ -19,8 +19,9 @@ const FOOD_DEFAULTS = [
 export default async function ContactPage() {
   const map = await getContentMap()
 
-  const heroEyebrow = map['contact.hero.eyebrow'] ?? 'Putney, London'
-  const heroTitle   = map['contact.hero.title']   ?? 'touch.'
+  const heroEyebrow     = map['contact.hero.eyebrow']      ?? 'Putney, London'
+  const heroTitlePrefix = map['contact.hero.title_prefix'] ?? 'Get in'
+  const heroTitle       = map['contact.hero.title']        ?? 'touch.'
   const heroDesc    = map['contact.hero.desc']    ?? 'Whether you want to order food or talk about mentoring me, use the form below. I reply within 24 hours.'
   const foodItems = FOOD_DEFAULTS.map((item, i) => ({
     label: map[`contact.food.${i}.label`] ?? item.label,
@@ -36,7 +37,7 @@ export default async function ContactPage() {
         <ContainerStandard className="py-16 md:py-20">
           <p className="font-accent text-[clamp(16px,2vw,22px)] text-brand-teal mb-3 leading-none">{heroEyebrow}</p>
           <h1 className="font-display font-light text-[clamp(36px,5vw,60px)] text-brand-dark leading-[1.1] tracking-[-1px] mb-4">
-            Get in <span className="font-semibold italic text-brand-teal">{heroTitle}</span>
+            {heroTitlePrefix} <span className="font-semibold italic text-brand-teal">{heroTitle}</span>
           </h1>
           <div className="w-12 h-px bg-brand-border mb-5" />
           <p className="font-body text-sm text-brand-muted leading-[1.85] max-w-[480px]">

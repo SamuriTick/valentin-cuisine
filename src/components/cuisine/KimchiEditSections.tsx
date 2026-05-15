@@ -3,8 +3,10 @@
 import { ContainerStandard } from './ContainerStandard'
 import { useEditContext } from '@/components/admin/visual/EditContext'
 import { EditableText } from '@/components/admin/visual/EditableText'
+import { EditableImage } from '@/components/admin/visual/EditableImage'
 
 export interface KimchiContent {
+  heroImage: string
   heroEyebrow: string
   heroTitle1: string
   heroTitle2: string
@@ -32,10 +34,31 @@ export function KimchiEditSections({ t }: Props) {
       <div className="bg-white border-b border-brand-border">
         <ContainerStandard className="py-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-center">
           <div className="hidden md:flex relative overflow-hidden rounded-xl h-[260px] bg-brand-light border border-brand-border items-center justify-center">
-            <div className="text-center px-8">
-              <p className="font-display text-[80px] text-brand-teal leading-none">김치</p>
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
-            </div>
+            {t.heroImage ? (
+              <EditableImage
+                src={t.heroImage}
+                alt="Kimchi hero"
+                className="w-full h-full object-cover"
+                editMode={editMode}
+                onSave={async url => { await editCtx?.onFieldUpdate('kimchi.hero.image', url) }}
+              />
+            ) : (
+              <div className="relative w-full h-full flex items-center justify-center">
+                <div className="text-center px-8">
+                  <p className="font-display text-[80px] text-brand-teal leading-none">김치</p>
+                  <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                </div>
+                {editMode && (
+                  <EditableImage
+                    src=""
+                    alt="Kimchi hero"
+                    className="w-full h-full object-cover"
+                    editMode={editMode}
+                    onSave={async url => { await editCtx?.onFieldUpdate('kimchi.hero.image', url) }}
+                  />
+                )}
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center">
             <p className="font-accent text-[clamp(22px,3.5vw,32px)] text-brand-teal mb-3 leading-none">

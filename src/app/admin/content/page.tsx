@@ -13,6 +13,7 @@ import { KimchiEditSections, type KimchiContent } from '@/components/cuisine/Kim
 import { ContactEditSections, type ContactContent } from '@/components/cuisine/ContactEditSections'
 
 const KIMCHI_DEFAULTS: KimchiContent = {
+  heroImage: '',
   heroEyebrow: 'Hand-made in Putney, London',
   heroTitle1: 'Spicy. Salty.',
   heroTitle2: 'Umami-rich.',
@@ -33,6 +34,7 @@ const KIMCHI_DEFAULTS: KimchiContent = {
 
 const CONTACT_DEFAULTS: ContactContent = {
   heroEyebrow: 'Putney, London',
+  heroTitlePrefix: 'Get in',
   heroTitle: 'touch.',
   heroDesc: 'Whether you want to order food or talk about mentoring me, use the form below. I reply within 24 hours.',
   foodItems: [
@@ -157,6 +159,7 @@ export default function VisualContentEditor() {
   const heroImage = content['hero.image'] ?? '/valentin-hero.jpg'
 
   const kimchiContent: KimchiContent = {
+    heroImage:   content['kimchi.hero.image']   ?? KIMCHI_DEFAULTS.heroImage,
     heroEyebrow: content['kimchi.hero.eyebrow'] ?? KIMCHI_DEFAULTS.heroEyebrow,
     heroTitle1:  content['kimchi.hero.title1']  ?? KIMCHI_DEFAULTS.heroTitle1,
     heroTitle2:  content['kimchi.hero.title2']  ?? KIMCHI_DEFAULTS.heroTitle2,
@@ -174,8 +177,9 @@ export default function VisualContentEditor() {
   }
 
   const contactContent: ContactContent = {
-    heroEyebrow: content['contact.hero.eyebrow'] ?? CONTACT_DEFAULTS.heroEyebrow,
-    heroTitle:   content['contact.hero.title']   ?? CONTACT_DEFAULTS.heroTitle,
+    heroEyebrow:     content['contact.hero.eyebrow']       ?? CONTACT_DEFAULTS.heroEyebrow,
+    heroTitlePrefix: content['contact.hero.title_prefix']  ?? CONTACT_DEFAULTS.heroTitlePrefix,
+    heroTitle:       content['contact.hero.title']         ?? CONTACT_DEFAULTS.heroTitle,
     heroDesc:    content['contact.hero.desc']    ?? CONTACT_DEFAULTS.heroDesc,
     foodItems: CONTACT_DEFAULTS.foodItems.map((item, i) => ({
       label: content[`contact.food.${i}.label`] ?? item.label,

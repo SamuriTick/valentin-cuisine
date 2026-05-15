@@ -49,6 +49,7 @@ const PAIRINGS = [
 export default async function KimchiPage() {
   const map = await getContentMap()
 
+  const heroImage   = map['kimchi.hero.image']   ?? ''
   const heroEyebrow = map['kimchi.hero.eyebrow'] ?? 'Hand-made in Putney, London'
   const heroTitle1  = map['kimchi.hero.title1']  ?? 'Spicy. Salty.'
   const heroTitle2  = map['kimchi.hero.title2']  ?? 'Umami-rich.'
@@ -74,10 +75,14 @@ export default async function KimchiPage() {
 
             {/* Visual - top on mobile, right on desktop */}
             <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[600px] md:max-h-none bg-brand-light border border-brand-border flex items-center justify-center">
-              <div className="text-center px-8">
-                <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>
-                <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
-              </div>
+              {heroImage ? (
+                <img src={heroImage} alt="Kimchi" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-center px-8">
+                  <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>
+                  <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                </div>
+              )}
             </div>
 
             {/* Text */}
