@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    const ctx = getCloudflareContext() as unknown as { env: Record<string, unknown> }
-    const bindings = ctx?.env ? Object.keys(ctx.env) : []
-    const hasDB = !!ctx?.env?.DB
-    return NextResponse.json({ cfContextOk: true, bindings, hasDB })
+    const count = await prisma.siteContent.count()
+    return NextResponse.json({ ok: true, siteContentRows: count })
   } catch (e: unknown) {
-    return NextResponse.json({ cfContextOk: false, error: String(e) }, { status: 500 })
+    return NextResponse.json({ ok: false, error: String(e) }, { status: 500 })
   }
 }
