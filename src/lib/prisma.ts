@@ -6,9 +6,14 @@ const globalForPrisma = globalThis as unknown as { _prismaClient: PrismaClient |
 
 function buildClient(): PrismaClient {
   try {
-    const { env } = getCloudflareContext() as { env: CloudflareEnv }
-    return new PrismaClient({ adapter: new PrismaD1(env.DB) })
-  } catch {
+    const ctx = getCloudflareContext() as { env: CloudflareEnv }
+    if (!ctx?.env?.DB) {
+      console.error('[prisma] getCloudflareContext() returned no DB binding, falling back')
+      return new PrismaClient()
+    }
+    return new PrismaClient({ adapter: new PrismaD1(ctx.env.DB) })
+  } catch (e) {
+    console.error('[prisma] getCloudflareContext() threw:', e)
     return new PrismaClient()
   }
 }
