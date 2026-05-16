@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    const ctx = getCloudflareContext() as { env: Record<string, unknown> }
+    const ctx = getCloudflareContext() as unknown as { env: Record<string, unknown> }
     const bindings = ctx?.env ? Object.keys(ctx.env) : []
     const hasDB = !!ctx?.env?.DB
     return NextResponse.json({ cfContextOk: true, bindings, hasDB })
