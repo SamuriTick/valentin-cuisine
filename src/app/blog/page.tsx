@@ -25,9 +25,10 @@ export const metadata: Metadata = {
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const activeCategory = searchParams.category || 'all';
+  const { category } = await searchParams
+  const activeCategory = category || 'all';
 
   const posts = await prisma.post.findMany({
     where: {
