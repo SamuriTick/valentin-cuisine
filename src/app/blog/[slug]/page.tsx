@@ -6,9 +6,10 @@ import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
   const post = await prisma.post.findUnique({
-    where: { slug: params.slug, published: true },
+    where: { slug, published: true },
     select: { title: true, excerpt: true, imageUrl: true, publishedAt: true },
   })
 
@@ -33,9 +34,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const post = await prisma.post.findUnique({
-    where: { slug: params.slug, published: true },
+    where: { slug, published: true },
   });
 
   if (!post) notFound();

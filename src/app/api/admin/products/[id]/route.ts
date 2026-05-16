@@ -2,19 +2,21 @@ import { NextRequest, NextResponse } from "next/server"
 import { withAuth } from "@/lib/auth-middleware"
 import { prisma } from "@/lib/prisma"
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   return withAuth(req, async () => {
-    const product = await prisma.product.findUnique({ where: { id: Number(params.id) } })
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
     if (!product) return NextResponse.json({ error: "Not found" }, { status: 404 })
     return NextResponse.json(product)
   })
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   return withAuth(req, async () => {
     const body = await req.json()
     const product = await prisma.product.update({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       data: {
         name: body.name,
         description: body.description || null,
@@ -31,9 +33,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   })
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   return withAuth(req, async () => {
-    await prisma.product.delete({ where: { id: Number(params.id) } })
+    await prisma.product.delete({ where: { id: Number(id) } })
     return NextResponse.json({ ok: true })
   })
 }

@@ -3,13 +3,10 @@ import { prisma } from '@/lib/prisma'
 import { checkAuth } from '@/lib/auth-middleware'
 import { deleteFromR2, isR2Configured } from '@/lib/r2-storage'
 
-// GET /api/media/[id]
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const id = parseInt(params.id)
+    const { id: rawId } = await params
+    const id = parseInt(rawId)
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid media ID' }, { status: 400 })
     }
@@ -26,18 +23,15 @@ export async function GET(
   }
 }
 
-// PUT /api/media/[id]
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const isAuthed = await checkAuth(request)
   if (!isAuthed) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
-    const id = parseInt(params.id)
+    const { id: rawId } = await params
+    const id = parseInt(rawId)
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid media ID' }, { status: 400 })
     }
@@ -57,18 +51,15 @@ export async function PUT(
   }
 }
 
-// DELETE /api/media/[id]
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const isAuthed = await checkAuth(request)
   if (!isAuthed) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
-    const id = parseInt(params.id)
+    const { id: rawId } = await params
+    const id = parseInt(rawId)
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid media ID' }, { status: 400 })
     }
