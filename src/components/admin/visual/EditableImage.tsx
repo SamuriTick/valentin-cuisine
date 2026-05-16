@@ -95,7 +95,7 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
   const [saving, setSaving] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => { setLocalCrop(crop) }, [crop.x, crop.y, crop.zoom])
+  useEffect(() => { setLocalCrop(crop) }, [crop])
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !containerRef.current) return
