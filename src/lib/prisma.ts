@@ -2,25 +2,15 @@ import { PrismaClient } from '@prisma/client/edge'
 import { PrismaD1 } from '@prisma/adapter-d1'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 
-const globalForPrisma = globalThis as unknown as { _prismaClient: PrismaClient | undefined }
-
-function buildClient(): PrismaClient {
-  try {
-    const ctx = getCloudflareContext() as { env: CloudflareEnv }
-    if (!ctx?.env?.DB) {
-      console.error('[prisma] No DB binding in CF context')
-      return new PrismaClient()
-    }
-    return new PrismaClient({ adapter: new PrismaD1(ctx.env.DB) })
-  } catch (e) {
-    console.error('[prisma] getCloudflareContext() threw:', e)
-    return new PrismaClient()
-  }
+function getClient(): PrismaClient {
+  const ctx = getCloudflareContext() as { env: CloudflareEnv }
+  return new PrismaClient({ adapter: new PrismaD1(ctx.env.DB) })
 }
 
+// Create a fresh client per property access so getCloudflareContext()
+// is always called within a live request context.
 export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
   get(_, prop: string | symbol) {
-    globalForPrisma._prismaClient ??= buildClient()
-    return (globalForPrisma._prismaClient as unknown as Record<string | symbol, unknown>)[prop]
+    return getClient()[prop as keyof PrismaClient]
   },
 })
