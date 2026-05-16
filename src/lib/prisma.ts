@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client/edge'
 import { PrismaD1 } from '@prisma/adapter-d1'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 
@@ -8,7 +8,7 @@ function buildClient(): PrismaClient {
   try {
     const ctx = getCloudflareContext() as { env: CloudflareEnv }
     if (!ctx?.env?.DB) {
-      console.error('[prisma] getCloudflareContext() returned no DB binding, falling back')
+      console.error('[prisma] No DB binding in CF context')
       return new PrismaClient()
     }
     return new PrismaClient({ adapter: new PrismaD1(ctx.env.DB) })
