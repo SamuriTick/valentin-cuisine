@@ -1,4 +1,4 @@
-name: Build and Deploy Valentin Cuisine
+name: Deploy to Cloudflare Workers
 
 on:
   push:
@@ -11,34 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        run: docker buildx build --platform linux/amd64 -t valentin-cuisine:latest --load .
-
-      - name: Save Docker image to tar.gz
-        run: docker save valentin-cuisine:latest | gzip > valentin-cuisine.tar.gz
-
-      - name: Copy image and config to VPS
-        uses: appleboy/scp-action@v0.1.7
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.VPS_PROD_HOST }}
-          username: ${{ secrets.VPS_PROD_USER }}
-          key: ${{ secrets.VPS_PROD_SSH_KEY }}
-          source: "valentin-cuisine.tar.gz,docker-compose.yml,deploy-valentin-cuisine.sh"
-          target: "/root/docker-images/valentin-cuisine/"
+          node-version: "20"
+          cache: "npm"
 
-      - name: Deploy on VPS
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Apply D1 migrations
+        uses: cloudflare/wrangler-action@v3
         with:
-          host: ${{ secrets.VPS_PROD_HOST }}
-          username: ${{ secrets.VPS_PROD_USER }}
-          key: ${{ secrets.VPS_PROD_SSH_KEY }}
-          command_timeout: 10m
-          script: |
-            chmod +x /root/docker-images/valentin-cuisine/deploy-valentin-cuisine.sh || true
-            /root/docker-images/valentin-cuisine/deploy-valentin-cuisine.sh
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 migrations apply valentin-cuisine-db --remote
+
+      - name: Build for Cloudflare Workers
+        run: npm run cf:build
+        env:
+          # Dummy value so Prisma generate succeeds during build without a real DB
+          DATABASE_URL: "file:./prisma/dev.db"
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

@@ -35,3 +35,12 @@ yarn-error.log*
 # Template folders (development templates - not part of main codebase)
 /templates
 .resources/
+
+# Wrangler local secrets (use `wrangler secret put` for production)
+.dev.vars
+
+# Wrangler local D1 state
+.wrangler/
+
+# OpenNext build output
+.open-next/

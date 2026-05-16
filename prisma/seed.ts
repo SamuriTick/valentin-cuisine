@@ -42,15 +42,16 @@ async function main() {
   }
   console.log('✅ Seeded site content')
 
-  // Seed default references
-  await prisma.reference.createMany({
-    skipDuplicates: true,
-    data: [
-      { name: 'Uyen Nguyen',      role: 'Owner',                  company: 'Mémoire Saïgon',       phone: '07537 993988', displayOrder: 1 },
-      { name: 'Alex Quennel',     role: 'Youth Council Organiser', company: 'Kingston Council',     phone: '020 8288 7511', displayOrder: 2 },
-      { name: 'Dorota Trawinska', role: 'Thermomix Advisor',       company: 'Thermomix West London', phone: '07710 694296', displayOrder: 3 },
-    ],
-  })
+  // Seed default references (upsert by name since SQLite doesn't support skipDuplicates)
+  const refs = [
+    { name: 'Uyen Nguyen',      role: 'Owner',                  company: 'Mémoire Saïgon',       phone: '07537 993988', displayOrder: 1 },
+    { name: 'Alex Quennel',     role: 'Youth Council Organiser', company: 'Kingston Council',     phone: '020 8288 7511', displayOrder: 2 },
+    { name: 'Dorota Trawinska', role: 'Thermomix Advisor',       company: 'Thermomix West London', phone: '07710 694296', displayOrder: 3 },
+  ]
+  for (const ref of refs) {
+    const existing = await prisma.reference.findFirst({ where: { name: ref.name } })
+    if (!existing) await prisma.reference.create({ data: ref })
+  }
   console.log('✅ Seeded references')
 
   console.log('🎉 Database seeded successfully!')

@@ -1,0 +1,28 @@
+name = "valentin-cuisine"
+main = ".open-next/worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "valentin-cuisine-db"
+database_id = "2bf7257e-6625-471d-beec-412efadc7364"
+migrations_dir = "prisma/migrations"
+
+[vars]
+NEXTAUTH_URL = "https://valentin-cuisine.workers.dev"
+# Override with your custom domain once connected in the Cloudflare dashboard.
+
+# Secrets (set via `wrangler secret put <NAME>` — never commit these):
+#   NEXTAUTH_SECRET
+#   RESEND_API_KEY
+#   CONTACT_TO_EMAIL
+#   R2_ACCOUNT_ID
+#   R2_ACCESS_KEY_ID
+#   R2_SECRET_ACCESS_KEY
+#   R2_BUCKET_NAME
+#   R2_PUBLIC_URL

@@ -23,24 +23,23 @@ export async function createAdminUser(email: string, password: string, name?: st
   }
 }
 
-// Script to create default admin user
 async function main() {
-  // Check if admin user already exists
-  const existingUser = await prisma.user.findFirst({
-    where: { email: 'admin@westactoncentre.co.uk' }
-  })
-  
+  const email = process.env.ADMIN_EMAIL || 'valentin@valentincuisine.com'
+  const password = process.env.ADMIN_PASSWORD
+  const name = process.env.ADMIN_NAME || 'Valentin'
+
+  if (!password) {
+    console.error('Set ADMIN_PASSWORD env var before running this script.')
+    process.exit(1)
+  }
+
+  const existingUser = await prisma.user.findFirst({ where: { email } })
   if (existingUser) {
-    console.log('Admin user already exists')
+    console.log('Admin user already exists:', { id: existingUser.id, email: existingUser.email })
     return
   }
-  
-  // Create default admin user
-  await createAdminUser(
-    'admin@westactoncentre.co.uk',
-    'admin123', // Change this password in production!
-    'WACC Admin'
-  )
+
+  await createAdminUser(email, password, name)
 }
 
 if (require.main === module) {
