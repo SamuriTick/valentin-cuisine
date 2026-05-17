@@ -1,15 +1,15 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 
 const BUCKET_NAME = process.env.R2_BUCKET_NAME || ''
 const PUBLIC_URL  = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '')
 
 // ─── Cloudflare R2 binding (Workers runtime) ──────────────────────────────────
 
-function getR2Binding(): R2Bucket | null {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getR2Binding(): any | null {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getCloudflareContext } = require('@opennextjs/cloudflare')
     const ctx = getCloudflareContext() as { env: CloudflareEnv }
     return ctx?.env?.R2 ?? null
   } catch {
@@ -33,8 +33,6 @@ function getS3Client() {
 // ─── Public helpers ───────────────────────────────────────────────────────────
 
 export function isR2Configured(): boolean {
-  // In Workers, the binding is always present if wrangler.toml is correct.
-  // In local dev, require the env vars.
   try {
     if (getR2Binding()) return true
   } catch { /* */ }
