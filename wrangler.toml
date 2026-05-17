@@ -13,6 +13,10 @@ database_name = "valentin-cuisine-db"
 database_id = "2bf7257e-6625-471d-beec-412efadc7364"
 migrations_dir = "prisma/migrations"
 
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "valentin-cuisine"
+
 [vars]
 NEXTAUTH_URL = "https://valentin-cuisine.workers.dev"
 # Override with your custom domain once connected in the Cloudflare dashboard.

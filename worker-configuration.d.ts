@@ -2,4 +2,5 @@
 interface CloudflareEnv {
   DB: D1Database;
   ASSETS: Fetcher;
+  R2: R2Bucket;
 }
