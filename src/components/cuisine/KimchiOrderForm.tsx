@@ -16,7 +16,9 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     name: '', email: '',
     jars: '1',
     variantIndex: '0',
-    dietary: '', delivery: '', address: '', details: '',
+    dietary: '', delivery: '',
+    addrLine1: '', addrLine2: '', addrCity: '', addrPostcode: '',
+    details: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -43,6 +45,11 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     return `${jars} jar${jars > 1 ? 's' : ''} × £${pricePerJar} = £${getTotal()}`
   }
 
+  function getAddressString(): string {
+    const parts = [form.addrLine1, form.addrLine2, form.addrCity, form.addrPostcode].filter(Boolean)
+    return parts.join(', ')
+  }
+
   const needsAddress = form.delivery === 'Collection near you (£3)' || form.delivery === 'Delivery (£6)'
 
   async function submit(e: React.FormEvent) {
@@ -51,13 +58,14 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     try {
       const jars = parseInt(form.jars, 10);
       const total = getTotal();
+      const address = getAddressString()
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''}${form.delivery ? ` · ${form.delivery}` : ''}${form.address ? ` · address: ${form.address}` : ''}`,
+          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''}${form.delivery ? ` · ${form.delivery}` : ''}${address ? ` · address: ${address}` : ''}`,
           details: form.details,
           jars,
           total,
@@ -152,10 +160,29 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       </div>
 
       {needsAddress && (
-        <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Your address *</label>
-          <textarea required rows={3} placeholder="Full name, street, city, postcode" value={form.address} onChange={e => set('address', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50" />
+        <div className="flex flex-col gap-3">
+          <div>
+            <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Address line 1 *</label>
+            <input type="text" required placeholder="House number and street" value={form.addrLine1} onChange={e => set('addrLine1', e.target.value)}
+              className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+          </div>
+          <div>
+            <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Address line 2</label>
+            <input type="text" placeholder="Flat, building, etc. (optional)" value={form.addrLine2} onChange={e => set('addrLine2', e.target.value)}
+              className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">City *</label>
+              <input type="text" required placeholder="London" value={form.addrCity} onChange={e => set('addrCity', e.target.value)}
+                className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+            </div>
+            <div>
+              <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Postcode *</label>
+              <input type="text" required placeholder="SW15 1AA" value={form.addrPostcode} onChange={e => set('addrPostcode', e.target.value)}
+                className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+            </div>
+          </div>
         </div>
       )}
 
