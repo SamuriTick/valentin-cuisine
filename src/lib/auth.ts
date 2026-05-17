@@ -1,11 +1,9 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -14,28 +12,16 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
-        }
+        if (!credentials?.email || !credentials?.password) return null
 
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
-          }
+          where: { email: credentials.email }
         })
 
-        if (!user || !user.password || !user.active) {
-          return null
-        }
+        if (!user || !user.password || !user.active) return null
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        )
-
-        if (!isPasswordValid) {
-          return null
-        }
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+        if (!isPasswordValid) return null
 
         return {
           id: user.id,
@@ -46,14 +32,10 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
-  session: {
-    strategy: "jwt"
-  },
+  session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.role = (user as any).role
-      }
+      if (user) token.role = (user as any).role
       return token
     },
     async session({ session, token }) {
@@ -64,7 +46,5 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-  pages: {
-    signIn: "/admin/login",
-  },
+  pages: { signIn: "/admin/login" },
 }
