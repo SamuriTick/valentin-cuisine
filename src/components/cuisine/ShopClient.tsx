@@ -12,6 +12,7 @@ interface Product {
   description: string | null
   price: string | null
   discount: Discount | null
+  pageUrl: string | null
   imageUrl: string | null
   category: string
   orderNote: string | null
@@ -193,6 +194,18 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
               })}
             </select>
           </div>
+        )}
+
+        {/* View full page link */}
+        {product.pageUrl && (
+          <a
+            href={product.pageUrl}
+            style={{ display: 'block', textAlign: 'center', padding: '8px', border: '1px solid #e8e3dc', borderRadius: 6, fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7a7060', textDecoration: 'none', transition: 'border-color 0.15s, color 0.15s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.color = '#1a1a1a' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#e8e3dc'; e.currentTarget.style.color = '#7a7060' }}
+          >
+            View full page →
+          </a>
         )}
 
         {/* Qty + Add to basket */}

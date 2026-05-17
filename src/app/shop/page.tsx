@@ -18,6 +18,7 @@ export default async function ShopPage() {
     ...p,
     weights: p.weights ? (() => { try { return JSON.parse(p.weights!) } catch { return [] } })() : [],
     discount: p.discount ? (() => { try { return JSON.parse(p.discount!) } catch { return null } })() : null,
+    pageUrl: p.pageUrl ?? null,
   }))
 
   return <ShopClient products={products} />

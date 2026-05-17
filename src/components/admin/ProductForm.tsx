@@ -91,6 +91,7 @@ export default function ProductForm({ product }: { product: any }) {
     name: product?.name ?? "",
     description: product?.description ?? "",
     price: product?.price ?? "",
+    pageUrl: product?.pageUrl ?? "",
     imageUrl: product?.imageUrl ?? "",
     category: product?.category ?? "cake",
     available: product?.available ?? true,
@@ -255,6 +256,14 @@ export default function ProductForm({ product }: { product: any }) {
         <FormRow>
           <label style={s.label}>Description</label>
           <textarea style={s.textarea} value={form.description} onChange={e => set("description", e.target.value)} />
+        </FormRow>
+
+        <FormRow>
+          <label style={s.label}>Linked page URL</label>
+          <input style={s.input} value={form.pageUrl} onChange={e => set("pageUrl", e.target.value)} placeholder="e.g. /kimchi" />
+          <p style={{ fontSize: 11, color: "#aaa", marginTop: 4, marginBottom: 0 }}>
+            Links this product to a page on the site. The shop card will show a "View page" button, and that page will use this product's price and variants.
+          </p>
         </FormRow>
 
         <FormRow>

@@ -3,6 +3,7 @@ import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
 import { KimchiFAQs } from '@/components/cuisine/KimchiFAQs';
 import { getContentMap } from '@/lib/siteContent';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,7 +58,15 @@ const PAIRINGS = [
 
 
 export default async function KimchiPage() {
-  const map = await getContentMap()
+  const [map, linkedProduct] = await Promise.all([
+    getContentMap(),
+    prisma.product.findFirst({ where: { pageUrl: '/kimchi', available: true } }),
+  ])
+
+  // Parse weight variants from the linked product if one exists
+  const linkedWeights: { amount: string; unit: string; price: string }[] = linkedProduct?.weights
+    ? (() => { try { return JSON.parse(linkedProduct.weights) } catch { return [] } })()
+    : []
 
   const heroImage   = map['kimchi.hero.image']   ?? ''
   const heroCropRaw = map['kimchi.hero.image.crop']
@@ -354,10 +363,23 @@ export default async function KimchiPage() {
 
             <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-5 mb-6">
               <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Pricing</p>
-              <div className="flex items-baseline gap-3">
-                <p className="font-display text-[48px] font-normal text-brand-dark leading-none">£15</p>
-                <p className="font-body text-sm text-brand-muted">per 2kg jar</p>
-              </div>
+              {linkedWeights.length > 0 ? (
+                <div className="space-y-2">
+                  {linkedWeights.map((w, i) => (
+                    <div key={i} className="flex items-baseline gap-3">
+                      <p className="font-display text-[36px] font-normal text-brand-dark leading-none">{w.price}</p>
+                      <p className="font-body text-sm text-brand-muted">for {w.amount}{w.unit}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-baseline gap-3">
+                  <p className="font-display text-[48px] font-normal text-brand-dark leading-none">
+                    {linkedProduct?.price ?? heroPrice}
+                  </p>
+                  <p className="font-body text-sm text-brand-muted">per 2kg jar</p>
+                </div>
+              )}
               <p className="font-body text-sm text-brand-muted mt-2">One whole nappa cabbage · glass jar · no microplastics</p>
             </div>
 
@@ -365,7 +387,10 @@ export default async function KimchiPage() {
 
           <div>
             <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Order form</p>
-            <KimchiOrderForm />
+            <KimchiOrderForm
+              pricePerJar={linkedProduct?.price ? parseFloat(linkedProduct.price.replace(/[^0-9.]/g, '')) || 15 : 15}
+              variants={linkedWeights}
+            />
 
             <div className="mt-6 bg-brand-green-light border border-brand-border rounded-lg px-5 py-4">
               <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-3">Dietary options</p>
@@ -405,7 +430,7 @@ export default async function KimchiPage() {
           </h2>
           <div className="w-12 h-px bg-brand-border mx-auto mt-5 mb-5" />
           <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-8">
-            £15 &middot; 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
+            {linkedProduct?.price ?? heroPrice} &middot; 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
           </p>
           <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-10 py-4 rounded inline-block hover:opacity-85 transition-opacity duration-200">
             Order Now
