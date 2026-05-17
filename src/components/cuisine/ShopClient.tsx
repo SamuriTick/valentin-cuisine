@@ -341,7 +341,7 @@ function Basket({ items, onUpdate, onRemove, onClose }: {
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-export default function ShopClient({ products }: { products: Product[] }) {
+export default function ShopClient({ products, titleMain = 'The', titleEmphasis = 'Shop', eyebrow = 'Putney, London' }: { products: Product[]; titleMain?: string; titleEmphasis?: string; eyebrow?: string }) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [basketOpen, setBasketOpen] = useState(false)
   const [addedId, setAddedId] = useState<number | null>(null)
@@ -382,10 +382,10 @@ export default function ShopClient({ products }: { products: Product[] }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
             <div>
               <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 18, color: '#b03060', margin: '0 0 8px' }}>
-                Putney, London
+                {eyebrow}
               </p>
               <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 300, color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-1px' }}>
-                The <span style={{ fontWeight: 600, fontStyle: 'italic', color: '#b03060' }}>Shop</span>
+                {titleMain} <span style={{ fontWeight: 600, fontStyle: 'italic', color: '#b03060' }}>{titleEmphasis}</span>
               </h1>
             </div>
             <button

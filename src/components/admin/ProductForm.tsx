@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { s, FormRow, CheckRow } from "./AdminUI"
 import Link from "next/link"
 
-const CATEGORIES = ["cake", "pastry", "bread", "fermented", "seasonal"]
+const CATEGORIES = ["cake", "pastry", "bread", "fermented", "provisions", "seasonal"]
 const UNITS = ["g", "kg"]
 
 interface Discount { type: 'percent' | 'amount'; value: string }
