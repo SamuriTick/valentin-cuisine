@@ -104,6 +104,7 @@ export default function ProductForm({ product }: { product: any }) {
   const [discount, setDiscount] = useState<Discount | undefined>(parseJSON(product?.discount, undefined))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
+  const [imageUploading, setImageUploading] = useState(false)
 
   function set(key: string, value: any) { setForm(f => ({ ...f, [key]: value })) }
 
@@ -267,8 +268,41 @@ export default function ProductForm({ product }: { product: any }) {
         </FormRow>
 
         <FormRow>
-          <label style={s.label}>Image URL</label>
-          <input style={s.input} value={form.imageUrl} onChange={e => set("imageUrl", e.target.value)} placeholder="https://…" />
+          <label style={s.label}>Image</label>
+          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <input style={{ ...s.input, flex: 1, marginBottom: 0 }} value={form.imageUrl} onChange={e => set("imageUrl", e.target.value)} placeholder="Paste a URL, or upload →" />
+            <label style={{ padding: "8px 14px", background: imageUploading ? "#ccc" : "#1a1a1a", color: "#fff", borderRadius: "6px", fontSize: "13px", cursor: imageUploading ? "default" : "pointer", whiteSpace: "nowrap", fontFamily: "'Nunito', sans-serif" }}>
+              {imageUploading ? "Uploading…" : "Upload photo"}
+              {!imageUploading && (
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  style={{ display: "none" }}
+                  onChange={async e => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+                    setImageUploading(true)
+                    try {
+                      const fd = new FormData()
+                      fd.append("file", file)
+                      const res = await fetch("/api/media", { method: "POST", body: fd })
+                      if (!res.ok) throw new Error(await res.text())
+                      const item = await res.json()
+                      set("imageUrl", item.filePath ?? item.url ?? "")
+                    } catch (err: any) {
+                      setError("Image upload failed: " + err.message)
+                    } finally {
+                      setImageUploading(false)
+                      e.target.value = ""
+                    }
+                  }}
+                />
+              )}
+            </label>
+          </div>
+          {form.imageUrl && (
+            <img src={form.imageUrl} alt="preview" style={{ marginTop: "8px", maxHeight: "120px", borderRadius: "6px", objectFit: "cover" }} />
+          )}
         </FormRow>
 
         <FormRow>
