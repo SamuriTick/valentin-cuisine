@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!isR2Configured()) {
-      return NextResponse.json({ error: 'Storage not configured.' }, { status: 500 })
+      return NextResponse.json({ error: 'Storage not configured. R2 binding missing and no S3 env vars set.' }, { status: 500 })
     }
 
     const formData = await request.formData()
@@ -110,7 +110,8 @@ export async function POST(request: NextRequest) {
       fileUrl = url
     } catch (r2Error) {
       console.error('[MEDIA API] R2 upload failed:', r2Error)
-      return NextResponse.json({ error: 'Failed to upload file to cloud storage' }, { status: 500 })
+      const msg = r2Error instanceof Error ? r2Error.message : String(r2Error)
+      return NextResponse.json({ error: 'Failed to upload file to cloud storage', detail: msg }, { status: 500 })
     }
 
     try {
