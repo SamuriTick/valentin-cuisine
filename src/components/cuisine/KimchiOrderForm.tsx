@@ -38,10 +38,12 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     const jars = parseInt(form.jars, 10)
     if (hasVariants) {
       const v = variants[parseInt(form.variantIndex, 10)]
-      return `${jars}× ${v?.amount ?? ''}${v?.unit ?? ''} @ ${v?.price ?? ''}`
+      return `${jars}× ${v?.amount ?? ''}${v?.unit ?? ''} (${v?.price ?? ''})`
     }
     return `${jars} jar${jars > 1 ? 's' : ''} × £${pricePerJar} = £${getTotal()}`
   }
+
+  const needsAddress = form.delivery === 'Collection near you (£3)' || form.delivery === 'Delivery (£6)'
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -99,14 +101,13 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
         </div>
       </div>
 
-      {/* Variant selector — only shown if admin linked variants exist */}
       {hasVariants && (
         <div>
           <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Size</label>
           <select value={form.variantIndex} onChange={e => set('variantIndex', e.target.value)}
             className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
             {variants.map((v, i) => (
-              <option key={i} value={i}>{v.amount}{v.unit} — {v.price}</option>
+              <option key={i} value={i}>{v.amount}{v.unit} ({v.price})</option>
             ))}
           </select>
         </div>
@@ -119,10 +120,9 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
         <select value={form.jars} onChange={e => set('jars', e.target.value)}
           className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
           {Array.from({ length: 10 }, (_, i) => String(i + 1)).map(n => {
-            const lineTotal = getLinePrice() * parseInt(n, 10)
             const label = hasVariants
-              ? `${n} · £${lineTotal % 1 === 0 ? lineTotal.toFixed(0) : lineTotal.toFixed(2)}`
-              : `${n} jar${n !== '1' ? 's' : ''} · £${parseInt(n, 10) * pricePerJar}`
+              ? n
+              : `${n} jar${n !== '1' ? 's' : ''}`
             return <option key={n} value={n}>{label}</option>
           })}
         </select>
@@ -134,21 +134,15 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Dietary needs</label>
-        <div className="flex flex-wrap gap-2">
-          {['None', 'Pescetarian', 'Vegetarian', 'Vegan', 'Gluten-free', 'Dairy-free', 'Nut allergy'].map(opt => (
-            <button key={opt} type="button" onClick={() => set('dietary', form.dietary === opt ? '' : opt)}
-              className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${form.dietary === opt ? 'bg-brand-teal text-white border-brand-teal' : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'}`}>
-              {opt}
-            </button>
-          ))}
-        </div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Dietary requirements</label>
+        <input type="text" placeholder="Any dietary needs or allergies?" value={form.dietary} onChange={e => set('dietary', e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Collection or delivery?</label>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Collection or delivery</label>
         <div className="flex flex-wrap gap-2">
-          {['Collection (SW London)', 'Royal Mail delivery', 'Not sure yet'].map(opt => (
+          {['Collection SW London', 'Collection near you (£3)', 'Delivery (£6)'].map(opt => (
             <button key={opt} type="button" onClick={() => set('delivery', form.delivery === opt ? '' : opt)}
               className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${form.delivery === opt ? 'bg-brand-teal text-white border-brand-teal' : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'}`}>
               {opt}
@@ -157,9 +151,9 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
         </div>
       </div>
 
-      {form.delivery === 'Royal Mail delivery' && (
+      {needsAddress && (
         <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Delivery address *</label>
+          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Your address *</label>
           <textarea required rows={3} placeholder="Full name, street, city, postcode" value={form.address} onChange={e => set('address', e.target.value)}
             className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50" />
         </div>

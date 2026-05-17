@@ -188,7 +188,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
                 const priceDisplay = d ? `${d.discountedPrice} (was ${d.originalPrice})` : w.price
                 return (
                   <option key={i} value={i}>
-                    {w.amount}{w.unit} — {priceDisplay}
+                    {w.amount}{w.unit} ({priceDisplay})
                   </option>
                 )
               })}

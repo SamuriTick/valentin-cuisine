@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 
-const FAQS = [
+interface FAQ { q: string; a: string }
+
+const DEFAULT_FAQS: FAQ[] = [
   {
     q: 'How long does it keep?',
     a: '3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).',
@@ -17,7 +19,7 @@ const FAQS = [
   },
   {
     q: 'Do you deliver?',
-    a: 'SW London collection (Putney) is the easiest option: I may be able to offer a small discount for this. Royal Mail delivery is possible but not guaranteed, depends on logistics. Mention what you need in the form and I\'ll let you know.',
+    a: 'SW London collection (Putney) is the easiest option. I can also come to you for a small fee (£3). Post delivery is also possible (£6). Choose your preference in the order form.',
   },
   {
     q: 'Can I get a vegan version?',
@@ -37,7 +39,8 @@ const FAQS = [
   },
 ];
 
-export function KimchiFAQs() {
+export function KimchiFAQs({ faqs }: { faqs?: FAQ[] }) {
+  const items = faqs && faqs.length > 0 ? faqs : DEFAULT_FAQS
   const [open, setOpen] = useState<Set<number>>(new Set());
 
   function toggle(i: number) {
@@ -50,8 +53,8 @@ export function KimchiFAQs() {
 
   return (
     <div className="divide-y divide-brand-border">
-      {FAQS.map(({ q, a }, i) => (
-        <div key={q}>
+      {items.map(({ q, a }, i) => (
+        <div key={i}>
           <button
             onClick={() => toggle(i)}
             className="w-full text-left flex items-center justify-between gap-6 py-6 group"
