@@ -96,7 +96,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
   function handleAdd() {
     const n = parseInt(qty, 10)
     if (!n || n < 1) { setQtyError(true); return }
-    const priceStr = activePrice ?? '0'
+    const priceStr = activePrice ?? ''
     const finalPrice = discountInfo ? discountInfo.discountedPrice : priceStr
     onAdd({
       productId: product.id,
@@ -148,7 +148,11 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
               <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#1a1a1a', fontWeight: 500 }}>
                 {activePrice}
               </div>
-            ) : null}
+            ) : (
+              <div style={{ fontFamily: "'Nunito', sans-serif", fontSize: 11, letterSpacing: '1px', textTransform: 'uppercase', color: '#aaa' }}>
+                {hasVariants ? 'Price by weight' : 'Price on enquiry'}
+              </div>
+            )}
           </div>
         </div>
 

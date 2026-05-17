@@ -172,8 +172,8 @@ export default function ProductForm({ product }: { product: any }) {
             </select>
           </FormRow>
           <FormRow>
-            <label style={s.label}>Base price (e.g. "£25")</label>
-            <input style={s.input} value={form.price} onChange={e => set("price", e.target.value)} placeholder="£25" />
+            <label style={s.label}>Base price — optional if using weight variants</label>
+            <input style={s.input} value={form.price} onChange={e => set("price", e.target.value)} placeholder="e.g. £25 · leave blank to price by weight" />
           </FormRow>
         </div>
 
