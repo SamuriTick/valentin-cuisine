@@ -6,6 +6,18 @@ import { s, FormRow, CheckRow } from "./AdminUI"
 import Link from "next/link"
 
 const CATEGORIES = ["cake", "pastry", "bread", "fermented", "seasonal"]
+const UNITS = ["g", "kg"]
+
+interface WeightVariant {
+  amount: string
+  unit: string
+  price: string
+}
+
+function parseWeights(raw: string | null | undefined): WeightVariant[] {
+  if (!raw) return []
+  try { return JSON.parse(raw) } catch { return [] }
+}
 
 export default function ProductForm({ product }: { product: any }) {
   const router = useRouter()
@@ -22,10 +34,24 @@ export default function ProductForm({ product }: { product: any }) {
     orderNote: product?.orderNote ?? "",
     displayOrder: product?.displayOrder ?? 0,
   })
+
+  const [weights, setWeights] = useState<WeightVariant[]>(parseWeights(product?.weights))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
 
   function set(key: string, value: any) { setForm(f => ({ ...f, [key]: value })) }
+
+  function addWeight() {
+    setWeights(w => [...w, { amount: "", unit: "kg", price: "" }])
+  }
+
+  function removeWeight(i: number) {
+    setWeights(w => w.filter((_, idx) => idx !== i))
+  }
+
+  function updateWeight(i: number, field: keyof WeightVariant, value: string) {
+    setWeights(w => w.map((row, idx) => idx === i ? { ...row, [field]: value } : row))
+  }
 
   async function save() {
     setSaving(true)
@@ -33,7 +59,12 @@ export default function ProductForm({ product }: { product: any }) {
     try {
       const url = isNew ? "/api/admin/products" : `/api/admin/products/${product.id}`
       const method = isNew ? "POST" : "PUT"
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) })
+      const validWeights = weights.filter(w => w.amount && w.price)
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, weights: validWeights.length ? validWeights : null }),
+      })
       if (!res.ok) throw new Error(await res.text())
       const data = await res.json()
       router.push(`/admin/products/${data.id}`)
@@ -73,9 +104,73 @@ export default function ProductForm({ product }: { product: any }) {
             </select>
           </FormRow>
           <FormRow>
-            <label style={s.label}>Price (e.g. "£25")</label>
+            <label style={s.label}>Base price (e.g. "£25")</label>
             <input style={s.input} value={form.price} onChange={e => set("price", e.target.value)} placeholder="£25" />
           </FormRow>
+        </div>
+
+        {/* Weight variants */}
+        <div style={{ marginBottom: "24px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+            <label style={s.label}>Weight variants</label>
+            <button
+              type="button"
+              onClick={addWeight}
+              style={{ fontSize: "12px", padding: "4px 12px", background: "#1a1a1a", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer", fontFamily: "'Nunito', sans-serif" }}
+            >
+              + Add variant
+            </button>
+          </div>
+
+          {weights.length === 0 && (
+            <p style={{ fontSize: "13px", color: "#aaa", fontStyle: "italic", marginBottom: 0 }}>
+              No variants yet — click "Add variant" to add weight options with individual prices.
+            </p>
+          )}
+
+          {weights.map((row, i) => (
+            <div key={i} style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
+              {/* Amount */}
+              <input
+                type="number"
+                min="0"
+                step="any"
+                placeholder="Amount"
+                value={row.amount}
+                onChange={e => updateWeight(i, "amount", e.target.value)}
+                style={{ ...s.input, width: "90px", marginBottom: 0 }}
+              />
+              {/* Unit */}
+              <select
+                value={row.unit}
+                onChange={e => updateWeight(i, "unit", e.target.value)}
+                style={{ ...s.select, width: "70px", marginBottom: 0 }}
+              >
+                {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+              </select>
+              {/* Price */}
+              <input
+                type="text"
+                placeholder="Price e.g. £10"
+                value={row.price}
+                onChange={e => updateWeight(i, "price", e.target.value)}
+                style={{ ...s.input, flex: 1, marginBottom: 0 }}
+              />
+              <button
+                type="button"
+                onClick={() => removeWeight(i)}
+                style={{ background: "none", border: "1px solid #e0d8cc", borderRadius: "5px", cursor: "pointer", padding: "6px 10px", color: "#999", fontSize: "14px", lineHeight: 1 }}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+
+          {weights.length > 0 && (
+            <p style={{ fontSize: "11px", color: "#aaa", marginTop: "6px" }}>
+              Example: 1 kg → £10, 2 kg → £15
+            </p>
+          )}
         </div>
 
         <FormRow>

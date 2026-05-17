@@ -21,6 +21,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         name: body.name,
         description: body.description || null,
         price: body.price || null,
+        weights: body.weights ? JSON.stringify(body.weights) : null,
         imageUrl: body.imageUrl || null,
         category: body.category || "cake",
         available: body.available ?? true,
