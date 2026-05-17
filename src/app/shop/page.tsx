@@ -17,6 +17,7 @@ export default async function ShopPage() {
   const products = raw.map(p => ({
     ...p,
     weights: p.weights ? (() => { try { return JSON.parse(p.weights!) } catch { return [] } })() : [],
+    discount: p.discount ? (() => { try { return JSON.parse(p.discount!) } catch { return null } })() : null,
   }))
 
   return <ShopClient products={products} />

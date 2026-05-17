@@ -8,15 +8,79 @@ import Link from "next/link"
 const CATEGORIES = ["cake", "pastry", "bread", "fermented", "seasonal"]
 const UNITS = ["g", "kg"]
 
-interface WeightVariant {
-  amount: string
-  unit: string
-  price: string
+interface Discount { type: 'percent' | 'amount'; value: string }
+interface WeightVariant { amount: string; unit: string; price: string; discount?: Discount }
+
+function parseJSON<T>(raw: string | null | undefined, fallback: T): T {
+  if (!raw) return fallback
+  try { return JSON.parse(raw) } catch { return fallback }
 }
 
-function parseWeights(raw: string | null | undefined): WeightVariant[] {
-  if (!raw) return []
-  try { return JSON.parse(raw) } catch { return [] }
+function parsePrice(raw: string): number {
+  return parseFloat(raw.replace(/[^0-9.]/g, '')) || 0
+}
+
+function calcOther(priceStr: string, disc: Discount): string {
+  const price = parsePrice(priceStr)
+  if (!price || !disc.value) return ''
+  const val = parseFloat(disc.value)
+  if (!val) return ''
+  if (disc.type === 'percent') {
+    const amt = price * val / 100
+    return `£${amt % 1 === 0 ? amt.toFixed(0) : amt.toFixed(2)} off`
+  } else {
+    const pct = (val / price) * 100
+    return `${Math.round(pct * 10) / 10}% off`
+  }
+}
+
+function DiscountRow({ price, disc, onChange }: {
+  price: string
+  disc: Discount | undefined
+  onChange: (d: Discount | undefined) => void
+}) {
+  const type = disc?.type ?? 'none'
+  const value = disc?.value ?? ''
+  const other = disc && price ? calcOther(price, disc) : ''
+
+  function setType(t: string) {
+    if (t === 'none') { onChange(undefined); return }
+    onChange({ type: t as 'percent' | 'amount', value })
+  }
+  function setValue(v: string) {
+    if (!disc) return
+    onChange({ ...disc, value: v })
+  }
+
+  return (
+    <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+      <select
+        value={type}
+        onChange={e => setType(e.target.value)}
+        style={{ ...s.select, width: 110, marginBottom: 0, fontSize: 12 }}
+      >
+        <option value="none">No discount</option>
+        <option value="percent">% off</option>
+        <option value="amount">£ off</option>
+      </select>
+      {disc && (
+        <>
+          <input
+            type="number"
+            min="0"
+            step="any"
+            placeholder={disc.type === 'percent' ? 'e.g. 15' : 'e.g. 3'}
+            value={value}
+            onChange={e => setValue(e.target.value)}
+            style={{ ...s.input, width: 80, marginBottom: 0, fontSize: 12 }}
+          />
+          {other && (
+            <span style={{ fontSize: 11, color: '#7a7060', fontStyle: 'italic' }}>= also {other}</span>
+          )}
+        </>
+      )}
+    </div>
+  )
 }
 
 export default function ProductForm({ product }: { product: any }) {
@@ -35,7 +99,8 @@ export default function ProductForm({ product }: { product: any }) {
     displayOrder: product?.displayOrder ?? 0,
   })
 
-  const [weights, setWeights] = useState<WeightVariant[]>(parseWeights(product?.weights))
+  const [weights, setWeights] = useState<WeightVariant[]>(parseJSON(product?.weights, []))
+  const [discount, setDiscount] = useState<Discount | undefined>(parseJSON(product?.discount, undefined))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
 
@@ -44,12 +109,10 @@ export default function ProductForm({ product }: { product: any }) {
   function addWeight() {
     setWeights(w => [...w, { amount: "", unit: "kg", price: "" }])
   }
-
   function removeWeight(i: number) {
     setWeights(w => w.filter((_, idx) => idx !== i))
   }
-
-  function updateWeight(i: number, field: keyof WeightVariant, value: string) {
+  function updateWeight(i: number, field: keyof WeightVariant, value: any) {
     setWeights(w => w.map((row, idx) => idx === i ? { ...row, [field]: value } : row))
   }
 
@@ -63,7 +126,11 @@ export default function ProductForm({ product }: { product: any }) {
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, weights: validWeights.length ? validWeights : null }),
+        body: JSON.stringify({
+          ...form,
+          weights: validWeights.length ? validWeights : null,
+          discount: discount?.value ? discount : null,
+        }),
       })
       if (!res.ok) throw new Error(await res.text())
       const data = await res.json()
@@ -109,6 +176,21 @@ export default function ProductForm({ product }: { product: any }) {
           </FormRow>
         </div>
 
+        {/* Product-level discount */}
+        <div style={{ marginBottom: "24px", padding: "14px 16px", background: "#fffef5", border: "1px solid #e8e3dc", borderRadius: "8px" }}>
+          <label style={{ ...s.label, marginBottom: "8px", display: "block" }}>Product discount</label>
+          <DiscountRow
+            price={form.price}
+            disc={discount}
+            onChange={setDiscount}
+          />
+          {!weights.length && discount?.value && form.price && (
+            <p style={{ fontSize: 11, color: "#aaa", marginTop: 6, marginBottom: 0 }}>
+              Applies to the base price above. Per-variant discounts override this.
+            </p>
+          )}
+        </div>
+
         {/* Weight variants */}
         <div style={{ marginBottom: "24px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
@@ -129,48 +211,45 @@ export default function ProductForm({ product }: { product: any }) {
           )}
 
           {weights.map((row, i) => (
-            <div key={i} style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
-              {/* Amount */}
-              <input
-                type="number"
-                min="0"
-                step="any"
-                placeholder="Amount"
-                value={row.amount}
-                onChange={e => updateWeight(i, "amount", e.target.value)}
-                style={{ ...s.input, width: "90px", marginBottom: 0 }}
-              />
-              {/* Unit */}
-              <select
-                value={row.unit}
-                onChange={e => updateWeight(i, "unit", e.target.value)}
-                style={{ ...s.select, width: "70px", marginBottom: 0 }}
-              >
-                {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
-              </select>
-              {/* Price */}
-              <input
-                type="text"
-                placeholder="Price e.g. £10"
-                value={row.price}
-                onChange={e => updateWeight(i, "price", e.target.value)}
-                style={{ ...s.input, flex: 1, marginBottom: 0 }}
-              />
-              <button
-                type="button"
-                onClick={() => removeWeight(i)}
-                style={{ background: "none", border: "1px solid #e0d8cc", borderRadius: "5px", cursor: "pointer", padding: "6px 10px", color: "#999", fontSize: "14px", lineHeight: 1 }}
-              >
-                ✕
-              </button>
+            <div key={i} style={{ marginBottom: "12px", padding: "12px", background: "#fafaf8", border: "1px solid #e8e3dc", borderRadius: "8px" }}>
+              {/* Main row */}
+              <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: row.discount || true ? "8px" : 0 }}>
+                <input
+                  type="number" min="0" step="any" placeholder="Amount"
+                  value={row.amount}
+                  onChange={e => updateWeight(i, "amount", e.target.value)}
+                  style={{ ...s.input, width: "80px", marginBottom: 0 }}
+                />
+                <select
+                  value={row.unit}
+                  onChange={e => updateWeight(i, "unit", e.target.value)}
+                  style={{ ...s.select, width: "65px", marginBottom: 0 }}
+                >
+                  {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                </select>
+                <input
+                  type="text" placeholder="Price e.g. £10"
+                  value={row.price}
+                  onChange={e => updateWeight(i, "price", e.target.value)}
+                  style={{ ...s.input, flex: 1, marginBottom: 0 }}
+                />
+                <button
+                  type="button" onClick={() => removeWeight(i)}
+                  style={{ background: "none", border: "1px solid #e0d8cc", borderRadius: "5px", cursor: "pointer", padding: "6px 10px", color: "#999", fontSize: "14px", lineHeight: 1 }}
+                >✕</button>
+              </div>
+
+              {/* Discount sub-row */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 11, color: "#aaa", letterSpacing: "0.08em", textTransform: "uppercase", width: 56, flexShrink: 0 }}>Discount</span>
+                <DiscountRow
+                  price={row.price}
+                  disc={row.discount}
+                  onChange={d => updateWeight(i, "discount", d)}
+                />
+              </div>
             </div>
           ))}
-
-          {weights.length > 0 && (
-            <p style={{ fontSize: "11px", color: "#aaa", marginTop: "6px" }}>
-              Example: 1 kg → £10, 2 kg → £15
-            </p>
-          )}
         </div>
 
         <FormRow>

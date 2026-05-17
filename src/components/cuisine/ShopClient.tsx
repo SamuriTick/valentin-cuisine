@@ -3,13 +3,15 @@
 import { useState } from 'react'
 import { ContainerStandard } from './ContainerStandard'
 
-interface WeightVariant { amount: string; unit: string; price: string }
+interface Discount { type: 'percent' | 'amount'; value: string }
+interface WeightVariant { amount: string; unit: string; price: string; discount?: Discount }
 
 interface Product {
   id: number
   name: string
   description: string | null
   price: string | null
+  discount: Discount | null
   imageUrl: string | null
   category: string
   orderNote: string | null
@@ -25,7 +27,7 @@ interface CartItem {
   quantity: number
 }
 
-function parsePrice(raw: string | null): number {
+function parsePrice(raw: string | null | undefined): number {
   if (!raw) return 0
   return parseFloat(raw.replace(/[^0-9.]/g, '')) || 0
 }
@@ -34,48 +36,74 @@ function formatPrice(n: number): string {
   return `£${n % 1 === 0 ? n.toFixed(0) : n.toFixed(2)}`
 }
 
+interface DiscountInfo {
+  originalPrice: string
+  discountedPrice: string
+  percentLabel: string
+  amountLabel: string
+}
+
+function calcDiscount(priceStr: string | null | undefined, disc: Discount | null | undefined): DiscountInfo | null {
+  if (!disc || !disc.value || !priceStr) return null
+  const price = parsePrice(priceStr)
+  const val = parseFloat(disc.value)
+  if (!price || !val) return null
+
+  let amountOff: number
+  let percentOff: number
+
+  if (disc.type === 'percent') {
+    percentOff = val
+    amountOff = price * val / 100
+  } else {
+    amountOff = val
+    percentOff = (val / price) * 100
+  }
+
+  const discounted = price - amountOff
+  return {
+    originalPrice: formatPrice(price),
+    discountedPrice: formatPrice(discounted),
+    percentLabel: `${Math.round(percentOff * 10) / 10}% off`,
+    amountLabel: `${formatPrice(amountOff)} off`,
+  }
+}
+
 // ─── Product card ─────────────────────────────────────────────────────────────
 function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartItem) => void }) {
   const hasVariants = product.weights.length > 0
-  const [selectedVariant, setSelectedVariant] = useState<number>(0)
+  const [selectedVariant, setSelectedVariant] = useState(0)
   const [qty, setQty] = useState('1')
   const [qtyError, setQtyError] = useState(false)
 
   const variant = hasVariants ? product.weights[selectedVariant] : null
-  const displayPrice = variant ? variant.price : product.price
+  const activePrice = variant ? variant.price : product.price
+  const activeDiscount = variant?.discount ?? product.discount
+  const discountInfo = calcDiscount(activePrice, activeDiscount)
 
   function handleQtyChange(val: string) {
-    // Only allow digits
-    const cleaned = val.replace(/[^0-9]/g, '')
-    setQty(cleaned)
+    setQty(val.replace(/[^0-9]/g, ''))
     setQtyError(false)
   }
 
   function handleAdd() {
     const n = parseInt(qty, 10)
     if (!n || n < 1) { setQtyError(true); return }
-
-    const priceStr = variant ? variant.price : (product.price ?? '0')
+    const priceStr = activePrice ?? '0'
+    const finalPrice = discountInfo ? discountInfo.discountedPrice : priceStr
     onAdd({
       productId: product.id,
       name: product.name,
       variantLabel: variant ? `${variant.amount}${variant.unit}` : null,
-      price: priceStr,
-      priceNum: parsePrice(priceStr),
+      price: finalPrice,
+      priceNum: parsePrice(finalPrice),
       quantity: n,
     })
     setQty('1')
   }
 
   return (
-    <div style={{
-      background: '#fff',
-      border: '1px solid #e8e3dc',
-      borderRadius: 12,
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <div style={{ background: '#fff', border: '1px solid #e8e3dc', borderRadius: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {/* Image */}
       {product.imageUrl ? (
         <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#f4f1ed' }}>
@@ -87,9 +115,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
         </div>
       )}
 
-      {/* Content */}
       <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {/* Category pill */}
         <span style={{ fontSize: 10, letterSpacing: '2px', textTransform: 'uppercase', color: '#b03060', fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}>
           {product.category}
         </span>
@@ -99,12 +125,37 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
           <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, fontWeight: 500, color: '#1a1a1a', margin: 0, lineHeight: 1.2 }}>
             {product.name}
           </h3>
-          {displayPrice && (
-            <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#1a1a1a', whiteSpace: 'nowrap', fontWeight: 500 }}>
-              {displayPrice}
-            </span>
-          )}
+
+          {/* Price block */}
+          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+            {discountInfo ? (
+              <>
+                <div style={{ fontFamily: "'Nunito', sans-serif", fontSize: 11, color: '#aaa', textDecoration: 'line-through', lineHeight: 1.2 }}>
+                  {discountInfo.originalPrice}
+                </div>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#b03060', fontWeight: 600, lineHeight: 1.2 }}>
+                  {discountInfo.discountedPrice}
+                </div>
+              </>
+            ) : activePrice ? (
+              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#1a1a1a', fontWeight: 500 }}>
+                {activePrice}
+              </div>
+            ) : null}
+          </div>
         </div>
+
+        {/* Discount badges — show both representations */}
+        {discountInfo && (
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'Nunito', sans-serif", background: '#fdf2f6', color: '#b03060', border: '1px solid #f5ccd8', borderRadius: 4, padding: '2px 8px' }}>
+              {discountInfo.percentLabel}
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'Nunito', sans-serif", background: '#fdf2f6', color: '#b03060', border: '1px solid #f5ccd8', borderRadius: 4, padding: '2px 8px' }}>
+              {discountInfo.amountLabel}
+            </span>
+          </div>
+        )}
 
         {product.description && (
           <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 13, color: '#7a7060', lineHeight: 1.7, margin: 0 }}>
@@ -129,52 +180,39 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
             <select
               value={selectedVariant}
               onChange={e => setSelectedVariant(Number(e.target.value))}
-              style={{
-                width: '100%', padding: '9px 12px', border: '1px solid #e8e3dc', borderRadius: 6,
-                fontSize: 14, fontFamily: "'Nunito', sans-serif", color: '#1a1a1a',
-                background: '#fff', cursor: 'pointer', outline: 'none',
-              }}
+              style={{ width: '100%', padding: '9px 12px', border: '1px solid #e8e3dc', borderRadius: 6, fontSize: 14, fontFamily: "'Nunito', sans-serif", color: '#1a1a1a', background: '#fff', cursor: 'pointer', outline: 'none' }}
             >
-              {product.weights.map((w, i) => (
-                <option key={i} value={i}>
-                  {w.amount}{w.unit} — {w.price}
-                </option>
-              ))}
+              {product.weights.map((w, i) => {
+                const d = calcDiscount(w.price, w.discount ?? product.discount)
+                const priceDisplay = d ? `${d.discountedPrice} (was ${d.originalPrice})` : w.price
+                return (
+                  <option key={i} value={i}>
+                    {w.amount}{w.unit} — {priceDisplay}
+                  </option>
+                )
+              })}
             </select>
           </div>
         )}
 
-        {/* Quantity + Add to basket */}
+        {/* Qty + Add to basket */}
         <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <label style={{ fontSize: 11, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7a7060', fontFamily: "'Nunito', sans-serif" }}>
-              Qty
-            </label>
+            <label style={{ fontSize: 11, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7a7060', fontFamily: "'Nunito', sans-serif" }}>Qty</label>
             <input
               type="text"
               inputMode="numeric"
               value={qty}
               onChange={e => handleQtyChange(e.target.value)}
               onBlur={() => { if (!qty || parseInt(qty) < 1) setQtyError(true) }}
-              style={{
-                width: 60, padding: '9px 10px', border: `1px solid ${qtyError ? '#b03060' : '#e8e3dc'}`,
-                borderRadius: 6, fontSize: 14, fontFamily: "'Nunito', sans-serif",
-                textAlign: 'center', color: '#1a1a1a', outline: 'none',
-              }}
+              style={{ width: 60, padding: '9px 10px', border: `1px solid ${qtyError ? '#b03060' : '#e8e3dc'}`, borderRadius: 6, fontSize: 14, fontFamily: "'Nunito', sans-serif", textAlign: 'center', color: '#1a1a1a', outline: 'none' }}
               placeholder="1"
             />
             {qtyError && <span style={{ fontSize: 11, color: '#b03060', fontFamily: "'Nunito', sans-serif" }}>Numbers only</span>}
           </div>
-
           <button
             onClick={handleAdd}
-            style={{
-              flex: 1, marginTop: 21, padding: '10px 16px',
-              background: '#1a1a1a', color: '#fff', border: 'none', borderRadius: 6,
-              fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700,
-              letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer',
-              transition: 'opacity 0.15s',
-            }}
+            style={{ flex: 1, marginTop: 21, padding: '10px 16px', background: '#1a1a1a', color: '#fff', border: 'none', borderRadius: 6, fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer', transition: 'opacity 0.15s' }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
@@ -197,15 +235,8 @@ function Basket({ items, onUpdate, onRemove, onClose }: {
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex' }}>
-      {/* Backdrop */}
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} onClick={onClose} />
-
-      {/* Panel */}
-      <div style={{
-        position: 'absolute', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: 400,
-        background: '#fff', display: 'flex', flexDirection: 'column', boxShadow: '-4px 0 24px rgba(0,0,0,0.12)',
-      }}>
-        {/* Header */}
+      <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: 400, background: '#fff', display: 'flex', flexDirection: 'column', boxShadow: '-4px 0 24px rgba(0,0,0,0.12)' }}>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid #e8e3dc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 500, color: '#1a1a1a', margin: 0 }}>Your basket</h2>
@@ -216,70 +247,56 @@ function Basket({ items, onUpdate, onRemove, onClose }: {
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, color: '#888', lineHeight: 1, padding: 4 }}>×</button>
         </div>
 
-        {/* Items */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px' }}>
           {items.length === 0 ? (
             <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 14, color: '#aaa', textAlign: 'center', marginTop: 40 }}>
               Nothing here yet — add something from the shop.
             </p>
-          ) : (
-            items.map((item, i) => (
-              <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '14px 0', borderBottom: '1px solid #f4f1ed' }}>
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 17, fontWeight: 500, color: '#1a1a1a', margin: '0 0 2px' }}>
-                    {item.name}
-                  </p>
-                  {item.variantLabel && (
-                    <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 12, color: '#7a7060', margin: '0 0 6px' }}>
-                      {item.variantLabel}
-                    </p>
+          ) : items.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '14px 0', borderBottom: '1px solid #f4f1ed' }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 17, fontWeight: 500, color: '#1a1a1a', margin: '0 0 2px' }}>{item.name}</p>
+                {item.variantLabel && (
+                  <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 12, color: '#7a7060', margin: '0 0 4px' }}>{item.variantLabel}</p>
+                )}
+                <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 13, color: '#b03060', margin: 0, fontWeight: 600 }}>
+                  {item.priceNum > 0 ? formatPrice(item.priceNum * item.quantity) : item.price}
+                  {item.quantity > 1 && item.priceNum > 0 && (
+                    <span style={{ fontWeight: 400, color: '#aaa', fontSize: 11, marginLeft: 6 }}>({item.price} each)</span>
                   )}
-                  <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: 13, color: '#b03060', margin: 0, fontWeight: 600 }}>
-                    {item.priceNum > 0 ? formatPrice(item.priceNum * item.quantity) : item.price}
-                  </p>
-                </div>
-
-                {/* Qty control */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button
-                    onClick={() => item.quantity <= 1 ? onRemove(item.productId, item.variantLabel) : onUpdate(item.productId, item.variantLabel, item.quantity - 1)}
-                    style={{ width: 28, height: 28, border: '1px solid #e8e3dc', borderRadius: 4, background: '#fff', cursor: 'pointer', fontSize: 16, lineHeight: 1, color: '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  >−</button>
-
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={item.quantity}
-                    onChange={e => {
-                      const cleaned = e.target.value.replace(/[^0-9]/g, '')
-                      const n = parseInt(cleaned, 10)
-                      if (cleaned === '') return
-                      if (n < 1) onRemove(item.productId, item.variantLabel)
-                      else onUpdate(item.productId, item.variantLabel, n)
-                    }}
-                    style={{
-                      width: 40, height: 28, textAlign: 'center', border: '1px solid #e8e3dc',
-                      borderRadius: 4, fontFamily: "'Nunito', sans-serif", fontSize: 14, color: '#1a1a1a',
-                      outline: 'none',
-                    }}
-                  />
-
-                  <button
-                    onClick={() => onUpdate(item.productId, item.variantLabel, item.quantity + 1)}
-                    style={{ width: 28, height: 28, border: '1px solid #e8e3dc', borderRadius: 4, background: '#fff', cursor: 'pointer', fontSize: 16, lineHeight: 1, color: '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  >+</button>
-
-                  <button
-                    onClick={() => onRemove(item.productId, item.variantLabel)}
-                    style={{ marginLeft: 4, background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', fontSize: 16, lineHeight: 1, padding: 0 }}
-                  >✕</button>
-                </div>
+                </p>
               </div>
-            ))
-          )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <button
+                  onClick={() => item.quantity <= 1 ? onRemove(item.productId, item.variantLabel) : onUpdate(item.productId, item.variantLabel, item.quantity - 1)}
+                  style={{ width: 28, height: 28, border: '1px solid #e8e3dc', borderRadius: 4, background: '#fff', cursor: 'pointer', fontSize: 16, color: '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >−</button>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={item.quantity}
+                  onChange={e => {
+                    const cleaned = e.target.value.replace(/[^0-9]/g, '')
+                    if (cleaned === '') return
+                    const n = parseInt(cleaned, 10)
+                    if (n < 1) onRemove(item.productId, item.variantLabel)
+                    else onUpdate(item.productId, item.variantLabel, n)
+                  }}
+                  style={{ width: 40, height: 28, textAlign: 'center', border: '1px solid #e8e3dc', borderRadius: 4, fontFamily: "'Nunito', sans-serif", fontSize: 14, color: '#1a1a1a', outline: 'none' }}
+                />
+                <button
+                  onClick={() => onUpdate(item.productId, item.variantLabel, item.quantity + 1)}
+                  style={{ width: 28, height: 28, border: '1px solid #e8e3dc', borderRadius: 4, background: '#fff', cursor: 'pointer', fontSize: 16, color: '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >+</button>
+                <button
+                  onClick={() => onRemove(item.productId, item.variantLabel)}
+                  style={{ marginLeft: 4, background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', fontSize: 16, lineHeight: 1, padding: 0 }}
+                >✕</button>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Footer */}
         {items.length > 0 && (
           <div style={{ padding: '16px 24px', borderTop: '1px solid #e8e3dc' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16 }}>
@@ -290,12 +307,7 @@ function Basket({ items, onUpdate, onRemove, onClose }: {
             </div>
             <a
               href={`/contact?order=${encodeURIComponent(items.map(i => `${i.quantity}× ${i.name}${i.variantLabel ? ` (${i.variantLabel})` : ''} @ ${i.price}`).join(', '))}`}
-              style={{
-                display: 'block', width: '100%', padding: '13px 0', textAlign: 'center',
-                background: '#1a1a1a', color: '#fff', borderRadius: 7, textDecoration: 'none',
-                fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-              }}
+              style={{ display: 'block', width: '100%', padding: '13px 0', textAlign: 'center', background: '#1a1a1a', color: '#fff', borderRadius: 7, textDecoration: 'none', fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase' }}
             >
               Place order
             </a>
@@ -350,25 +362,16 @@ export default function ShopClient({ products }: { products: Product[] }) {
         <ContainerStandard className="py-8 md:py-12">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
             <div>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 18, color: '#b03060', margin: '0 0 8px', letterSpacing: 0.3 }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 18, color: '#b03060', margin: '0 0 8px' }}>
                 Putney, London
               </p>
               <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 300, color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-1px' }}>
                 The <span style={{ fontWeight: 600, fontStyle: 'italic', color: '#b03060' }}>Shop</span>
               </h1>
             </div>
-
-            {/* Basket button */}
             <button
               onClick={() => setBasketOpen(true)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 10, padding: '10px 20px',
-                background: cartCount > 0 ? '#1a1a1a' : '#fff',
-                color: cartCount > 0 ? '#fff' : '#1a1a1a',
-                border: '1px solid #1a1a1a', borderRadius: 7, cursor: 'pointer',
-                fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 700,
-                transition: 'all 0.2s',
-              }}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 20px', background: cartCount > 0 ? '#1a1a1a' : '#fff', color: cartCount > 0 ? '#fff' : '#1a1a1a', border: '1px solid #1a1a1a', borderRadius: 7, cursor: 'pointer', fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 700, transition: 'all 0.2s' }}
             >
               <svg width="18" height="16" viewBox="0 0 18 16" fill="none">
                 <path d="M1 1h2.5l2 8h9l2-6H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -377,10 +380,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
               </svg>
               Basket
               {cartCount > 0 && (
-                <span style={{
-                  background: '#b03060', color: '#fff', borderRadius: '99px',
-                  fontSize: 11, fontWeight: 700, padding: '1px 7px', lineHeight: '18px',
-                }}>
+                <span style={{ background: '#b03060', color: '#fff', borderRadius: '99px', fontSize: 11, fontWeight: 700, padding: '1px 7px', lineHeight: '18px' }}>
                   {cartCount}
                 </span>
               )}
@@ -402,13 +402,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
             {products.map(p => (
               <div key={p.id} style={{ position: 'relative' }}>
                 {addedId === p.id && (
-                  <div style={{
-                    position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-                    background: '#1a1a1a', color: '#fff', borderRadius: 5, padding: '5px 14px',
-                    fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700,
-                    letterSpacing: '1px', textTransform: 'uppercase', zIndex: 10, whiteSpace: 'nowrap',
-                    animation: 'fadeIn 0.15s ease',
-                  }}>
+                  <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', background: '#1a1a1a', color: '#fff', borderRadius: 5, padding: '5px 14px', fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', zIndex: 10, whiteSpace: 'nowrap' }}>
                     Added ✓
                   </div>
                 )}
@@ -419,19 +413,9 @@ export default function ShopClient({ products }: { products: Product[] }) {
         )}
       </ContainerStandard>
 
-      {/* Basket drawer */}
       {basketOpen && (
-        <Basket
-          items={cart}
-          onUpdate={updateItem}
-          onRemove={removeItem}
-          onClose={() => setBasketOpen(false)}
-        />
+        <Basket items={cart} onUpdate={updateItem} onRemove={removeItem} onClose={() => setBasketOpen(false)} />
       )}
-
-      <style>{`
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-4px) } to { opacity: 1; transform: translateX(-50%) translateY(0) } }
-      `}</style>
     </div>
   )
 }
