@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 
-type Reason = 'food' | 'mentoring' | '';
+type Reason = 'food' | 'mentoring' | 'misc' | '';
 
 export function ContactForm() {
-  const [form, setForm] = useState({ name: '', email: '', reason: '' as Reason, message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', reason: '' as Reason, message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   function set(k: string, v: string) { setForm(f => ({ ...f, [k]: v })); }
@@ -20,7 +20,12 @@ export function ContactForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          occasion: form.reason === 'food' ? 'Food enquiry' : form.reason === 'mentoring' ? 'Mentoring' : 'General',
+          phone: form.phone || undefined,
+          occasion:
+            form.reason === 'food' ? 'Food enquiry' :
+            form.reason === 'mentoring' ? 'Mentoring' :
+            form.reason === 'misc' ? 'Miscellaneous' :
+            'General',
           details: form.message,
         }),
       });
@@ -34,7 +39,7 @@ export function ContactForm() {
     return (
       <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-lg text-center">
         <p className="font-body text-xl font-semibold text-brand-dark mb-2">Message sent!</p>
-        <p className="font-body text-sm text-brand-muted">Thanks {form.name} - Valentin will get back to you within 24 hours.</p>
+        <p className="font-body text-sm text-brand-muted">Thanks {form.name} — Valentin will get back to you within 24 hours.</p>
       </div>
     );
   }
@@ -43,7 +48,7 @@ export function ContactForm() {
     <form onSubmit={submit} className="flex flex-col gap-5">
       {status === 'error' && (
         <div className="px-4 py-3 bg-red-50 border border-red-200 text-red-700 font-body text-[13px] rounded-md">
-          Something went wrong - please try again.
+          Something went wrong — please try again.
         </div>
       )}
 
@@ -71,11 +76,23 @@ export function ContactForm() {
       </div>
 
       <div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Phone number</label>
+        <input
+          type="tel"
+          value={form.phone}
+          onChange={e => set('phone', e.target.value)}
+          placeholder="Optional"
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50"
+        />
+      </div>
+
+      <div>
         <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">What is this about?</label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           {[
             { value: 'food', label: 'Food order' },
             { value: 'mentoring', label: 'Mentoring' },
+            { value: 'misc', label: 'Miscellaneous' },
           ].map(({ value, label }) => (
             <button
               key={value}

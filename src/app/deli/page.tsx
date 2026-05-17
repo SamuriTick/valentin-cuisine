@@ -4,11 +4,11 @@ import { prisma } from '@/lib/prisma'
 import ShopClient from '@/components/cuisine/ShopClient'
 
 export const metadata = {
-  title: "The Larder · Valentin's Cuisine",
+  title: "The Deli · Valentin's Cuisine",
   description: 'Homemade provisions from Valentin Thang — beef jerky, fermented goods, and more. Made fresh in Putney, London.',
 }
 
-export default async function LarderPage() {
+export default async function DeliPage() {
   const raw = await prisma.product.findMany({
     where: { available: true },
     orderBy: [{ displayOrder: 'asc' }, { createdAt: 'desc' }],
@@ -25,7 +25,7 @@ export default async function LarderPage() {
     <ShopClient
       products={products}
       titleMain="The"
-      titleEmphasis="Larder"
+      titleEmphasis="Deli"
       eyebrow="Homemade provisions · Putney, London"
     />
   )
