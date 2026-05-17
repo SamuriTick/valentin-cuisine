@@ -50,7 +50,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     return parts.join(', ')
   }
 
-  const needsAddress = form.delivery === 'Collection near you (£3)' || form.delivery === 'Delivery (£6)'
+  const needsAddress = form.delivery === 'Collection near you (£3)' || form.delivery === 'Delivery'
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -150,7 +150,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       <div>
         <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Collection or delivery</label>
         <div className="flex flex-wrap gap-2">
-          {['Collection SW London', 'Collection near you (£3)', 'Delivery (£6)'].map(opt => (
+          {['Collection SW London', 'Collection near you (£3)', 'Delivery'].map(opt => (
             <button key={opt} type="button" onClick={() => set('delivery', form.delivery === opt ? '' : opt)}
               className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${form.delivery === opt ? 'bg-brand-teal text-white border-brand-teal' : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'}`}>
               {opt}
