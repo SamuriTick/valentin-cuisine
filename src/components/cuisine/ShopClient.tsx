@@ -37,6 +37,12 @@ function formatPrice(n: number): string {
   return `£${n % 1 === 0 ? n.toFixed(0) : n.toFixed(2)}`
 }
 
+function withPound(s: string | null | undefined): string {
+  if (!s) return ''
+  const t = s.trim()
+  return t.startsWith('£') ? t : `£${t}`
+}
+
 interface DiscountInfo {
   originalPrice: string
   discountedPrice: string
@@ -78,7 +84,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
   const [qtyError, setQtyError] = useState(false)
 
   const variant = hasVariants ? product.weights[selectedVariant] : null
-  const activePrice = variant ? variant.price : product.price
+  const activePrice = withPound(variant ? variant.price : product.price) || null
   const activeDiscount = variant?.discount ?? product.discount
   const discountInfo = calcDiscount(activePrice, activeDiscount)
 
@@ -185,7 +191,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
             >
               {product.weights.map((w, i) => {
                 const d = calcDiscount(w.price, w.discount ?? product.discount)
-                const priceDisplay = d ? `${d.discountedPrice} (was ${d.originalPrice})` : w.price
+                const priceDisplay = d ? `${d.discountedPrice} (was ${d.originalPrice})` : withPound(w.price)
                 return (
                   <option key={i} value={i}>
                     {w.amount}{w.unit} ({priceDisplay})

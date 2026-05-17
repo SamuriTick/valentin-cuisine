@@ -391,7 +391,7 @@ export default async function KimchiPage() {
                 <div className="space-y-2">
                   {linkedWeights.map((w, i) => (
                     <div key={i} className="flex items-baseline gap-3">
-                      <p className="font-display text-[36px] font-normal text-brand-dark leading-none">{w.price}</p>
+                      <p className="font-display text-[36px] font-normal text-brand-dark leading-none">{w.price.startsWith('£') ? w.price : `£${w.price}`}</p>
                       <p className="font-body text-sm text-brand-muted">for {w.amount}{w.unit}</p>
                     </div>
                   ))}
@@ -399,7 +399,7 @@ export default async function KimchiPage() {
               ) : (
                 <div className="flex items-baseline gap-3">
                   <p className="font-display text-[48px] font-normal text-brand-dark leading-none">
-                    {linkedProduct?.price ?? heroPrice}
+                    {linkedProduct?.price ? (linkedProduct.price.startsWith('£') ? linkedProduct.price : `£${linkedProduct.price}`) : heroPrice}
                   </p>
                   <p className="font-body text-sm text-brand-muted">per 2kg jar</p>
                 </div>

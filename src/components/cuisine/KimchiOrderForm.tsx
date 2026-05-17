@@ -23,6 +23,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   function set(k: string, v: string) { setForm(f => ({ ...f, [k]: v })); }
+  function withPound(s: string): string { const t = s.trim(); return t.startsWith('£') ? t : `£${t}` }
 
   function getLinePrice(): number {
     if (hasVariants) {
@@ -40,7 +41,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     const jars = parseInt(form.jars, 10)
     if (hasVariants) {
       const v = variants[parseInt(form.variantIndex, 10)]
-      return `${jars}× ${v?.amount ?? ''}${v?.unit ?? ''} (${v?.price ?? ''})`
+      return `${jars}× ${v?.amount ?? ''}${v?.unit ?? ''} (${v?.price ? withPound(v.price) : ''})`
     }
     return `${jars} jar${jars > 1 ? 's' : ''} × £${pricePerJar} = £${getTotal()}`
   }
@@ -115,7 +116,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
           <select value={form.variantIndex} onChange={e => set('variantIndex', e.target.value)}
             className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
             {variants.map((v, i) => (
-              <option key={i} value={i}>{v.amount}{v.unit} ({v.price})</option>
+              <option key={i} value={i}>{v.amount}{v.unit} ({withPound(v.price)})</option>
             ))}
           </select>
         </div>
