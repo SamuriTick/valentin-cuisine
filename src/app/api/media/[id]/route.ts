@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { checkAuth } from '@/lib/auth-middleware'
-import { deleteFromR2, isR2Configured } from '@/lib/r2-storage'
+import { deleteFromR2, getMediaDisplayUrl, isR2Configured } from '@/lib/r2-storage'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -16,7 +16,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'Media item not found' }, { status: 404 })
     }
 
-    return NextResponse.json(mediaItem)
+    return NextResponse.json({
+      ...mediaItem,
+      filePath: getMediaDisplayUrl(mediaItem.filePath || mediaItem.filename),
+    })
   } catch (error) {
     console.error('Error fetching media item:', error)
     return NextResponse.json({ error: 'Failed to fetch media item' }, { status: 500 })
@@ -44,7 +47,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       data: { altText: altText ?? null, caption: caption ?? null },
     })
 
-    return NextResponse.json(mediaItem)
+    return NextResponse.json({
+      ...mediaItem,
+      filePath: getMediaDisplayUrl(mediaItem.filePath || mediaItem.filename),
+    })
   } catch (error) {
     console.error('Error updating media item:', error)
     return NextResponse.json({ error: 'Failed to update media item' }, { status: 500 })

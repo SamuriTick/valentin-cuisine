@@ -12,6 +12,7 @@ import { t as defaults } from '@/components/cuisine/translations'
 import { KimchiEditSections, type KimchiContent } from '@/components/cuisine/KimchiEditSections'
 import { ContactEditSections, type ContactContent } from '@/components/cuisine/ContactEditSections'
 import type { CropPosition } from '@/components/admin/visual/EditableImage'
+import { getMediaDisplayUrl } from '@/lib/media-url'
 
 const KIMCHI_DEFAULTS: KimchiContent = {
   heroImage: '',
@@ -210,11 +211,11 @@ export default function VisualContentEditor() {
     galleryTitle:   content['gallery.title']   ?? defaults.galleryTitle,
   }
 
-  const heroImage = content['hero.image'] ?? '/valentin-hero.jpg'
+  const heroImage = getMediaDisplayUrl(content['hero.image'] ?? '/valentin-hero.jpg')
   const heroImageCrop = parseCrop(content['hero.image.crop'])
 
   const kimchiContent: KimchiContent = {
-    heroImage:   content['kimchi.hero.image']   ?? KIMCHI_DEFAULTS.heroImage,
+    heroImage:   getMediaDisplayUrl(content['kimchi.hero.image'] ?? KIMCHI_DEFAULTS.heroImage),
     heroImageCrop: (() => {
       return parseCrop(content['kimchi.hero.image.crop'])
     })(),
@@ -341,7 +342,7 @@ export default function VisualContentEditor() {
             <AboutTab t={t as any} />
             <SpecialtiesTab t={t as any} />
             <GalleryTab t={t as any} photos={galleryPhotos.map((p, i) => ({
-              url: content[`gallery.photo.${i}`] ?? p.url,
+              url: getMediaDisplayUrl(content[`gallery.photo.${i}`] ?? p.url),
               alt: p.alt,
               crop: parseCrop(content[`gallery.photo.${i}.crop`]),
             }))} />

@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { prisma } from '@/lib/prisma'
+import { getMediaDisplayUrl } from '@/lib/media-url'
 import ShopClient from '@/components/cuisine/ShopClient'
 
 export const metadata = {
@@ -19,6 +20,7 @@ export default async function ShopPage() {
     weights: p.weights ? (() => { try { return JSON.parse(p.weights!) } catch { return [] } })() : [],
     discount: p.discount ? (() => { try { return JSON.parse(p.discount!) } catch { return null } })() : null,
     pageUrl: p.pageUrl ?? null,
+    imageUrl: p.imageUrl ? getMediaDisplayUrl(p.imageUrl) : null,
   }))
 
   return <ShopClient products={products} />

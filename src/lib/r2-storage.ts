@@ -1,6 +1,7 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { getMediaDisplayUrl } from '@/lib/media-url'
 
 const BUCKET_NAME = process.env.R2_BUCKET_NAME || ''
 const PUBLIC_URL  = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '')
@@ -43,6 +44,8 @@ export function isR2Configured(): boolean {
   )
 }
 
+export { getMediaDisplayUrl }
+
 export async function uploadToR2(
   key: string,
   buffer: Buffer,
@@ -62,7 +65,7 @@ export async function uploadToR2(
       const msg = err instanceof Error ? err.message : String(err)
       throw new Error(`R2 native binding put() failed: ${msg}`)
     }
-    const url = PUBLIC_URL ? `${PUBLIC_URL}/${key}` : key
+    const url = PUBLIC_URL ? `${PUBLIC_URL}/${key}` : getMediaDisplayUrl(key)
     return { key, url }
   }
 
@@ -102,6 +105,35 @@ export async function deleteFromR2(key: string): Promise<void> {
 
   const s3 = getS3Client()
   await s3.send(new DeleteObjectCommand({ Bucket: BUCKET_NAME, Key: key }))
+}
+
+export async function getObjectFromR2(key: string): Promise<{
+  body: BodyInit
+  contentType?: string
+  cacheControl?: string
+} | null> {
+  const r2 = getR2Binding()
+
+  if (r2) {
+    const object = await r2.get(key)
+    if (!object) return null
+
+    return {
+      body: object.body,
+      contentType: object.httpMetadata?.contentType,
+      cacheControl: object.httpMetadata?.cacheControl,
+    }
+  }
+
+  const s3 = getS3Client()
+  const object = await s3.send(new GetObjectCommand({ Bucket: BUCKET_NAME, Key: key }))
+  if (!object.Body) return null
+
+  return {
+    body: object.Body as BodyInit,
+    contentType: object.ContentType,
+    cacheControl: object.CacheControl,
+  }
 }
 
 export async function getSignedUrlFromR2(key: string, expiresIn = 3600): Promise<string> {

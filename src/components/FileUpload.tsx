@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react"
 import { validateImageFile, formatFileSize, extractImageMetadata } from "@/lib/image-utils"
+import { getMediaDisplayUrl } from "@/lib/media-url"
 
 interface MediaItem {
   id: number
@@ -170,7 +171,7 @@ export default function FileUpload({
       {(currentImage || previewUrl) && (
         <div className="relative inline-block">
           <img
-            src={previewUrl || currentImage || ''}
+            src={previewUrl || getMediaDisplayUrl(currentImage || '')}
             alt={previewUrl ? "Preview" : "Current"}
             className="h-32 w-32 object-cover rounded-lg border-2 border-gray-300 shadow-sm"
           />

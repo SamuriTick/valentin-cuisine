@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { getMediaDisplayUrl } from '@/lib/media-url'
 
 export interface CropPosition { x: number; y: number; zoom: number }
 const DEFAULT_CROP: CropPosition = { x: 50, y: 50, zoom: 1 }
@@ -93,11 +94,11 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [saving, setSaving] = useState(false)
-  const [localSrc, setLocalSrc] = useState(src)
+  const [localSrc, setLocalSrc] = useState(getMediaDisplayUrl(src))
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { setLocalCrop(crop) }, [crop])
-  useEffect(() => { setLocalSrc(src) }, [src])
+  useEffect(() => { setLocalSrc(getMediaDisplayUrl(src)) }, [src])
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !containerRef.current) return
@@ -231,7 +232,7 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
           onSelect={async url => {
             setShowPicker(false)
             setSaving(true)
-            setLocalSrc(url)
+            setLocalSrc(getMediaDisplayUrl(url))
             setLocalCrop(DEFAULT_CROP)
             await onSave(url)
             await onCropSave?.(DEFAULT_CROP)

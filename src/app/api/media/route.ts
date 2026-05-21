@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { checkAuth } from '@/lib/auth-middleware'
 import { uploadRateLimiter, getClientIp } from '@/lib/rate-limiter'
-import { uploadToR2, isR2Configured, generateR2Key, deleteFromR2 } from '@/lib/r2-storage'
+import { uploadToR2, isR2Configured, generateR2Key, deleteFromR2, getMediaDisplayUrl } from '@/lib/r2-storage'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,7 +38,10 @@ export async function GET(request: NextRequest) {
       take: limit ? parseInt(limit) : undefined,
     })
 
-    return NextResponse.json(mediaItems)
+    return NextResponse.json(mediaItems.map(item => ({
+      ...item,
+      filePath: getMediaDisplayUrl(item.filePath || item.filename),
+    })))
   } catch (error) {
     console.error('Error fetching media items:', error)
     return NextResponse.json({ error: 'Failed to fetch media items' }, { status: 500 })

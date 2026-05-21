@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { s, FormRow, CheckRow } from "./AdminUI"
 import Link from "next/link"
+import { getMediaDisplayUrl } from "@/lib/media-url"
 
 const CATEGORIES = ["cake", "pastry", "bread", "fermented", "provisions", "seasonal"]
 const UNITS = ["g", "kg"]
@@ -301,7 +302,7 @@ export default function ProductForm({ product }: { product: any }) {
             </label>
           </div>
           {form.imageUrl && (
-            <img src={form.imageUrl} alt="preview" style={{ marginTop: "8px", maxHeight: "120px", borderRadius: "6px", objectFit: "cover" }} />
+            <img src={getMediaDisplayUrl(form.imageUrl)} alt="preview" style={{ marginTop: "8px", maxHeight: "120px", borderRadius: "6px", objectFit: "cover" }} />
           )}
         </FormRow>
 

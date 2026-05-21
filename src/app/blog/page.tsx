@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
+import { getMediaDisplayUrl } from '@/lib/media-url';
 
 const BLOG_CATEGORIES = ['recipe', 'news', 'update'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -86,7 +87,7 @@ export default async function BlogPage({
                 <article className="bg-white border border-brand-border rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
                   {post.imageUrl && (
                     <div style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
-                      <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      <img src={getMediaDisplayUrl(post.imageUrl)} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                     </div>
                   )}
                   <div className="p-6 flex flex-col flex-1">

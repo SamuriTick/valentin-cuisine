@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getContentMap, mergeContent } from '@/lib/siteContent';
 import { prisma } from '@/lib/prisma';
+import { getMediaDisplayUrl } from '@/lib/media-url';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,9 +31,9 @@ export default async function Home() {
     }),
   ])
   const t = mergeContent(map)
-  const heroImage = map['hero.image'] ?? '/valentin-hero.jpg'
+  const heroImage = getMediaDisplayUrl(map['hero.image'] ?? '/valentin-hero.jpg')
   const galleryPhotos = galleryItems.map((item, i) => ({
-    url: map[`gallery.photo.${i}`] ?? item.filePath,
+    url: getMediaDisplayUrl(map[`gallery.photo.${i}`] ?? item.filePath),
     alt: item.altText ?? '',
   }))
 

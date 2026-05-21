@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
+import { getMediaDisplayUrl } from '@/lib/media-url';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   })
 
   if (!post) return { title: 'Post Not Found' }
+  const imageUrl = post.imageUrl ? getMediaDisplayUrl(post.imageUrl) : null
 
   return {
     title: post.title,
@@ -22,14 +24,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.title,
       description: post.excerpt ?? undefined,
       type: 'article',
-      ...(post.imageUrl && { images: [{ url: post.imageUrl, alt: post.title }] }),
+      ...(imageUrl && { images: [{ url: imageUrl, alt: post.title }] }),
       ...(post.publishedAt && { publishedTime: post.publishedAt.toISOString() }),
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt ?? undefined,
-      ...(post.imageUrl && { images: [post.imageUrl] }),
+      ...(imageUrl && { images: [imageUrl] }),
     },
   }
 }
@@ -41,6 +43,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   });
 
   if (!post) notFound();
+  const imageUrl = post.imageUrl ? getMediaDisplayUrl(post.imageUrl) : null
 
   const CATEGORY_LABELS: Record<string, string> = { recipe: 'Recipe', news: 'News', update: 'Update' };
 
@@ -53,7 +56,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     author: { '@type': 'Person', name: 'Valentin Thang' },
     publisher: { '@type': 'Person', name: 'Valentin Thang' },
     url: `${BASE_URL}/blog/${post.slug}`,
-    ...(post.imageUrl && { image: post.imageUrl }),
+    ...(imageUrl && { image: imageUrl }),
     ...(post.publishedAt && { datePublished: post.publishedAt.toISOString() }),
     ...(post.updatedAt && { dateModified: post.updatedAt.toISOString() }),
   }
@@ -63,14 +66,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
       {/* Hero image */}
-      {post.imageUrl && (
+      {imageUrl && (
         <div className="pt-[72px]" style={{ height: 'clamp(220px, 40vw, 420px)', overflow: 'hidden' }}>
-          <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img src={imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         </div>
       )}
 
       {/* Article */}
-      <div className={post.imageUrl ? '' : 'pt-[72px]'}>
+      <div className={imageUrl ? '' : 'pt-[72px]'}>
         <ContainerStandard className="py-12 md:py-16 max-w-[720px]">
 
           {/* Breadcrumb */}
