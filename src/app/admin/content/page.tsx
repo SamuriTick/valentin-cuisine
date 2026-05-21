@@ -11,6 +11,7 @@ import { OrderTab } from '@/components/cuisine/OrderTab'
 import { t as defaults } from '@/components/cuisine/translations'
 import { KimchiEditSections, type KimchiContent } from '@/components/cuisine/KimchiEditSections'
 import { ContactEditSections, type ContactContent } from '@/components/cuisine/ContactEditSections'
+import type { CropPosition } from '@/components/admin/visual/EditableImage'
 
 const KIMCHI_DEFAULTS: KimchiContent = {
   heroImage: '',
@@ -96,6 +97,13 @@ const PAGES = [
   { id: 'kimchi',  label: 'Kimchi' },
   { id: 'contact', label: 'Contact' },
 ]
+
+function parseCrop(value?: string): CropPosition | undefined {
+  if (!value) return undefined
+  const [x, y, zoom] = value.split(' ').map(Number)
+  if (![x, y, zoom].every(Number.isFinite)) return undefined
+  return { x, y, zoom }
+}
 
 export default function VisualContentEditor() {
   const [page, setPage] = useState<'home' | 'kimchi' | 'contact'>('home')
@@ -203,14 +211,12 @@ export default function VisualContentEditor() {
   }
 
   const heroImage = content['hero.image'] ?? '/valentin-hero.jpg'
+  const heroImageCrop = parseCrop(content['hero.image.crop'])
 
   const kimchiContent: KimchiContent = {
     heroImage:   content['kimchi.hero.image']   ?? KIMCHI_DEFAULTS.heroImage,
     heroImageCrop: (() => {
-      const raw = content['kimchi.hero.image.crop']
-      if (!raw) return undefined
-      const parts = raw.split(' ').map(Number)
-      return { x: parts[0] ?? 50, y: parts[1] ?? 50, zoom: parts[2] ?? 1 }
+      return parseCrop(content['kimchi.hero.image.crop'])
     })(),
     heroEyebrow: content['kimchi.hero.eyebrow'] ?? KIMCHI_DEFAULTS.heroEyebrow,
     heroTitle1:  content['kimchi.hero.title1']  ?? KIMCHI_DEFAULTS.heroTitle1,
@@ -331,12 +337,13 @@ export default function VisualContentEditor() {
       <EditProvider value={{ editMode, onFieldUpdate: saveField, onImageUpdate: saveField }}>
         {page === 'home' && (
           <>
-            <HeroSection t={t as any} heroImage={heroImage} noNavOffset />
+            <HeroSection t={t as any} heroImage={heroImage} heroImageCrop={heroImageCrop} noNavOffset />
             <AboutTab t={t as any} />
             <SpecialtiesTab t={t as any} />
             <GalleryTab t={t as any} photos={galleryPhotos.map((p, i) => ({
               url: content[`gallery.photo.${i}`] ?? p.url,
               alt: p.alt,
+              crop: parseCrop(content[`gallery.photo.${i}.crop`]),
             }))} />
             <MentoringSection t={t as any} />
             <OrderTab t={t as any} />

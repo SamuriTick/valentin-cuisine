@@ -93,9 +93,11 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [saving, setSaving] = useState(false)
+  const [localSrc, setLocalSrc] = useState(src)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { setLocalCrop(crop) }, [crop])
+  useEffect(() => { setLocalSrc(src) }, [src])
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !containerRef.current) return
@@ -132,9 +134,11 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
   }
 
   if (!editMode) {
+    if (!localSrc) return null
+
     return (
       <img
-        src={src} alt={alt} className={className}
+        src={localSrc} alt={alt} className={className}
         style={{ objectPosition: `${crop.x}% ${crop.y}%`, transform: crop.zoom > 1 ? `scale(${crop.zoom})` : undefined, transformOrigin: `${crop.x}% ${crop.y}%` }}
       />
     )
@@ -146,7 +150,27 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
         ref={containerRef}
         style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
       >
-        <img src={src} alt={alt} className={className} style={{ ...imgStyle, position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} draggable={false} />
+        {localSrc ? (
+          <img src={localSrc} alt={alt} className={className} style={{ ...imgStyle, position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} draggable={false} />
+        ) : (
+          <button
+            onClick={() => setShowPicker(true)}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              border: '2px dashed rgba(176,48,96,0.45)',
+              background: '#f7f2ed',
+              color: '#b03060',
+              cursor: 'pointer',
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Add photo
+          </button>
+        )}
 
         {/* Crop mode overlay */}
         {cropping && (
@@ -192,11 +216,11 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
         {/* Edit buttons (when not in crop mode) */}
         {!cropping && (
           <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 20, display: 'flex', gap: 6 }}>
-            <button onClick={() => setCropping(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
+            {localSrc && <button onClick={() => setCropping(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
               Reposition
-            </button>
+            </button>}
             <button onClick={() => setShowPicker(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(176,48,96,0.9)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
-              Change photo
+              {localSrc ? 'Change photo' : 'Add photo'}
             </button>
           </div>
         )}
@@ -204,7 +228,15 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
 
       {showPicker && (
         <MediaPicker
-          onSelect={async url => { setShowPicker(false); setSaving(true); await onSave(url); setSaving(false) }}
+          onSelect={async url => {
+            setShowPicker(false)
+            setSaving(true)
+            setLocalSrc(url)
+            setLocalCrop(DEFAULT_CROP)
+            await onSave(url)
+            await onCropSave?.(DEFAULT_CROP)
+            setSaving(false)
+          }}
           onClose={() => setShowPicker(false)}
         />
       )}

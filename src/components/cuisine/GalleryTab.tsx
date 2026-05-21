@@ -5,8 +5,9 @@ import { Translations } from './translations';
 import { useEditContext } from '@/components/admin/visual/EditContext';
 import { EditableText } from '@/components/admin/visual/EditableText';
 import { EditableImage } from '@/components/admin/visual/EditableImage';
+import type { CropPosition } from '@/components/admin/visual/EditableImage';
 
-interface Photo { url: string; alt: string }
+interface Photo { url: string; alt: string; crop?: CropPosition }
 interface Props { t?: Translations; photos?: Photo[] }
 
 export function GalleryTab({ t: tProp, photos = [] }: Props) {
@@ -43,6 +44,7 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
                   alt={photo.alt}
                   className="w-full h-full object-cover"
                   editMode={editMode}
+                  crop={photo.crop}
                   onSave={async url => { await editCtx?.onFieldUpdate(`gallery.photo.${i}`, url) }}
                   onCropSave={async crop => { await editCtx?.onFieldUpdate(`gallery.photo.${i}.crop`, `${crop.x} ${crop.y} ${crop.zoom}`) }}
                 />

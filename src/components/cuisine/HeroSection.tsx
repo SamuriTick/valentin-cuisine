@@ -6,14 +6,16 @@ import { useEditContext } from '@/components/admin/visual/EditContext';
 import { EditableText } from '@/components/admin/visual/EditableText';
 import { EditableImage } from '@/components/admin/visual/EditableImage';
 import { EditableTitleBlock } from '@/components/admin/visual/EditableTitleBlock';
+import type { CropPosition } from '@/components/admin/visual/EditableImage';
 
 interface Props {
   t: Translations
   heroImage?: string
+  heroImageCrop?: CropPosition
   noNavOffset?: boolean
 }
 
-export function HeroSection({ t, heroImage = '/valentin-hero.jpg', noNavOffset = false }: Props) {
+export function HeroSection({ t, heroImage = '/valentin-hero.jpg', heroImageCrop, noNavOffset = false }: Props) {
   const editCtx = useEditContext()
   const editMode = editCtx?.editMode ?? false
 
@@ -36,6 +38,7 @@ export function HeroSection({ t, heroImage = '/valentin-hero.jpg', noNavOffset =
                 alt="Valentin in the kitchen"
                 className="absolute inset-0 w-full h-full object-cover object-center"
                 editMode={editMode}
+                crop={heroImageCrop}
                 onSave={async url => await editCtx?.onImageUpdate('hero.image', url)}
                 onCropSave={async crop => await editCtx?.onFieldUpdate('hero.image.crop', `${crop.x} ${crop.y} ${crop.zoom}`)}
               />
@@ -44,6 +47,11 @@ export function HeroSection({ t, heroImage = '/valentin-hero.jpg', noNavOffset =
                 src={heroImage}
                 alt="Valentin in the kitchen"
                 className="absolute inset-0 w-full h-full object-cover object-center"
+                style={heroImageCrop ? {
+                  objectPosition: `${heroImageCrop.x}% ${heroImageCrop.y}%`,
+                  transform: heroImageCrop.zoom > 1 ? `scale(${heroImageCrop.zoom})` : undefined,
+                  transformOrigin: `${heroImageCrop.x}% ${heroImageCrop.y}%`,
+                } : undefined}
               />
             )}
           </div>
