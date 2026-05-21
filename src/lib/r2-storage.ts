@@ -7,8 +7,7 @@ const PUBLIC_URL  = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '')
 
 // ─── Cloudflare R2 binding (Workers runtime) ──────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getR2Binding(): any | null {
+function getR2Binding(): any | null { // eslint-disable-line
   try {
     const ctx = getCloudflareContext() as { env: CloudflareEnv }
     return ctx?.env?.R2 ?? null
@@ -54,23 +53,37 @@ export async function uploadToR2(
 
   if (r2) {
     // Native R2 binding — works in Cloudflare Workers without any credentials
-    await r2.put(key, buffer, {
-      httpMetadata: { contentType },
-      customMetadata: metadata,
-    })
+    try {
+      await r2.put(key, buffer, {
+        httpMetadata: { contentType },
+        customMetadata: metadata,
+      })
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      throw new Error(`R2 native binding put() failed: ${msg}`)
+    }
     const url = PUBLIC_URL ? `${PUBLIC_URL}/${key}` : key
     return { key, url }
   }
 
+  if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {
+    throw new Error('R2 native binding not available and S3 credentials (R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY) are not set')
+  }
+
   // Local dev: use AWS-SDK S3-compatible client
   const s3 = getS3Client()
-  await s3.send(new PutObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: key,
-    Body: buffer,
-    ContentType: contentType,
-    Metadata: metadata,
-  }))
+  try {
+    await s3.send(new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+      Metadata: metadata,
+    }))
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    throw new Error(`S3/R2 SDK upload failed (account=${process.env.R2_ACCOUNT_ID}, bucket=${BUCKET_NAME}): ${msg}`)
+  }
 
   const url = PUBLIC_URL
     ? `${PUBLIC_URL}/${key}`

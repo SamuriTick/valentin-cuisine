@@ -87,7 +87,7 @@ export default function FileUpload({
         let errorMessage = 'Upload failed'
         try {
           const error = await response.json()
-          errorMessage = error.error || errorMessage
+          errorMessage = error.detail ? `${error.error}: ${error.detail}` : (error.error || errorMessage)
           console.error('[FileUpload] API error response:', error)
         } catch (e) {
           // Response is not JSON (likely HTML error page)

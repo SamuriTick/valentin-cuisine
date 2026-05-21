@@ -35,7 +35,10 @@ export default function MediaPage() {
       const tags = file.type === "application/pdf" ? "cv" : "gallery"
       form.append("tags", tags)
       const res = await fetch("/api/media", { method: "POST", body: form })
-      if (!res.ok) throw new Error(await res.text())
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
+        throw new Error(body.detail ? `${body.error}: ${body.detail}` : body.error)
+      }
       await load()
     } catch (e: any) {
       setError(e.message)

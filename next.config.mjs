@@ -1,3 +1,7 @@
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare"
+
+initOpenNextCloudflareForDev()
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -21,6 +25,6 @@ const nextConfig = {
       bodySizeLimit: '10mb',
     },
   },
-};
+}
 
-module.exports = nextConfig;
+export default nextConfig
