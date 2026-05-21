@@ -101,8 +101,15 @@ const PAGES = [
 
 function parseCrop(value?: string): CropPosition | undefined {
   if (!value) return undefined
-  const [x, y, zoom] = value.split(' ').map(Number)
-  if (![x, y, zoom].every(Number.isFinite)) return undefined
+  const parts = value.split(' ').map(Number)
+  const x = parts[0]
+  const y = parts[1]
+  const zoom = parts[2]
+  if (
+    typeof x !== 'number' || !Number.isFinite(x) ||
+    typeof y !== 'number' || !Number.isFinite(y) ||
+    typeof zoom !== 'number' || !Number.isFinite(zoom)
+  ) return undefined
   return { x, y, zoom }
 }
 
