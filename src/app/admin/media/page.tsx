@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { s } from "@/components/admin/AdminUI"
-import Image from "next/image"
 
 type Media = {
   id: number; filename: string; originalName: string; filePath: string;
@@ -91,7 +90,11 @@ export default function MediaPage() {
             <div key={item.id} style={{ ...s.card, overflow: "hidden" } as any}>
               <div style={{ height: "140px", background: "#F0EBE0", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                 {item.fileType === "image" ? (
-                  <Image src={item.filePath} alt={item.altText || item.originalName} fill style={{ objectFit: "cover" }} unoptimized />
+                  <img
+                    src={item.filePath}
+                    alt={item.altText || item.originalName}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
                 ) : (
                   <div style={{ fontSize: "36px" }}>📄</div>
                 )}
