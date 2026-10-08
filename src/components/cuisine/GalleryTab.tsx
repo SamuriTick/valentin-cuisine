@@ -4,15 +4,37 @@ import { ContainerStandard } from './ContainerStandard';
 import { Translations } from './translations';
 import { useEditContext } from '@/components/admin/visual/EditContext';
 import { EditableText } from '@/components/admin/visual/EditableText';
-import { EditableImage } from '@/components/admin/visual/EditableImage';
-import type { CropPosition } from '@/components/admin/visual/EditableImage';
+import { EditableImage, MediaPicker } from '@/components/admin/visual/EditableImage';
+import { getMediaDisplayUrl } from '@/lib/media-url';
+import { GALLERY_KEY, GalleryPhoto } from '@/lib/gallery';
+import { useState } from 'react';
 
-interface Photo { url: string; alt: string; crop?: CropPosition }
-interface Props { t?: Translations; photos?: Photo[] }
+interface Props { t?: Translations; photos?: GalleryPhoto[] }
+
+const ctrlBtn: React.CSSProperties = {
+  padding: '5px 10px', fontSize: 12, fontWeight: 600, background: 'rgba(0,0,0,0.7)',
+  color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer',
+}
 
 export function GalleryTab({ t: tProp, photos = [] }: Props) {
   const editCtx = useEditContext()
   const editMode = editCtx?.editMode ?? false
+  const list = photos
+  const [showPicker, setShowPicker] = useState(false)
+
+  const saveList = async (next: GalleryPhoto[]) => {
+    await editCtx?.onFieldUpdate(GALLERY_KEY, JSON.stringify(next))
+  }
+  const updateAt = (i: number, patch: Partial<GalleryPhoto>) =>
+    saveList(list.map((p, j) => (j === i ? { ...p, ...patch } : p)))
+  const removeAt = (i: number) => saveList(list.filter((_, j) => j !== i))
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir
+    if (j < 0 || j >= list.length) return
+    const next = [...list]
+    next.splice(j, 0, ...next.splice(i, 1))
+    saveList(next)
+  }
 
   const save = (key: string) => async (value: string) => {
     await editCtx?.onFieldUpdate(key, value)
@@ -35,21 +57,36 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
         </h2>
         <div className="w-12 h-px bg-white/15 mx-auto mt-5 mb-10" />
 
-        {photos.length > 0 ? (
+        {list.length > 0 || editMode ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {photos.map((photo, i) => (
-              <div key={i} className="rounded-lg overflow-hidden aspect-[4/3] relative bg-brand-card-dark border border-brand-card-border">
+            {list.map((photo, i) => (
+              <div key={`${photo.url}-${i}`} className="rounded-lg overflow-hidden aspect-[4/3] relative bg-brand-card-dark border border-brand-card-border">
                 <EditableImage
-                  src={photo.url}
-                  alt={photo.alt}
+                  src={getMediaDisplayUrl(photo.url)}
+                  alt={photo.alt ?? ''}
                   className="w-full h-full object-cover"
                   editMode={editMode}
                   crop={photo.crop}
-                  onSave={async url => { await editCtx?.onFieldUpdate(`gallery.photo.${i}`, url) }}
-                  onCropSave={async crop => { await editCtx?.onFieldUpdate(`gallery.photo.${i}.crop`, `${crop.x} ${crop.y} ${crop.zoom}`) }}
+                  onSave={url => updateAt(i, { url })}
+                  onCropSave={crop => updateAt(i, { crop })}
+                  onDelete={() => removeAt(i)}
                 />
+                {editMode && (
+                  <div style={{ position: 'absolute', bottom: 10, right: 10, zIndex: 20, display: 'flex', gap: 6 }}>
+                    <button onClick={() => move(i, -1)} disabled={i === 0} style={{ ...ctrlBtn, opacity: i === 0 ? 0.4 : 1 }} title="Move earlier">←</button>
+                    <button onClick={() => move(i, 1)} disabled={i === list.length - 1} style={{ ...ctrlBtn, opacity: i === list.length - 1 ? 0.4 : 1 }} title="Move later">→</button>
+                  </div>
+                )}
               </div>
             ))}
+            {editMode && (
+              <button
+                onClick={() => setShowPicker(true)}
+                className="rounded-lg aspect-[4/3] border-2 border-dashed border-white/30 hover:border-brand-teal text-white/70 hover:text-brand-teal font-body text-sm flex items-center justify-center transition-colors"
+              >
+                + Add photo
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -67,6 +104,13 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
         )}
 
       </ContainerStandard>
+
+      {showPicker && (
+        <MediaPicker
+          onSelect={url => { setShowPicker(false); saveList([...list, { url }]) }}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
     </div>
   );
 }

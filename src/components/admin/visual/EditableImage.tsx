@@ -85,9 +85,10 @@ interface Props {
   crop?: CropPosition
   onSave: (url: string) => Promise<void>
   onCropSave?: (crop: CropPosition) => Promise<void>
+  onDelete?: () => Promise<void>
 }
 
-export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CROP, onSave, onCropSave }: Props) {
+export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CROP, onSave, onCropSave, onDelete }: Props) {
   const [showPicker, setShowPicker] = useState(false)
   const [cropping, setCropping] = useState(false)
   const [localCrop, setLocalCrop] = useState<CropPosition>(crop)
@@ -223,6 +224,14 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
             <button onClick={() => setShowPicker(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(176,48,96,0.9)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
               {localSrc ? 'Change photo' : 'Add photo'}
             </button>
+            {onDelete && (
+              <button
+                onClick={async () => { if (!confirm('Delete this photo?')) return; setSaving(true); await onDelete(); setSaving(false) }}
+                style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(200,30,30,0.9)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}
+              >
+                Delete
+              </button>
+            )}
           </div>
         )}
       </div>

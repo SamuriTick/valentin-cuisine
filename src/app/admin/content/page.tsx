@@ -6,6 +6,7 @@ import { HeroSection } from '@/components/cuisine/HeroSection'
 import { AboutTab } from '@/components/cuisine/AboutTab'
 import { SpecialtiesTab } from '@/components/cuisine/SpecialtiesTab'
 import { GalleryTab } from '@/components/cuisine/GalleryTab'
+import { resolveGalleryPhotos } from '@/lib/gallery'
 import { MentoringSection } from '@/components/cuisine/MentoringSection'
 import { OrderTab } from '@/components/cuisine/OrderTab'
 import { t as defaults } from '@/components/cuisine/translations'
@@ -23,6 +24,8 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   heroPrice: '£15',
   heroPriceSub: 'for 2kg · glass jar · no microplastics',
   quote: "I haven't been making kimchi for a while because I'm a kid and I'm still in school. But now I have time, so buy my kimchi. It's probably going to sell out in a few weeks.",
+  shortUrl: '',
+  shortTitle: 'Watch me make it',
   tasteEyebrow: 'What it tastes like',
   tasteTitle1: 'Four things happening',
   tasteTitle2: 'at once.',
@@ -118,7 +121,7 @@ export default function VisualContentEditor() {
   const [editMode, setEditMode] = useState(false)
   const [content, setContent] = useState<Record<string, string>>({})
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle')
-  const [galleryPhotos, setGalleryPhotos] = useState<{ url: string; alt: string }[]>([])
+  const [galleryMedia, setGalleryMedia] = useState<{ filePath: string; altText?: string | null }[]>([])
 
   useEffect(() => {
     fetch('/api/admin/content')
@@ -130,8 +133,9 @@ export default function VisualContentEditor() {
       })
     fetch('/api/media?fileType=image')
       .then(r => r.ok ? r.json() : [])
-      .then((items: { filePath?: string; url?: string; altText?: string; filename?: string }[]) => {
-        setGalleryPhotos(items.map(i => ({ url: i.filePath ?? i.url ?? i.filename ?? '', alt: i.altText ?? '' })))
+      .then((items: { filePath: string; altText?: string | null }[]) => {
+        // API returns newest first; the public gallery fallback uses oldest first
+        setGalleryMedia([...items].reverse())
       })
   }, [])
 
@@ -233,6 +237,8 @@ export default function VisualContentEditor() {
     heroPrice:   content['kimchi.hero.price']   ?? KIMCHI_DEFAULTS.heroPrice,
     heroPriceSub: content['kimchi.hero.price_sub'] ?? KIMCHI_DEFAULTS.heroPriceSub,
     quote:       content['kimchi.quote']        ?? KIMCHI_DEFAULTS.quote,
+    shortUrl:    content['kimchi.short.url']    ?? KIMCHI_DEFAULTS.shortUrl,
+    shortTitle:  content['kimchi.short.title']  ?? KIMCHI_DEFAULTS.shortTitle,
     tasteEyebrow: content['kimchi.taste.eyebrow'] ?? KIMCHI_DEFAULTS.tasteEyebrow,
     tasteTitle1: content['kimchi.taste.title1'] ?? KIMCHI_DEFAULTS.tasteTitle1,
     tasteTitle2: content['kimchi.taste.title2'] ?? KIMCHI_DEFAULTS.tasteTitle2,
@@ -348,11 +354,7 @@ export default function VisualContentEditor() {
             <HeroSection t={t as any} heroImage={heroImage} heroImageCrop={heroImageCrop} noNavOffset />
             <AboutTab t={t as any} />
             <SpecialtiesTab t={t as any} />
-            <GalleryTab t={t as any} photos={galleryPhotos.map((p, i) => ({
-              url: getMediaDisplayUrl(content[`gallery.photo.${i}`] ?? p.url),
-              alt: p.alt,
-              crop: parseCrop(content[`gallery.photo.${i}.crop`]),
-            }))} />
+            <GalleryTab t={t as any} photos={resolveGalleryPhotos(content, galleryMedia)} />
             <MentoringSection t={t as any} />
             <OrderTab t={t as any} />
           </>

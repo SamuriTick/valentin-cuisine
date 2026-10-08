@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { ContainerStandard } from '@/components/cuisine/ContainerStandard';
 import { KimchiOrderForm } from '@/components/cuisine/KimchiOrderForm';
 import { KimchiFAQs } from '@/components/cuisine/KimchiFAQs';
+import { KimchiShort } from '@/components/cuisine/KimchiShort';
+import { youtubeId } from '@/lib/youtube';
 import { getContentMap } from '@/lib/siteContent';
 import { prisma } from '@/lib/prisma';
 
@@ -86,6 +88,10 @@ export default async function KimchiPage() {
   // Quote
   const valentinQuote = map['kimchi.quote'] ?? "I haven't been making kimchi for a while because I'm a kid and I'm still in school. But now I have time, so buy my kimchi. It's probably going to sell out in a few weeks."
 
+  // YouTube Short
+  const shortUrl   = map['kimchi.short.url']   ?? ''
+  const shortTitle = map['kimchi.short.title'] ?? 'Watch me make it'
+
   // Taste profile
   const tasteEyebrow = map['kimchi.taste.eyebrow'] ?? 'What it tastes like'
   const tasteTitle1  = map['kimchi.taste.title1']  ?? 'Four things happening'
@@ -163,7 +169,9 @@ export default async function KimchiPage() {
           <ContainerStandard className="py-10 md:py-hero grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-col-gap items-center w-full">
 
             <div className="relative overflow-hidden rounded-xl h-[56vw] min-h-[240px] max-h-[360px] md:order-last md:h-auto md:min-h-[600px] md:max-h-none bg-brand-light border border-brand-border flex items-center justify-center">
-              {heroImage ? (
+              {youtubeId(shortUrl) ? (
+                <KimchiShort url={shortUrl} title={shortTitle} className="h-full max-h-full w-auto" />
+              ) : heroImage ? (
                 <img
                   src={heroImage}
                   alt="Kimchi"

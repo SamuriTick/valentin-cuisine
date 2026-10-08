@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getContentMap, mergeContent } from '@/lib/siteContent';
 import { prisma } from '@/lib/prisma';
 import { getMediaDisplayUrl } from '@/lib/media-url';
+import { resolveGalleryPhotos, GALLERY_FALLBACK_LIMIT } from '@/lib/gallery';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,16 +27,13 @@ export default async function Home() {
     prisma.mediaItem.findMany({
       where: { fileType: 'image' },
       orderBy: { uploadedAt: 'asc' },
-      take: 12,
+      take: GALLERY_FALLBACK_LIMIT,
       select: { id: true, filePath: true, altText: true },
     }),
   ])
   const t = mergeContent(map)
   const heroImage = getMediaDisplayUrl(map['hero.image'] ?? '/valentin-hero.jpg')
-  const galleryPhotos = galleryItems.map((item, i) => ({
-    url: getMediaDisplayUrl(map[`gallery.photo.${i}`] ?? item.filePath),
-    alt: item.altText ?? '',
-  }))
+  const galleryPhotos = resolveGalleryPhotos(map, galleryItems)
 
   const personJsonLd = {
     '@context': 'https://schema.org',

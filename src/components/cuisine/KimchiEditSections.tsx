@@ -5,6 +5,8 @@ import { ContainerStandard } from './ContainerStandard'
 import { useEditContext } from '@/components/admin/visual/EditContext'
 import { EditableText } from '@/components/admin/visual/EditableText'
 import { EditableImage } from '@/components/admin/visual/EditableImage'
+import { KimchiShort } from './KimchiShort'
+import { youtubeId } from '@/lib/youtube'
 
 export interface KimchiContent {
   heroImage: string
@@ -16,6 +18,8 @@ export interface KimchiContent {
   heroPrice: string
   heroPriceSub: string
   quote: string
+  shortUrl: string
+  shortTitle: string
   tasteEyebrow: string
   tasteTitle1: string
   tasteTitle2: string
@@ -66,7 +70,9 @@ export function KimchiEditSections({ t }: Props) {
       <div className="bg-white border-b border-brand-border">
         <ContainerStandard className="py-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-center">
           <div className="hidden md:flex relative overflow-hidden rounded-xl h-[260px] bg-brand-light border border-brand-border items-center justify-center">
-            {t.heroImage ? (
+            {youtubeId(t.shortUrl) ? (
+              <KimchiShort url={t.shortUrl} title={t.shortTitle} className="h-full max-h-full w-auto" />
+            ) : t.heroImage ? (
               <EditableImage
                 src={t.heroImage}
                 alt="Kimchi hero"
@@ -110,6 +116,12 @@ export function KimchiEditSections({ t }: Props) {
             <p className="font-body text-base text-brand-muted leading-[1.85] mb-6 max-w-[420px]">
               <EditableText value={t.heroDesc} onSave={save('kimchi.hero.desc')} editMode={editMode} as="span" multiline />
             </p>
+            {editMode && (
+              <div className="mb-4 text-sm text-brand-muted">
+                Hero video (YouTube link, replaces the picture; clear it to show the picture again):{' '}
+                <EditableText value={t.shortUrl || 'https://youtube.com/shorts/…'} onSave={save('kimchi.short.url')} editMode={editMode} as="span" />
+              </div>
+            )}
             <div className="flex items-baseline gap-2">
               <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">
                 <EditableText value={t.heroPrice} onSave={save('kimchi.hero.price')} editMode={editMode} as="span" />
