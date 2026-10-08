@@ -54,10 +54,21 @@ export interface KimchiContent {
 
 interface Props { t: KimchiContent }
 
+const videoBtn: React.CSSProperties = {
+  padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(0,0,0,0.75)',
+  color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer',
+}
+
 export function KimchiEditSections({ t }: Props) {
   const editCtx = useEditContext()
   const editMode = editCtx?.editMode ?? false
   const save = (key: string) => async (val: string) => { await editCtx?.onFieldUpdate(key, val) }
+  const setVideo = async () => {
+    const url = window.prompt('Paste a YouTube link (Shorts or normal video):', t.shortUrl)
+    if (url === null) return
+    if (url.trim() && !youtubeId(url)) { alert("That doesn't look like a YouTube link."); return }
+    await save('kimchi.short.url')(url.trim())
+  }
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set())
   function toggleFaq(i: number) {
     setFaqOpen(prev => { const next = new Set(prev); next.has(i) ? next.delete(i) : next.add(i); return next })
@@ -100,6 +111,18 @@ export function KimchiEditSections({ t }: Props) {
                 )}
               </div>
             )}
+            {editMode && (
+              <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 30, display: 'flex', gap: 6 }}>
+                <button onClick={setVideo} style={videoBtn}>
+                  {youtubeId(t.shortUrl) ? 'Change video' : 'Use YouTube video'}
+                </button>
+                {youtubeId(t.shortUrl) && (
+                  <button onClick={() => save('kimchi.short.url')('')} style={{ ...videoBtn, background: 'rgba(200,30,30,0.9)' }}>
+                    Remove video
+                  </button>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center">
             <p className="font-accent text-[clamp(22px,3.5vw,32px)] text-brand-teal mb-3 leading-none">
@@ -116,12 +139,6 @@ export function KimchiEditSections({ t }: Props) {
             <p className="font-body text-base text-brand-muted leading-[1.85] mb-6 max-w-[420px]">
               <EditableText value={t.heroDesc} onSave={save('kimchi.hero.desc')} editMode={editMode} as="span" multiline />
             </p>
-            {editMode && (
-              <div className="mb-4 text-sm text-brand-muted">
-                Hero video (YouTube link, replaces the picture; clear it to show the picture again):{' '}
-                <EditableText value={t.shortUrl || 'https://youtube.com/shorts/…'} onSave={save('kimchi.short.url')} editMode={editMode} as="span" />
-              </div>
-            )}
             <div className="flex items-baseline gap-2">
               <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">
                 <EditableText value={t.heroPrice} onSave={save('kimchi.hero.price')} editMode={editMode} as="span" />
