@@ -69,7 +69,7 @@ export function KimchiEditSections({ t }: Props) {
       {/* Hero */}
       <div className="bg-white border-b border-brand-border">
         <ContainerStandard className="py-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-center">
-          <div className="hidden md:flex relative overflow-hidden rounded-xl h-[260px] bg-brand-light border border-brand-border items-center justify-center">
+          <div className="flex relative overflow-hidden rounded-xl h-[420px] bg-brand-light border border-brand-border items-center justify-center">
             {youtubeId(t.shortUrl) ? (
               <KimchiShort url={t.shortUrl} title={t.shortTitle} className="h-full max-h-full w-auto" />
             ) : t.heroImage ? (
