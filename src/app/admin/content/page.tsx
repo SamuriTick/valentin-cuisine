@@ -337,7 +337,7 @@ export default function VisualContentEditor() {
             style={{
               padding: '8px 20px', borderRadius: 6, fontSize: 12, fontWeight: 700,
               letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', border: 'none',
-              background: editMode ? '#b03060' : '#fff',
+              background: editMode ? '#c2412d' : '#fff',
               color: editMode ? '#fff' : '#1a1a1a',
               transition: 'all 0.2s',
             }}

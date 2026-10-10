@@ -14,7 +14,7 @@ export function StaticFooter() {
           <Link href="/" style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontSize: 20, fontWeight: 400, fontStyle: 'italic',
-            color: '#b03060', textDecoration: 'none', letterSpacing: 0.5,
+            color: '#c2412d', textDecoration: 'none', letterSpacing: 0.5,
           }}>
             Valentin&rsquo;s Cuisine
           </Link>

@@ -16,9 +16,9 @@ const config: Config = {
         trueGray: colors.neutral,
         brand: {
           dark: '#1a1a1a',
-          teal: '#b03060',
+          teal: '#c2412d',
           light: '#fffef5',
-          'green-light': '#fdf2f6',
+          'green-light': '#fbece6',
           border: '#ece8df',
           muted: '#8a8070',
           'bg-dark': '#1a1a1a',

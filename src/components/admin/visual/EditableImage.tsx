@@ -45,7 +45,7 @@ export function MediaPicker({ onSelect, onClose }: { onSelect: (url: string) => 
           <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#888', lineHeight: 1 }}>×</button>
         </div>
         <div style={{ padding: '10px 20px', borderBottom: '1px solid #e8e3dc' }}>
-          <label style={{ fontSize: 13, color: '#b03060', fontWeight: 600, cursor: uploading ? 'default' : 'pointer' }}>
+          <label style={{ fontSize: 13, color: '#c2412d', fontWeight: 600, cursor: uploading ? 'default' : 'pointer' }}>
             {uploading ? 'Uploading…' : '+ Upload new photo'}
             {!uploading && (
               <input type="file" accept="image/*" style={{ display: 'none' }}
@@ -160,9 +160,9 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
             style={{
               position: 'absolute',
               inset: 0,
-              border: '2px dashed rgba(176,48,96,0.45)',
+              border: '2px dashed rgba(194, 65, 45,0.45)',
               background: '#f7f2ed',
-              color: '#b03060',
+              color: '#c2412d',
               cursor: 'pointer',
               fontSize: 12,
               fontWeight: 700,
@@ -177,7 +177,7 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
         {/* Crop mode overlay */}
         {cropping && (
           <div
-            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', border: '3px dashed rgba(176,48,96,0.8)', zIndex: 10, cursor: isDragging ? 'grabbing' : 'grab' }}
+            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', border: '3px dashed rgba(194, 65, 45,0.8)', zIndex: 10, cursor: isDragging ? 'grabbing' : 'grab' }}
             onMouseDown={e => { e.preventDefault(); setIsDragging(true); setDragStart({ x: e.clientX, y: e.clientY }) }}
           >
             <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 12, padding: '4px 14px', borderRadius: 4 }}>
@@ -207,7 +207,7 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
                 Cancel
               </button>
               <button onClick={async () => { setSaving(true); await onCropSave?.(localCrop); setSaving(false); setCropping(false) }}
-                style={{ padding: '4px 14px', fontSize: 12, background: 'rgba(176,48,96,0.9)', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                style={{ padding: '4px 14px', fontSize: 12, background: 'rgba(194, 65, 45,0.9)', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
               >
                 {saving ? '…' : 'Save'}
               </button>
@@ -221,7 +221,7 @@ export function EditableImage({ src, alt, className, editMode, crop = DEFAULT_CR
             {localSrc && <button onClick={() => setCropping(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
               Reposition
             </button>}
-            <button onClick={() => setShowPicker(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(176,48,96,0.9)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
+            <button onClick={() => setShowPicker(true)} style={{ padding: '5px 12px', fontSize: 12, fontWeight: 600, background: 'rgba(194, 65, 45,0.9)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }}>
               {localSrc ? 'Change photo' : 'Add photo'}
             </button>
             {onDelete && (

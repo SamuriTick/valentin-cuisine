@@ -406,7 +406,7 @@ export default function EmailPage() {
                   <label style={{ ...(s.label as React.CSSProperties), marginBottom: 0 }}>Body (HTML)</label>
                   <button
                     onClick={() => setShowPreview(p => !p)}
-                    style={{ fontSize: 12, color: '#b03060', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
+                    style={{ fontSize: 12, color: '#c2412d', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
                   >
                     {showPreview ? 'Edit' : 'Preview'}
                   </button>
@@ -505,7 +505,7 @@ export default function EmailPage() {
                       <label style={{ ...(s.label as React.CSSProperties), marginBottom: 0 }}>Body (HTML)</label>
                       <button
                         onClick={() => setShowSendPreview(p => !p)}
-                        style={{ fontSize: 12, color: '#b03060', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
+                        style={{ fontSize: 12, color: '#c2412d', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
                       >
                         {showSendPreview ? 'Edit' : 'Preview'}
                       </button>

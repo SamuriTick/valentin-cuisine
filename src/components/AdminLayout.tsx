@@ -22,7 +22,7 @@ function Sidebar({ session, onClose }: { session: any; onClose?: () => void }) {
       {/* Logo */}
       <div style={{ padding: "24px 20px 20px", borderBottom: "1px solid #e8e3dc", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, fontStyle: "italic", fontWeight: 400, color: "#b03060", letterSpacing: 0.3 }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, fontStyle: "italic", fontWeight: 400, color: "#c2412d", letterSpacing: 0.3 }}>
             Valentin&apos;s Cuisine
           </div>
           <div style={{ fontSize: 10, color: "rgba(26,26,26,0.35)", marginTop: 4, letterSpacing: "0.15em", textTransform: "uppercase" }}>
@@ -109,7 +109,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <rect y="12.5" width="20" height="1.5" rx="1" fill="#1a1a1a"/>
             </svg>
           </button>
-          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 18, fontStyle: "italic", color: "#b03060" }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 18, fontStyle: "italic", color: "#c2412d" }}>
             Valentin&apos;s Cuisine
           </span>
         </div>

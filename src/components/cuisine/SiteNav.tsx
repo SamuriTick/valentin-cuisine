@@ -30,7 +30,7 @@ export function SiteNav() {
         <Link href="/" style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontSize: 22, fontWeight: 400, fontStyle: 'italic',
-          color: '#b03060', textDecoration: 'none', letterSpacing: 0.5,
+          color: '#c2412d', textDecoration: 'none', letterSpacing: 0.5,
         }}>
           Valentin&rsquo;s Cuisine
         </Link>
@@ -49,7 +49,7 @@ export function SiteNav() {
           <span style={{ width: 1, height: 16, background: '#ece8df', display: 'inline-block' }} />
           <Link href="/kimchi" style={{
             fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, textDecoration: 'none',
-            color: '#ffffff', background: '#b03060',
+            color: '#ffffff', background: '#c2412d',
             padding: '8px 18px', borderRadius: 999,
             transition: 'opacity 0.2s',
           }}>
@@ -87,7 +87,7 @@ export function SiteNav() {
             </Link>
           ))}
           <Link href="/kimchi" onClick={() => setMenuOpen(false)} style={{
-            fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#b03060',
+            fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#c2412d',
             textDecoration: 'none', display: 'inline-block', marginTop: 20,
           }}>
             Order Kimchi

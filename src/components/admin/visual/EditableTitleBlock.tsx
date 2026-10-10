@@ -124,7 +124,7 @@ export function EditableTitleBlock({ rawText, editMode, onSave, renderLine }: Pr
                   padding: '3px 10px', fontSize: 13, borderRadius: 4, cursor: 'pointer', border: 'none',
                   fontStyle: t.highlighted ? 'italic' : 'normal',
                   fontWeight: t.highlighted ? 700 : 400,
-                  background: t.highlighted ? '#b03060' : '#e8e3dc',
+                  background: t.highlighted ? '#c2412d' : '#e8e3dc',
                   color: t.highlighted ? '#fff' : '#1a1a1a',
                   transition: 'all 0.1s',
                 }}

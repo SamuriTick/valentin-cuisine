@@ -36,7 +36,7 @@ export default function AdminLogin() {
           <div style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontSize: 32, fontWeight: 400, fontStyle: "italic",
-            color: "#b03060", letterSpacing: 0.5, marginBottom: 6,
+            color: "#c2412d", letterSpacing: 0.5, marginBottom: 6,
           }}>
             Valentin&apos;s Cuisine
           </div>

@@ -21,7 +21,7 @@ function emailWrapper(body: string) {
       <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #ece8df;border-radius:4px;overflow:hidden;">
 
         <!-- Header -->
-        <div style="background:#ffffff;border-bottom:2px solid #b03060;padding:24px 32px;display:flex;align-items:baseline;gap:12px;">
+        <div style="background:#ffffff;border-bottom:2px solid #c2412d;padding:24px 32px;display:flex;align-items:baseline;gap:12px;">
           <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:21px;color:#1a1a1a;letter-spacing:-0.3px;">Valentin&rsquo;s Cuisine</p>
           <p style="margin:0 0 0 10px;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#8a8070;">Putney, London</p>
         </div>
@@ -67,7 +67,7 @@ function ownerBody(vars: Record<string, string | number>) {
   const { name, email, phone, occasion, details, jars, total } = vars
   const isKimchiOrder = typeof total === 'number' || (typeof total === 'string' && total !== '')
   return `
-    <p style="margin:0 0 4px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#b03060;">${isKimchiOrder ? 'Kimchi order' : 'New message'}</p>
+    <p style="margin:0 0 4px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c2412d;">${isKimchiOrder ? 'Kimchi order' : 'New message'}</p>
     <h2 style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:24px;color:#1a1a1a;letter-spacing:-0.3px;">
       ${occasion || 'New message'}
     </h2>
@@ -79,7 +79,7 @@ function ownerBody(vars: Record<string, string | number>) {
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #ece8df;color:#8a8070;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Email</td>
-        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;"><a href="mailto:${email}" style="color:#b03060;text-decoration:none;">${email}</a></td>
+        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;"><a href="mailto:${email}" style="color:#c2412d;text-decoration:none;">${email}</a></td>
       </tr>
       ${phone ? `<tr><td style="padding:10px 0;border-bottom:1px solid #ece8df;color:#8a8070;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;color:#1a1a1a;">${phone}</td></tr>` : ''}
       ${isKimchiOrder ? `
@@ -89,10 +89,10 @@ function ownerBody(vars: Record<string, string | number>) {
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #ece8df;color:#8a8070;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Total</td>
-        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;font-weight:bold;color:#b03060;">£${total}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;font-weight:bold;color:#c2412d;">£${total}</td>
       </tr>` : ''}
     </table>
-    ${details ? `<div style="padding:16px 18px;background:#fffef5;border:1px solid #ece8df;border-left:3px solid #b03060;border-radius:2px;"><p style="margin:0;font-size:14px;line-height:1.75;color:#1a1a1a;white-space:pre-wrap;">${details}</p></div>` : ''}
+    ${details ? `<div style="padding:16px 18px;background:#fffef5;border:1px solid #ece8df;border-left:3px solid #c2412d;border-radius:2px;"><p style="margin:0;font-size:14px;line-height:1.75;color:#1a1a1a;white-space:pre-wrap;">${details}</p></div>` : ''}
     <p style="margin-top:24px;font-size:12px;color:#8a8070;line-height:1.6;">Reply to this email to respond directly to ${name}.</p>
   `
 }
@@ -100,7 +100,7 @@ function ownerBody(vars: Record<string, string | number>) {
 function customerBody(vars: Record<string, string | number>) {
   const { name, jars, total } = vars
   return `
-    <p style="margin:0 0 4px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#b03060;">Order confirmed</p>
+    <p style="margin:0 0 4px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c2412d;">Order confirmed</p>
     <h2 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:28px;color:#1a1a1a;letter-spacing:-0.3px;">Thanks, ${name}.</h2>
     <p style="margin:0 0 28px;font-size:14px;color:#8a8070;line-height:1.65;">Your kimchi order is in. Here&rsquo;s a summary:</p>
 
@@ -112,7 +112,7 @@ function customerBody(vars: Record<string, string | number>) {
         </tr>
         <tr>
           <td style="padding:12px 0 0;font-size:15px;font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;border-top:1px solid #ece8df;">Total</td>
-          <td style="padding:12px 0 0;font-size:15px;font-family:Georgia,'Times New Roman',serif;color:#b03060;text-align:right;border-top:1px solid #ece8df;font-weight:bold;">£${total}</td>
+          <td style="padding:12px 0 0;font-size:15px;font-family:Georgia,'Times New Roman',serif;color:#c2412d;text-align:right;border-top:1px solid #ece8df;font-weight:bold;">£${total}</td>
         </tr>
       </table>
     </div>
@@ -135,7 +135,7 @@ function customerBody(vars: Record<string, string | number>) {
       </table>
     </div>
 
-    <div style="padding:16px 18px;background:#fdf2f6;border:1px solid #ece8df;border-left:3px solid #b03060;border-radius:2px;margin-bottom:28px;">
+    <div style="padding:16px 18px;background:#fbece6;border:1px solid #ece8df;border-left:3px solid #c2412d;border-radius:2px;margin-bottom:28px;">
       <p style="margin:0;font-size:13px;line-height:1.75;color:#8a8070;">
         <strong style="color:#1a1a1a;">Next steps:</strong> Once I see your payment, your order will be ready to collect on the 25th in Putney, SW London.
       </p>

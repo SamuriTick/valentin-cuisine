@@ -64,7 +64,7 @@ export function KimchiFAQs({ faqs }: { faqs?: FAQ[] }) {
             </span>
             <span className="flex-shrink-0">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className={`transition-transform duration-200 ${open.has(i) ? 'rotate-180' : ''}`}>
-                <path d="M5 7.5l5 5 5-5" stroke="#b03060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5 7.5l5 5 5-5" stroke="#c2412d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
           </button>

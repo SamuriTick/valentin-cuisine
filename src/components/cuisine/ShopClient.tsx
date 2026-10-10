@@ -118,12 +118,12 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
         </div>
       ) : (
         <div style={{ aspectRatio: '4/3', background: 'linear-gradient(135deg, #f4f1ed, #e8e3dc)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, color: '#b03060', opacity: 0.4 }}>V</span>
+          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, color: '#c2412d', opacity: 0.4 }}>V</span>
         </div>
       )}
 
       <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <span style={{ fontSize: 12, color: '#b03060', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+        <span style={{ fontSize: 12, color: '#c2412d', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
           {product.category}
         </span>
 
@@ -140,7 +140,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
                 <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#aaa', textDecoration: 'line-through', lineHeight: 1.2 }}>
                   {discountInfo.originalPrice}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#b03060', fontWeight: 600, lineHeight: 1.2 }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, color: '#c2412d', fontWeight: 600, lineHeight: 1.2 }}>
                   {discountInfo.discountedPrice}
                 </div>
               </>
@@ -159,10 +159,10 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
         {/* Discount badges — show both representations */}
         {discountInfo && (
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: '#fdf2f6', color: '#b03060', border: '1px solid #f5ccd8', borderRadius: 4, padding: '2px 8px' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: '#fbece6', color: '#c2412d', border: '1px solid #f5d0c5', borderRadius: 4, padding: '2px 8px' }}>
               {discountInfo.percentLabel}
             </span>
-            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: '#fdf2f6', color: '#b03060', border: '1px solid #f5ccd8', borderRadius: 4, padding: '2px 8px' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: '#fbece6', color: '#c2412d', border: '1px solid #f5d0c5', borderRadius: 4, padding: '2px 8px' }}>
               {discountInfo.amountLabel}
             </span>
           </div>
@@ -228,10 +228,10 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (item: CartI
               value={qty}
               onChange={e => handleQtyChange(e.target.value)}
               onBlur={() => { if (!qty || parseInt(qty) < 1) setQtyError(true) }}
-              style={{ width: 60, padding: '9px 10px', border: `1px solid ${qtyError ? '#b03060' : '#e8e3dc'}`, borderRadius: 6, fontSize: 14, fontFamily: "'DM Sans', sans-serif", textAlign: 'center', color: '#1a1a1a', outline: 'none' }}
+              style={{ width: 60, padding: '9px 10px', border: `1px solid ${qtyError ? '#c2412d' : '#e8e3dc'}`, borderRadius: 6, fontSize: 14, fontFamily: "'DM Sans', sans-serif", textAlign: 'center', color: '#1a1a1a', outline: 'none' }}
               placeholder="1"
             />
-            {qtyError && <span style={{ fontSize: 11, color: '#b03060', fontFamily: "'DM Sans', sans-serif" }}>Numbers only</span>}
+            {qtyError && <span style={{ fontSize: 11, color: '#c2412d', fontFamily: "'DM Sans', sans-serif" }}>Numbers only</span>}
           </div>
           <button
             onClick={handleAdd}
@@ -282,7 +282,7 @@ function Basket({ items, onUpdate, onRemove, onClose }: {
                 {item.variantLabel && (
                   <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#7a7060', margin: '0 0 4px' }}>{item.variantLabel}</p>
                 )}
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#b03060', margin: 0, fontWeight: 600 }}>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#c2412d', margin: 0, fontWeight: 600 }}>
                   {item.priceNum > 0 ? formatPrice(item.priceNum * item.quantity) : item.price}
                   {item.quantity > 1 && item.priceNum > 0 && (
                     <span style={{ fontWeight: 400, color: '#aaa', fontSize: 11, marginLeft: 6 }}>({item.price} each)</span>
@@ -385,11 +385,11 @@ export default function ShopClient({ products, titleMain = 'The', titleEmphasis 
         <ContainerStandard className="py-8 md:py-12">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
             <div>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 18, color: '#b03060', margin: '0 0 8px' }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 18, color: '#c2412d', margin: '0 0 8px' }}>
                 {eyebrow}
               </p>
               <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 300, color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-1px' }}>
-                {titleMain} <span style={{ fontWeight: 600, fontStyle: 'italic', color: '#b03060' }}>{titleEmphasis}</span>
+                {titleMain} <span style={{ fontWeight: 600, fontStyle: 'italic', color: '#c2412d' }}>{titleEmphasis}</span>
               </h1>
             </div>
             <button
@@ -403,7 +403,7 @@ export default function ShopClient({ products, titleMain = 'The', titleEmphasis 
               </svg>
               Basket
               {cartCount > 0 && (
-                <span style={{ background: '#b03060', color: '#fff', borderRadius: '99px', fontSize: 11, fontWeight: 700, padding: '1px 7px', lineHeight: '18px' }}>
+                <span style={{ background: '#c2412d', color: '#fff', borderRadius: '99px', fontSize: 11, fontWeight: 700, padding: '1px 7px', lineHeight: '18px' }}>
                   {cartCount}
                 </span>
               )}
