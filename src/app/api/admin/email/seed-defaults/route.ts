@@ -77,9 +77,68 @@ const DEFAULTS = [
 
 <div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
   <p style="margin:0;font-size:13px;line-height:1.7;color:#7A7060;">
-    <strong style="color:#1a1a1a;">Delivery:</strong> I&rsquo;ll be in touch to sort out collection or delivery &mdash; we&rsquo;ll figure out the details together once payment is confirmed.
+    <strong style="color:#1a1a1a;">Collection:</strong> I&rsquo;ll be in touch to arrange a collection time in Putney, SW London, once payment is confirmed.
   </p>
 </div>
+
+<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
+  Any questions? Just reply to this email.<br/>
+  &mdash; Valentin
+</p>`,
+  },
+  {
+    slug: 'payment-request',
+    name: 'Payment request — bank details',
+    subject: 'How to pay for your order',
+    body: `<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Hi {{name}},</h2>
+<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Thanks for your order! To confirm it, please send the payment by bank transfer using the details below. Once it arrives I&rsquo;ll arrange a collection time with you.</p>
+
+<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1a1a1a;">Pay by bank transfer</h3>
+<div style="border:1px solid #E8E0D5;border-radius:4px;overflow:hidden;margin-bottom:24px;">
+  <table style="border-collapse:collapse;width:100%;">
+    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_NAME}</td></tr>
+    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;font-family:Georgia,serif;border-bottom:1px solid #E8E0D5;">${BANK_SORT}</td></tr>
+    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;font-family:Georgia,serif;border-bottom:1px solid #E8E0D5;">${BANK_ACCOUNT}</td></tr>
+    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;">Reference</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;">Your name</td></tr>
+  </table>
+</div>
+
+<p style="margin:0 0 24px;font-size:13px;color:#7A7060;line-height:1.7;">Collection is from Putney, SW London (no delivery).</p>
+
+<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
+  Any questions? Just reply to this email.<br/>
+  &mdash; Valentin
+</p>`,
+  },
+  {
+    slug: 'payment-received',
+    name: 'Payment received — ready to collect',
+    subject: 'Payment received, thank you!',
+    body: `<p style="margin:0 0 8px;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#3d7a6b;">Payment received</p>
+<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Thanks, {{name}}!</h2>
+<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">I&rsquo;ve received your payment. Your order will be ready to collect from Putney, SW London.</p>
+
+<div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
+  <p style="margin:0;font-size:13px;line-height:1.7;color:#1a1a1a;"><strong>Collection:</strong> [day and time] at [address]. Reply to let me know if that works for you.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
+  Any questions? Just reply to this email.<br/>
+  &mdash; Valentin
+</p>`,
+  },
+  {
+    slug: 'collection-reminder',
+    name: 'Collection reminder',
+    subject: 'Your order is ready to collect',
+    body: `<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Hi {{name}},</h2>
+<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Just a reminder that your order is ready and waiting for you in Putney, SW London.</p>
+
+<div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
+  <p style="margin:0;font-size:13px;line-height:1.7;color:#1a1a1a;"><strong>When:</strong> [day and time]<br/><strong>Where:</strong> [address]</p>
+</div>
+
+<p style="margin:0 0 24px;font-size:13px;color:#7A7060;line-height:1.7;">Tip: keep it in the fridge once you get home. It keeps getting better for the first week.</p>
 
 <p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
   Any questions? Just reply to this email.<br/>

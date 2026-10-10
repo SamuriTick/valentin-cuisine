@@ -9,17 +9,23 @@ interface Props {
   variants?: Variant[]
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const BANK_NAME = 'MSTR Valentin Thang'
+const BANK_SORT = '20-90-74'
+const BANK_ACCOUNT = '33552330'
+
 export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
   const hasVariants = variants.length > 0
 
   const [form, setForm] = useState({
-    name: '', email: '',
+    name: '', email: '', phone: '',
     jars: '1',
     variantIndex: '0',
-    dietary: '', delivery: '',
-    addrLine1: '', addrLine2: '', addrCity: '', addrPostcode: '',
+    dietary: '',
     details: '',
   });
+  const [emailError, setEmailError] = useState('');
+  const [paidTotal, setPaidTotal] = useState(0);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   function set(k: string, v: string) { setForm(f => ({ ...f, [k]: v })); }
@@ -46,32 +52,31 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     return `${jars} jar${jars > 1 ? 's' : ''} × £${pricePerJar} = £${getTotal()}`
   }
 
-  function getAddressString(): string {
-    const parts = [form.addrLine1, form.addrLine2, form.addrCity, form.addrPostcode].filter(Boolean)
-    return parts.join(', ')
-  }
-
-  const needsAddress = form.delivery === 'Collection near you (£3)' || form.delivery === 'Delivery'
-
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!EMAIL_RE.test(form.email.trim())) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+    setEmailError('');
     setStatus('sending');
     try {
       const jars = parseInt(form.jars, 10);
       const total = getTotal();
-      const address = getAddressString()
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: form.name,
-          email: form.email,
-          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''}${form.delivery ? ` · ${form.delivery}` : ''}${address ? ` · address: ${address}` : ''}`,
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''}} · Collection (Putney)`,
           details: form.details,
           jars,
           total,
         }),
       });
+      if (res.ok) setPaidTotal(total);
       setStatus(res.ok ? 'sent' : 'error');
     } catch {
       setStatus('error');
@@ -82,7 +87,22 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
     return (
       <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-lg text-center">
         <p className="font-body text-xl font-semibold text-brand-dark mb-2">Order sent!</p>
-        <p className="font-body text-sm text-brand-muted">Thanks {form.name}, I&apos;ll be in touch within 24 hours.</p>
+        <p className="font-body text-sm text-brand-muted mb-6">Thanks {form.name}! To confirm your order, please pay by bank transfer:</p>
+        <div className="mx-auto max-w-sm text-left bg-white border border-brand-border rounded-md divide-y divide-brand-border">
+          {[
+            ['Name', BANK_NAME],
+            ['Sort code', BANK_SORT],
+            ['Account', BANK_ACCOUNT],
+            ['Amount', `£${paidTotal % 1 === 0 ? paidTotal.toFixed(0) : paidTotal.toFixed(2)}`],
+            ['Reference', form.name],
+          ].map(([k, v]) => (
+            <div key={k} className="flex justify-between gap-4 px-4 py-3">
+              <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">{k}</span>
+              <span className="font-body text-sm text-brand-dark font-semibold text-right">{v}</span>
+            </div>
+          ))}
+        </div>
+        <p className="font-body text-[12px] text-brand-muted mt-6">These details are also in your confirmation email. Once I see your payment I&apos;ll be in touch to arrange collection in Putney, SW London.</p>
       </div>
     );
   }
@@ -105,9 +125,16 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
         </div>
         <div>
           <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Email *</label>
-          <input type="email" required value={form.email} onChange={e => set('email', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal" />
+          <input type="email" required value={form.email} onChange={e => { set('email', e.target.value); setEmailError('') }}
+            className={`w-full px-4 py-3 bg-white border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal ${emailError ? 'border-red-400' : 'border-brand-border'}`} />
+          {emailError && <p className="font-body text-[12px] text-red-600 mt-1">{emailError}</p>}
         </div>
+      </div>
+
+      <div>
+        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Phone number</label>
+        <input type="tel" placeholder="Optional" value={form.phone} onChange={e => set('phone', e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
       </div>
 
       {hasVariants && (
@@ -148,44 +175,9 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
           className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
       </div>
 
-      <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Collection or delivery</label>
-        <div className="flex flex-wrap gap-2">
-          {['Collection SW London', 'Collection near you (£3)', 'Delivery'].map(opt => (
-            <button key={opt} type="button" onClick={() => set('delivery', form.delivery === opt ? '' : opt)}
-              className={`px-3 py-2 font-body text-[11px] font-bold tracking-[1px] uppercase rounded border transition-colors duration-200 ${form.delivery === opt ? 'bg-brand-teal text-white border-brand-teal' : 'bg-white text-brand-muted border-brand-border hover:border-brand-teal hover:text-brand-teal'}`}>
-              {opt}
-            </button>
-          ))}
-        </div>
+      <div className="px-4 py-3 bg-brand-green-light border border-brand-border rounded-md font-body text-[13px] text-brand-dark">
+        Collection only, from Putney (SW London). I&apos;ll confirm a time with you.
       </div>
-
-      {needsAddress && (
-        <div className="flex flex-col gap-3">
-          <div>
-            <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Address line 1 *</label>
-            <input type="text" required placeholder="House number and street" value={form.addrLine1} onChange={e => set('addrLine1', e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
-          </div>
-          <div>
-            <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Address line 2</label>
-            <input type="text" placeholder="Flat, building, etc. (optional)" value={form.addrLine2} onChange={e => set('addrLine2', e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">City *</label>
-              <input type="text" required placeholder="London" value={form.addrCity} onChange={e => set('addrCity', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
-            </div>
-            <div>
-              <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Postcode *</label>
-              <input type="text" required placeholder="SW15 1AA" value={form.addrPostcode} onChange={e => set('addrPostcode', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
-            </div>
-          </div>
-        </div>
-      )}
 
       <div>
         <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Anything else?</label>
@@ -199,7 +191,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       </button>
 
       <p className="font-body text-[12px] text-brand-muted text-center leading-[1.6]">
-        Valentin replies within 24 hours. Payment on collection or agreed before delivery.
+        Valentin replies within 24 hours. Pay by bank transfer: details shown after you send your order.
       </p>
     </form>
   );

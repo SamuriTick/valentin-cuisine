@@ -67,15 +67,15 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   orderEyebrow: 'Get yours',
   orderTitle: 'Place an order',
   orderSteps: [
-    { title: 'Fill in the form', body: 'Name, email, how many jars. Mention dietary needs or how you want to collect.' },
+    { title: 'Fill in the form', body: 'Name, email, how many jars. Mention any dietary needs.' },
     { title: 'I confirm', body: "I'm a student: weekends and school holidays work best. I reply within 24 hours." },
-    { title: 'Come collect or I deliver', body: 'SW London collection is easiest. I can also come to you (£3) or send someone to deliver to your door (£6): just choose in the form.' },
+    { title: 'Pay and collect', body: 'Pay by bank transfer (details shown after you order), then collect your jar in Putney, SW London.' },
   ],
   faqs: [
     { q: 'How long does it keep?', a: "3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I've heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish)." },
     { q: 'Is it ready to eat when I get it?', a: "Yes. But you're getting it 2 to 3 days old, which is good. One week old is noticeably better: the fermentation has properly kicked in. I prefer it at least a week in. Leave it in the fridge, it'll keep improving." },
     { q: "What's different about this recipe?", a: "Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum's fridge instead of fermented shrimp. More umami, more depth." },
-    { q: 'Do you deliver?', a: 'SW London collection (Putney) is the easiest option. I can also come to you for a small fee (£3). Door-to-door delivery by one of my people is also possible (£6). Choose your preference in the order form.' },
+    { q: 'Can I get it delivered?', a: 'Not anymore: collection only, from Putney in SW London. I will confirm a time with you after your order.' },
     { q: 'Can I get a vegan version?', a: 'Yes. The standard recipe uses fish sauce and soy sauce. For vegan, I remove the fish sauce and any other meat products. Pescetarians are fine with the standard recipe.' },
     { q: 'Help: my jar is overflowing.', a: "That's the fermentation working. Kimchi releases CO2 as it ferments and the liquid rises. Don't fill the jar completely to the top: leave a bit of room. If it's already bubbling over, open the lid carefully, let the gas escape, press the cabbage down below the brine, and seal it again." },
     { q: "I've eaten all the cabbage but there's sauce left. What do I do?", a: "Cook with it. The kimchi sauce works brilliantly with beef, with fish (mackerel especially), cooked in a pan with butter and served over rice. Don't throw it away." },
@@ -89,7 +89,7 @@ const CONTACT_DEFAULTS: ContactContent = {
   heroTitle: 'touch.',
   heroDesc: 'Whether you want to order food or talk about mentoring me, use the form below. I reply within 24 hours.',
   foodItems: [
-    { label: 'Kimchi', body: 'Hand-made, blended with a Vietnamese twist. £15 for 2kg in a glass jar. SW London collection or Royal Mail.' },
+    { label: 'Kimchi', body: 'Hand-made, blended with a Vietnamese twist. £15 for 2kg in a glass jar. Collection only, Putney (SW London).' },
     { label: 'Custom cakes', body: 'Celebration cakes made to order. Tell me the flavour, design, and date and I will handle the rest.' },
     { label: 'Sourdough & pastries', body: 'I bake to order on weekends and school holidays. Ask and I will tell you what is available.' },
   ],

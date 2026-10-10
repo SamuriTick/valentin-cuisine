@@ -18,8 +18,8 @@ const DEFAULT_FAQS: FAQ[] = [
     a: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum\'s fridge instead of fermented shrimp. More umami, more depth.',
   },
   {
-    q: 'Do you deliver?',
-    a: 'SW London collection (Putney) is the easiest option. I can also come to you for a small fee (£3). Door-to-door delivery by one of my people is also possible (£6). Choose your preference in the order form.',
+    q: 'Can I get it delivered?',
+    a: 'Not anymore: collection only, from Putney in SW London. I will confirm a time with you after your order.',
   },
   {
     q: 'Can I get a vegan version?',
