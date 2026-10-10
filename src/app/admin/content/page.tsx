@@ -39,7 +39,7 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   recipeTitle1: 'Not traditional.',
   recipeTitle2: 'Better.',
   recipeBody1: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout.',
-  recipeBody2: "I also use dried Vietnamese shrimp from my mum's fridge instead of fermented shrimp. More umami, more depth.",
+  recipeBody2: "I also use locally sourced dried shrimp from Cà Mau, Vietnam, instead of fermented shrimp. More umami, more depth.",
   pairingsTitle1: 'Kimchi goes with',
   pairingsTitle2: 'anything savoury.',
   pairings: [
@@ -74,7 +74,7 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   faqs: [
     { q: 'How long does it keep?', a: "3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I've heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish)." },
     { q: 'Is it ready to eat when I get it?', a: "Yes. But you're getting it 2 to 3 days old, which is good. One week old is noticeably better: the fermentation has properly kicked in. I prefer it at least a week in. Leave it in the fridge, it'll keep improving." },
-    { q: "What's different about this recipe?", a: "Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum's fridge instead of fermented shrimp. More umami, more depth." },
+    { q: "What's different about this recipe?", a: "Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use locally sourced dried shrimp from Cà Mau, Vietnam, instead of fermented shrimp. More umami, more depth." },
     { q: 'Can I get it delivered?', a: 'Not anymore: collection only, from Putney in SW London. Orders are ready to collect on the 25th.' },
     { q: 'Can I get a vegan version?', a: 'Yes. The standard recipe uses fish sauce and soy sauce. For vegan, I remove the fish sauce and any other meat products. Pescetarians are fine with the standard recipe.' },
     { q: 'Help: my jar is overflowing.', a: "That's the fermentation working. Kimchi releases CO2 as it ferments and the liquid rises. Don't fill the jar completely to the top: leave a bit of room. If it's already bubbling over, open the lid carefully, let the gas escape, press the cabbage down below the brine, and seal it again." },

@@ -15,7 +15,7 @@ const DEFAULT_FAQS: FAQ[] = [
   },
   {
     q: 'What\'s different about this recipe?',
-    a: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use dried Vietnamese shrimp from my mum\'s fridge instead of fermented shrimp. More umami, more depth.',
+    a: 'Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use locally sourced dried shrimp from Cà Mau, Vietnam, instead of fermented shrimp. More umami, more depth.',
   },
   {
     q: 'Can I get it delivered?',
