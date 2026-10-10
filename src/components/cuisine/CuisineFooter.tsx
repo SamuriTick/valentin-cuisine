@@ -29,8 +29,7 @@ export function CuisineFooter({ t }: Props) {
               { href: '/kimchi', label: 'Order Kimchi' },
             ].map(({ href, label }) => (
               <Link key={href} href={href} style={{
-                fontFamily: "'Nunito', sans-serif", fontSize: 11,
-                letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13, textDecoration: 'none',
                 color: 'rgba(26,26,26,0.5)', transition: 'color 0.2s',
               }}>
                 {label}
@@ -46,8 +45,7 @@ export function CuisineFooter({ t }: Props) {
         <ContainerStandard>
           <p style={{
             padding: '16px 0', margin: 0,
-            fontFamily: "'Nunito', sans-serif", fontSize: 11,
-            letterSpacing: 1.5, textTransform: 'uppercase',
+            fontFamily: "'DM Sans', sans-serif", fontSize: 13,
             color: 'rgba(26,26,26,0.35)', textAlign: 'center',
           }}>
             &copy; 2025 Valentin&rsquo;s Cuisine &middot; Putney, London &middot; Made with love

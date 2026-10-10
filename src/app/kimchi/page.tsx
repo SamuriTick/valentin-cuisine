@@ -185,7 +185,7 @@ export default async function KimchiPage() {
               ) : (
                 <div className="text-center px-8">
                   <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>
-                  <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
                 </div>
               )}
             </div>
@@ -200,13 +200,13 @@ export default async function KimchiPage() {
               <p className="font-body text-base text-brand-muted leading-[1.85] mb-6 max-w-[420px]">{heroDesc}</p>
               <div className="flex items-baseline gap-2 mb-8">
                 <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">{heroPrice}</span>
-                <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">{heroPriceSub}</span>
+                <span className="font-body text-[13px] text-brand-muted">{heroPriceSub}</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-8 py-4 rounded text-center hover:opacity-85 transition-opacity duration-200">
+                <a href="#order" className="font-body text-[13px] font-bold bg-brand-teal text-white no-underline px-8 py-4 rounded-full text-center hover:opacity-85 transition-opacity duration-200">
                   Order Now
                 </a>
-                <a href="#about" className="font-body text-[11px] font-normal tracking-[2.5px] uppercase no-underline px-8 py-4 rounded text-center border border-brand-border text-brand-muted hover:border-brand-teal hover:text-brand-teal transition-colors duration-200">
+                <a href="#about" className="font-body text-[13px] font-normal no-underline px-8 py-4 rounded-lg text-center border border-brand-border text-brand-muted hover:border-brand-teal hover:text-brand-teal transition-colors duration-200">
                   The Story
                 </a>
               </div>
@@ -223,7 +223,7 @@ export default async function KimchiPage() {
             <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-brand-dark leading-[1.55] tracking-tight mb-6">
               &ldquo;{valentinQuote}&rdquo;
             </p>
-            <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
+            <cite className="font-body text-[13px] text-brand-teal not-italic">
               Valentin Thang, aged 13 &middot; Putney, London
             </cite>
           </blockquote>
@@ -241,7 +241,7 @@ export default async function KimchiPage() {
           <div className="w-10 h-px bg-brand-border mt-5 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {taste.map(({ label, desc }) => (
-              <div key={label} className="bg-brand-light border border-brand-border rounded-lg p-6 hover:bg-brand-green-light transition-colors duration-200">
+              <div key={label} className="bg-brand-light border border-brand-border rounded-2xl p-6 hover:bg-brand-green-light transition-colors duration-200">
                 <p className="font-body text-base font-bold text-brand-dark mb-2 tracking-tight">{label}</p>
                 <div className="w-6 h-px bg-brand-border mb-3" />
                 <p className="font-body text-sm text-brand-muted leading-[1.7]">{desc}</p>
@@ -266,8 +266,8 @@ export default async function KimchiPage() {
             <p className="font-body text-sm text-brand-muted leading-[1.85]">{recipeBody2}</p>
           </div>
 
-          <div className="bg-white border border-brand-border rounded-lg p-6 md:p-8">
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">What&rsquo;s in it</p>
+          <div className="bg-white border border-brand-border rounded-2xl p-6 md:p-8">
+            <p className="font-body text-[13px] text-brand-muted mb-4">What&rsquo;s in it</p>
             {[
               ['Napa cabbage', 'One whole big head per 2kg jar'],
               ['Gochugaru + chilli blend', 'Blended smooth into the paste'],
@@ -297,7 +297,7 @@ export default async function KimchiPage() {
           <div className="w-10 h-px bg-brand-border mx-auto mt-5 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {pairings.map(({ label, desc }) => (
-              <div key={label} className="bg-brand-light border border-brand-border rounded-lg p-5 hover:bg-brand-green-light transition-colors duration-200">
+              <div key={label} className="bg-brand-light border border-brand-border rounded-2xl p-5 hover:bg-brand-green-light transition-colors duration-200">
                 <p className="font-body text-sm font-bold text-brand-dark mb-2">{label}</p>
                 <div className="w-6 h-px bg-brand-border mb-2.5" />
                 <p className="font-body text-sm text-brand-muted leading-[1.7]">{desc}</p>
@@ -305,7 +305,7 @@ export default async function KimchiPage() {
             ))}
           </div>
 
-          <div className="mt-10 bg-brand-light border border-brand-border rounded-lg px-6 py-6 md:px-8 md:py-7 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div className="mt-10 bg-brand-light border border-brand-border rounded-2xl px-6 py-6 md:px-8 md:py-7 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-2">
               <p className="font-accent text-[clamp(14px,2vw,18px)] text-brand-teal mb-3 leading-none">Pro tip: leftover kimchi sauce</p>
               <p className="font-body text-sm text-brand-muted leading-[1.75]">
@@ -314,20 +314,20 @@ export default async function KimchiPage() {
                 I tested this after a fishing trip to Weymouth. Still one of the best things I&rsquo;ve eaten.
               </p>
             </div>
-            <div className="bg-white border border-brand-border rounded-lg p-5 text-center">
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-2">The formula</p>
+            <div className="bg-white border border-brand-border rounded-2xl p-5 text-center">
+              <p className="font-body text-[13px] text-brand-muted mb-2">The formula</p>
               <p className="font-display font-light text-[28px] text-brand-dark leading-snug">
                 Sauce + fish<br />+ butter + rice
               </p>
             </div>
           </div>
 
-          <blockquote className="mt-8 mx-auto max-w-[520px] bg-brand-light border border-brand-border rounded-lg px-6 py-5 text-center">
+          <blockquote className="mt-8 mx-auto max-w-[520px] bg-brand-light border border-brand-border rounded-2xl px-6 py-5 text-center">
             <p className="font-body text-sm italic text-brand-dark leading-[1.8] mb-2">
               &ldquo;If you&rsquo;re depressed, buy kimchi. If you&rsquo;re lonely, buy kimchi.
               Just buy kimchi: because kimchi will make you happy.&rdquo;
             </p>
-            <cite className="font-body text-[11px] tracking-[1.8px] uppercase text-brand-muted not-italic">Valentin, aged 13</cite>
+            <cite className="font-body text-[13px] text-brand-muted not-italic">Valentin, aged 13</cite>
           </blockquote>
         </ContainerStandard>
       </section>
@@ -347,15 +347,15 @@ export default async function KimchiPage() {
             </div>
             <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {storageStages.map(({ stage, note }) => (
-                <div key={stage} className="bg-brand-light border border-brand-border rounded-lg p-5">
-                  <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mb-2">{stage}</p>
+                <div key={stage} className="bg-brand-light border border-brand-border rounded-2xl p-5">
+                  <p className="font-body text-[13px] font-bold text-brand-teal mb-2">{stage}</p>
                   <p className="font-body text-sm text-brand-muted leading-[1.7]">{note}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-brand-light border border-brand-border rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-brand-light border border-brand-border rounded-2xl px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="font-accent text-[clamp(18px,2.5vw,26px)] text-brand-teal mb-3 leading-none">{storageTip1Title}</p>
               <p className="font-body text-sm text-brand-muted leading-[1.75]">{storageTip1Body}</p>
@@ -382,7 +382,7 @@ export default async function KimchiPage() {
             <div className="space-y-5 mb-8">
               {orderSteps.map(({ title, body }, i) => (
                 <div key={i} className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded flex items-center justify-center">
+                  <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded-2xl flex items-center justify-center">
                     <span className="font-display text-xl font-normal text-brand-teal leading-none">{i + 1}</span>
                   </div>
                   <div>
@@ -393,8 +393,8 @@ export default async function KimchiPage() {
               ))}
             </div>
 
-            <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-5 mb-6">
-              <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Pricing</p>
+            <div className="bg-brand-green-light border border-brand-border rounded-2xl px-5 py-5 mb-6">
+              <p className="font-body text-[13px] text-brand-muted mb-2">Pricing</p>
               {linkedWeights.length > 0 ? (
                 <div className="space-y-2">
                   {linkedWeights.map((w, i) => (
@@ -417,14 +417,14 @@ export default async function KimchiPage() {
           </div>
 
           <div>
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Order form</p>
+            <p className="font-body text-[13px] text-brand-muted mb-5">Order form</p>
             <KimchiOrderForm
               pricePerJar={linkedProduct?.price ? parseFloat(linkedProduct.price.replace(/[^0-9.]/g, '')) || 15 : 15}
               variants={linkedWeights}
             />
 
-            <div className="mt-6 bg-brand-green-light border border-brand-border rounded-lg px-5 py-4">
-              <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-3">Dietary options</p>
+            <div className="mt-6 bg-brand-green-light border border-brand-border rounded-2xl px-5 py-4">
+              <p className="font-body text-[13px] text-brand-muted mb-3">Dietary options</p>
               <div className="space-y-2">
                 {[
                   ['Standard', 'Fish sauce, soy sauce, dried shrimp: full recipe'],
@@ -432,7 +432,7 @@ export default async function KimchiPage() {
                   ['Vegan', 'Fish sauce and meat products removed: just ask'],
                 ].map(([diet, note]) => (
                   <div key={diet} className="flex gap-3 items-start">
-                    <span className="font-body text-[11px] font-bold tracking-[1px] uppercase text-brand-teal w-[90px] flex-shrink-0 pt-[1px]">{diet}</span>
+                    <span className="font-body text-[13px] font-bold text-brand-teal w-[90px] flex-shrink-0 pt-[1px]">{diet}</span>
                     <span className="font-body text-sm text-brand-muted leading-[1.6]">{note}</span>
                   </div>
                 ))}
@@ -460,10 +460,10 @@ export default async function KimchiPage() {
             Just get the <span className="font-semibold italic text-brand-teal">kimchi.</span>
           </h2>
           <div className="w-12 h-px bg-brand-border mx-auto mt-5 mb-5" />
-          <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-8">
+          <p className="font-body text-[13px] text-brand-muted mb-8">
             {linkedProduct?.price ?? heroPrice} &middot; 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
           </p>
-          <a href="#order" className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white no-underline px-10 py-4 rounded inline-block hover:opacity-85 transition-opacity duration-200">
+          <a href="#order" className="font-body text-[13px] font-bold bg-brand-teal text-white no-underline px-10 py-4 rounded-full inline-block hover:opacity-85 transition-opacity duration-200">
             Order Now
           </a>
         </ContainerStandard>

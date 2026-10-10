@@ -37,11 +37,11 @@ function AvatarContainer({ src, editMode, onSave, onCropSave }: {
         <div style={{ position: 'absolute', bottom: -38, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6, whiteSpace: 'nowrap', opacity: hovered ? 1 : 0, transition: 'opacity 0.15s', pointerEvents: hovered ? 'auto' : 'none' }}>
           {src && (
             <button onClick={() => setRepositioning(true)}
-              style={{ padding: '4px 10px', fontSize: 11, fontWeight: 700, fontFamily: "'Nunito', sans-serif", background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.06em', textTransform: 'uppercase' }}
+              style={{ padding: '4px 10px', fontSize: 13, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', }}
             >Reposition</button>
           )}
           <button onClick={() => setPicking(true)}
-            style={{ padding: '4px 10px', fontSize: 11, fontWeight: 700, fontFamily: "'Nunito', sans-serif", background: '#1a1a1a', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.06em', textTransform: 'uppercase' }}
+            style={{ padding: '4px 10px', fontSize: 13, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", background: '#1a1a1a', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', }}
           >Change photo</button>
         </div>
       )}
@@ -139,7 +139,7 @@ export function AboutTab({ t }: Props) {
               onCropSave={async (x, y, zoom) => { await editCtx?.onFieldUpdate('about.avatar.crop', `${x} ${y} ${zoom}`) }}
             />
             <p className="font-display text-[22px] font-normal text-brand-dark mb-1">Valentin Thang</p>
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted">
+            <p className="font-body text-[13px] text-brand-muted">
               <EditableText value={t.taglineSub} onSave={save('about.tagline_sub')} editMode={editMode} as="span" />
             </p>
           </div>
@@ -178,11 +178,11 @@ export function AboutTab({ t }: Props) {
             <p className="font-body text-sm text-brand-muted leading-[1.85] mb-6">
               <EditableText value={t.aboutBody2} onSave={save('about.body2')} editMode={editMode} as="span" multiline />
             </p>
-            <blockquote className="m-0 px-6 py-5 bg-white border border-brand-border rounded-lg">
+            <blockquote className="m-0 px-6 py-5 bg-white border border-brand-border rounded-2xl">
               <p className="font-display text-[18px] font-light italic text-brand-dark leading-[1.6] mb-2">
                 <EditableText value={t.aboutQuote} onSave={save('about.quote')} editMode={editMode} as="span" multiline />
               </p>
-              <cite className="font-body block text-[11px] tracking-[1.8px] uppercase text-brand-muted not-italic">
+              <cite className="font-body block text-[13px] text-brand-muted not-italic">
                 <EditableText value={t.aboutQuoteCredit} onSave={save('about.quote_credit')} editMode={editMode} as="span" />
               </cite>
             </blockquote>
@@ -223,7 +223,7 @@ export function AboutTab({ t }: Props) {
               [t.storyTitle3, t.storyBody3, 'story.title3', 'story.body3'],
               [t.storyTitle4, t.storyBody4, 'story.title4', 'story.body4'],
             ] as [string, string, string, string][]).map(([title, body, tKey, bKey]) => (
-              <div key={tKey} className="bg-white rounded-lg border border-brand-border px-6 py-6">
+              <div key={tKey} className="bg-white rounded-2xl border border-brand-border px-6 py-6">
                 <h3 className="font-display font-semibold text-[18px] text-brand-dark leading-snug mb-3">
                   <EditableText value={title} onSave={save(tKey)} editMode={editMode} as="span" />
                 </h3>

@@ -59,8 +59,7 @@ export default async function BlogPage({
                 href={cat === 'all' ? '/blog' : `/blog?category=${cat}`}
                 style={{
                   display: 'inline-block', padding: '6px 16px', borderRadius: 99,
-                  fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 600,
-                  letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none',
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, textDecoration: 'none',
                   background: activeCategory === cat ? '#1a1a1a' : '#fff',
                   color: activeCategory === cat ? '#fff' : 'rgba(26,26,26,0.5)',
                   border: activeCategory === cat ? '1px solid #1a1a1a' : '1px solid #e8e3dc',
@@ -91,7 +90,7 @@ export default async function BlogPage({
                     </div>
                   )}
                   <div className="p-6 flex flex-col flex-1">
-                    <p className="font-body text-[10px] tracking-[2px] uppercase text-brand-teal mb-3">
+                    <p className="font-body text-[12px] text-brand-teal mb-3">
                       {CATEGORY_LABELS[post.category] || post.category}
                       {post.publishedAt && (
                         <span className="text-brand-muted ml-2">
@@ -105,7 +104,7 @@ export default async function BlogPage({
                     {post.excerpt && (
                       <p className="font-body text-sm text-brand-muted leading-[1.75] mb-4">{post.excerpt}</p>
                     )}
-                    <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mt-auto">
+                    <p className="font-body text-[13px] font-bold text-brand-teal mt-auto">
                       Read →
                     </p>
                   </div>

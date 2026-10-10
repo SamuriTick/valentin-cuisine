@@ -27,7 +27,7 @@ export function StaticFooter() {
               { href: '/privacy', label: 'Privacy policy' },
             ].map(({ href, label }) => (
               <Link key={href} href={href} style={{
-                fontFamily: "'Nunito', sans-serif", fontSize: 13,
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13,
                 letterSpacing: 0.2, textDecoration: 'none',
                 color: 'rgba(26,26,26,0.5)',
               }}>
@@ -43,8 +43,7 @@ export function StaticFooter() {
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 clamp(16px, 5vw, 60px)' }}>
           <p style={{
             padding: '16px 0', margin: 0,
-            fontFamily: "'Nunito', sans-serif", fontSize: 11,
-            letterSpacing: 1.5, textTransform: 'uppercase',
+            fontFamily: "'DM Sans', sans-serif", fontSize: 13,
             color: 'rgba(26,26,26,0.35)', textAlign: 'center',
           }}>
             Valentin&rsquo;s Cuisine &middot; Putney, London &middot; Made with love

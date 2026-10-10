@@ -85,10 +85,10 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
 
   if (status === 'sent') {
     return (
-      <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-lg text-center">
+      <div className="px-8 py-10 bg-brand-green-light border border-brand-border rounded-2xl text-center">
         <p className="font-body text-xl font-semibold text-brand-dark mb-2">Order sent!</p>
         <p className="font-body text-sm text-brand-muted mb-6">Thanks {form.name}! To confirm your order, please pay by bank transfer:</p>
-        <div className="mx-auto max-w-sm text-left bg-white border border-brand-border rounded-md divide-y divide-brand-border">
+        <div className="mx-auto max-w-sm text-left bg-white border border-brand-border rounded-xl divide-y divide-brand-border">
           {[
             ['Name', BANK_NAME],
             ['Sort code', BANK_SORT],
@@ -97,7 +97,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
             ['Reference', form.name],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between gap-4 px-4 py-3">
-              <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">{k}</span>
+              <span className="font-body text-[13px] text-brand-muted">{k}</span>
               <span className="font-body text-sm text-brand-dark font-semibold text-right">{v}</span>
             </div>
           ))}
@@ -112,36 +112,36 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
       {status === 'error' && (
-        <div className="px-4 py-3 bg-red-50 border border-red-200 text-red-700 font-body text-[13px] rounded-md">
+        <div className="px-4 py-3 bg-red-50 border border-red-200 text-red-700 font-body text-[13px] rounded-xl">
           Something went wrong — please try again.
         </div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Name *</label>
+          <label className="block font-body text-[13px] text-brand-muted mb-2">Name *</label>
           <input type="text" required value={form.name} onChange={e => set('name', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal" />
+            className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal" />
         </div>
         <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Email *</label>
+          <label className="block font-body text-[13px] text-brand-muted mb-2">Email *</label>
           <input type="email" required value={form.email} onChange={e => { set('email', e.target.value); setEmailError('') }}
-            className={`w-full px-4 py-3 bg-white border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal ${emailError ? 'border-red-400' : 'border-brand-border'}`} />
+            className={`w-full px-4 py-3 bg-white border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal ${emailError ? 'border-red-400' : 'border-brand-border'}`} />
           {emailError && <p className="font-body text-[12px] text-red-600 mt-1">{emailError}</p>}
         </div>
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Phone number</label>
+        <label className="block font-body text-[13px] text-brand-muted mb-2">Phone number</label>
         <input type="tel" placeholder="Optional" value={form.phone} onChange={e => set('phone', e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
       </div>
 
       {hasVariants && (
         <div>
-          <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Size</label>
+          <label className="block font-body text-[13px] text-brand-muted mb-2">Size</label>
           <select value={form.variantIndex} onChange={e => set('variantIndex', e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
+            className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
             {variants.map((v, i) => (
               <option key={i} value={i}>{v.amount}{v.unit} ({withPound(v.price)})</option>
             ))}
@@ -150,11 +150,11 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       )}
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">
+        <label className="block font-body text-[13px] text-brand-muted mb-2">
           {hasVariants ? 'How many?' : 'How many jars?'}
         </label>
         <select value={form.jars} onChange={e => set('jars', e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal cursor-pointer">
           {Array.from({ length: 10 }, (_, i) => String(i + 1)).map(n => {
             const label = hasVariants
               ? n
@@ -170,23 +170,23 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Dietary requirements</label>
+        <label className="block font-body text-[13px] text-brand-muted mb-2">Dietary requirements</label>
         <input type="text" placeholder="Any dietary needs or allergies?" value={form.dietary} onChange={e => set('dietary', e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal placeholder:text-brand-muted/50" />
       </div>
 
-      <div className="px-4 py-3 bg-brand-green-light border border-brand-border rounded-md font-body text-[13px] text-brand-dark">
+      <div className="px-4 py-3 bg-brand-green-light border border-brand-border rounded-xl font-body text-[13px] text-brand-dark">
         Collection only, from Putney (SW London). Ready to collect on the 25th.
       </div>
 
       <div>
-        <label className="block font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-2">Anything else?</label>
+        <label className="block font-body text-[13px] text-brand-muted mb-2">Anything else?</label>
         <textarea rows={3} placeholder="Timing, special requests..." value={form.details} onChange={e => set('details', e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-brand-border rounded-md font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50" />
+          className="w-full px-4 py-3 bg-white border border-brand-border rounded-xl font-body text-sm text-brand-dark outline-none transition-colors duration-200 focus:border-brand-teal resize-y placeholder:text-brand-muted/50" />
       </div>
 
       <button type="submit" disabled={status === 'sending'}
-        className={`w-full font-body text-[11px] font-bold tracking-[2px] uppercase text-white py-4 px-8 rounded transition-opacity duration-200 hover:opacity-85 ${status === 'sending' ? 'bg-brand-muted cursor-not-allowed' : 'bg-brand-teal cursor-pointer'}`}>
+        className={`w-full font-body text-[13px] font-bold text-white py-4 px-8 rounded-full transition-opacity duration-200 hover:opacity-85 ${status === 'sending' ? 'bg-brand-muted cursor-not-allowed' : 'bg-brand-teal cursor-pointer'}`}>
         {status === 'sending' ? 'Sending…' : 'Send Order Request'}
       </button>
 

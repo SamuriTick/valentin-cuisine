@@ -52,8 +52,8 @@ export function MentoringSection({ t: tProp }: Props = {}) {
             </p>
           </div>
 
-          <div className="bg-brand-light border border-brand-border rounded-lg p-8">
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">What I am looking for</p>
+          <div className="bg-brand-light border border-brand-border rounded-2xl p-8">
+            <p className="font-body text-[13px] text-brand-muted mb-4">What I am looking for</p>
             <div className="space-y-4 mb-8">
               {([
                 [item1Label, item1Body, 'mentor.item1.label', 'mentor.item1.body'],
@@ -76,7 +76,7 @@ export function MentoringSection({ t: tProp }: Props = {}) {
             <Link
               href="/contact"
               onClick={e => { if (editMode) e.preventDefault() }}
-              className="inline-block font-body text-[11px] font-bold tracking-[2px] uppercase text-white bg-brand-teal no-underline px-8 py-3 rounded hover:opacity-85 transition-opacity duration-200"
+              className="inline-block font-body text-[13px] font-bold text-white bg-brand-teal no-underline px-8 py-3 rounded-full hover:opacity-85 transition-opacity duration-200"
             >
               Mentor Me
             </Link>

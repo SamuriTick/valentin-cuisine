@@ -69,7 +69,7 @@ export default function PrivacyPage() {
         <div className="mt-14 pt-8 border-t border-brand-border">
           <Link
             href="/"
-            className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal no-underline"
+            className="font-body text-[13px] font-bold text-brand-teal no-underline"
           >
             ← Back home
           </Link>

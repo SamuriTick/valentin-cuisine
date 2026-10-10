@@ -58,10 +58,10 @@ export default async function ContactPage() {
           {/* Left: context */}
           <div>
             <div className="mb-10">
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">About food</p>
+              <p className="font-body text-[13px] text-brand-muted mb-4">About food</p>
               <div className="space-y-4">
                 {foodItems.map(({ label, body }) => (
-                  <div key={label} className="bg-white border border-brand-border rounded-lg px-5 py-4">
+                  <div key={label} className="bg-white border border-brand-border rounded-2xl px-5 py-4">
                     <p className="font-body text-sm font-semibold text-brand-dark mb-1">{label}</p>
                     <p className="font-body text-sm text-brand-muted leading-[1.7]">{body}</p>
                   </div>
@@ -70,8 +70,8 @@ export default async function ContactPage() {
             </div>
 
             <div>
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">About mentoring</p>
-              <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-5">
+              <p className="font-body text-[13px] text-brand-muted mb-4">About mentoring</p>
+              <div className="bg-brand-green-light border border-brand-border rounded-2xl px-5 py-5">
                 <p className="font-body text-sm text-brand-muted leading-[1.8]">{mentorBody}</p>
               </div>
             </div>
@@ -79,7 +79,7 @@ export default async function ContactPage() {
 
           {/* Right: form */}
           <div>
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Send a message</p>
+            <p className="font-body text-[13px] text-brand-muted mb-5">Send a message</p>
             <ContactForm />
           </div>
 

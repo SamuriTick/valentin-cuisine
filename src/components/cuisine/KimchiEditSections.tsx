@@ -97,7 +97,7 @@ export function KimchiEditSections({ t }: Props) {
               <div className="relative w-full h-full flex items-center justify-center">
                 <div className="text-center px-8">
                   <p className="font-display text-[80px] text-brand-teal leading-none">김치</p>
-                  <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
                 </div>
                 {editMode && (
                   <EditableImage
@@ -143,7 +143,7 @@ export function KimchiEditSections({ t }: Props) {
               <span className="font-display text-[clamp(32px,4vw,44px)] text-brand-dark leading-none">
                 <EditableText value={t.heroPrice} onSave={save('kimchi.hero.price')} editMode={editMode} as="span" />
               </span>
-              <span className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted">
+              <span className="font-body text-[13px] text-brand-muted">
                 <EditableText value={t.heroPriceSub} onSave={save('kimchi.hero.price_sub')} editMode={editMode} as="span" />
               </span>
             </div>
@@ -158,7 +158,7 @@ export function KimchiEditSections({ t }: Props) {
             <p className="font-display font-light text-[clamp(20px,3.5vw,30px)] text-brand-dark leading-[1.55] tracking-tight mb-6">
               &ldquo;<EditableText value={t.quote} onSave={save('kimchi.quote')} editMode={editMode} as="span" multiline />&rdquo;
             </p>
-            <cite className="font-body text-[11px] tracking-[2px] uppercase text-brand-teal not-italic">
+            <cite className="font-body text-[13px] text-brand-teal not-italic">
               Valentin Thang, aged 13 · Putney, London
             </cite>
           </blockquote>
@@ -181,7 +181,7 @@ export function KimchiEditSections({ t }: Props) {
           <div className="w-10 h-px bg-brand-border mt-5 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {t.taste.map((item, i) => (
-              <div key={i} className="bg-brand-light border border-brand-border rounded-lg p-6">
+              <div key={i} className="bg-brand-light border border-brand-border rounded-2xl p-6">
                 <p className="font-body text-base font-bold text-brand-dark mb-2 tracking-tight">
                   <EditableText value={item.label} onSave={save(`kimchi.taste.${i}.label`)} editMode={editMode} as="span" />
                 </p>
@@ -217,8 +217,8 @@ export function KimchiEditSections({ t }: Props) {
               <EditableText value={t.recipeBody2} onSave={save('kimchi.recipe.body2')} editMode={editMode} as="span" multiline />
             </p>
           </div>
-          <div className="bg-white border border-brand-border rounded-lg p-6">
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">What&rsquo;s in it (hardcoded — edit in code)</p>
+          <div className="bg-white border border-brand-border rounded-2xl p-6">
+            <p className="font-body text-[13px] text-brand-muted mb-4">What&rsquo;s in it (hardcoded — edit in code)</p>
             <p className="font-body text-[12px] text-brand-muted italic">Napa cabbage, gochugaru, garlic, ginger, onions, soy sauce, fish sauce, dried Vietnamese shrimp, vinegar</p>
           </div>
         </ContainerStandard>
@@ -236,7 +236,7 @@ export function KimchiEditSections({ t }: Props) {
           <div className="w-10 h-px bg-brand-border mx-auto mt-5 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {t.pairings.map((item, i) => (
-              <div key={i} className="bg-brand-light border border-brand-border rounded-lg p-5">
+              <div key={i} className="bg-brand-light border border-brand-border rounded-2xl p-5">
                 <p className="font-body text-sm font-bold text-brand-dark mb-2">
                   <EditableText value={item.label} onSave={save(`kimchi.pairings.${i}.label`)} editMode={editMode} as="span" />
                 </p>
@@ -272,8 +272,8 @@ export function KimchiEditSections({ t }: Props) {
             </div>
             <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {t.storageStages.map((item, i) => (
-                <div key={i} className="bg-brand-light border border-brand-border rounded-lg p-5">
-                  <p className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-brand-teal mb-2">
+                <div key={i} className="bg-brand-light border border-brand-border rounded-2xl p-5">
+                  <p className="font-body text-[13px] font-bold text-brand-teal mb-2">
                     <EditableText value={item.stage} onSave={save(`kimchi.storage.stage.${i}.stage`)} editMode={editMode} as="span" />
                   </p>
                   <p className="font-body text-sm text-brand-muted leading-[1.7]">
@@ -283,7 +283,7 @@ export function KimchiEditSections({ t }: Props) {
               ))}
             </div>
           </div>
-          <div className="bg-brand-light border border-brand-border rounded-lg px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-brand-light border border-brand-border rounded-2xl px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="font-accent text-[clamp(18px,2.5vw,26px)] text-brand-teal mb-3 leading-none">
                 <EditableText value={t.storageTip1Title} onSave={save('kimchi.storage.tip1.title')} editMode={editMode} as="span" />
@@ -319,7 +319,7 @@ export function KimchiEditSections({ t }: Props) {
           <div className="space-y-5 max-w-xl">
             {t.orderSteps.map((step, i) => (
               <div key={i} className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded flex items-center justify-center">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-green-light border border-brand-border rounded-2xl flex items-center justify-center">
                   <span className="font-display text-xl font-normal text-brand-teal leading-none">{i + 1}</span>
                 </div>
                 <div>

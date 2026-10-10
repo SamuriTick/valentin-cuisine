@@ -33,7 +33,7 @@ export function SpecialtiesTab({ t }: Props) {
           {t.dishes.map((dish, i) => (
             <div
               key={i}
-              className="bg-brand-light border border-brand-border rounded-lg p-6 transition-colors duration-200 hover:bg-brand-green-light"
+              className="bg-brand-light border border-brand-border rounded-2xl p-6 transition-colors duration-200 hover:bg-brand-green-light"
             >
               <h3 className="font-display font-semibold text-[18px] text-brand-dark mb-3 leading-snug">
                 <EditableText value={dish.name} onSave={save(`dish.${i}.name`)} editMode={editMode} as="span" />
@@ -50,14 +50,14 @@ export function SpecialtiesTab({ t }: Props) {
           <a
             href="/kimchi"
             onClick={e => { if (editMode) e.preventDefault() }}
-            className="inline-block font-body text-[11px] font-bold tracking-[2.5px] uppercase text-white bg-brand-teal px-10 py-4 rounded no-underline transition-opacity duration-200 hover:opacity-85"
+            className="inline-block font-body text-[13px] font-bold text-white bg-brand-teal px-10 py-4 rounded-full no-underline transition-opacity duration-200 hover:opacity-85"
           >
             Order Kimchi
           </a>
           <a
             href="/contact"
             onClick={e => { if (editMode) e.preventDefault() }}
-            className="inline-block font-body text-[11px] font-bold tracking-[2.5px] uppercase text-brand-teal bg-white border border-brand-teal px-10 py-4 rounded no-underline transition-opacity duration-200 hover:opacity-85"
+            className="inline-block font-body text-[13px] font-bold text-brand-teal bg-white border border-brand-teal px-10 py-4 rounded-lg no-underline transition-opacity duration-200 hover:opacity-85"
           >
             Order anything else
           </a>

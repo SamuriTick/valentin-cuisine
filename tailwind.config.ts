@@ -102,7 +102,7 @@ const config: Config = {
       heading: ["Inter", "system-ui", ...defaultTheme.fontFamily.sans],
       stock: [defaultTheme.fontFamily.sans],
       display: ["'Cormorant Garamond'", "serif"],
-      body: ["'Nunito'", "sans-serif"],
+      body: ["'DM Sans'", "sans-serif"],
       'serif-display': ["'DM Serif Display'", "serif"],
       accent: ["'Great Vibes'", "cursive"],
     },

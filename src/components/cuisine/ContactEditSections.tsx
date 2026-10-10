@@ -50,10 +50,10 @@ export function ContactEditSections({ t }: Props) {
           {/* Left: info cards */}
           <div>
             <div className="mb-10">
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">About food</p>
+              <p className="font-body text-[13px] text-brand-muted mb-4">About food</p>
               <div className="space-y-4">
                 {t.foodItems.map((item, i) => (
-                  <div key={i} className="bg-white border border-brand-border rounded-lg px-5 py-4">
+                  <div key={i} className="bg-white border border-brand-border rounded-2xl px-5 py-4">
                     <p className="font-body text-sm font-semibold text-brand-dark mb-1">
                       <EditableText value={item.label} onSave={save(`contact.food.${i}.label`)} editMode={editMode} as="span" />
                     </p>
@@ -66,8 +66,8 @@ export function ContactEditSections({ t }: Props) {
             </div>
 
             <div>
-              <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-4">About mentoring</p>
-              <div className="bg-brand-green-light border border-brand-border rounded-lg px-5 py-5">
+              <p className="font-body text-[13px] text-brand-muted mb-4">About mentoring</p>
+              <div className="bg-brand-green-light border border-brand-border rounded-2xl px-5 py-5">
                 <p className="font-body text-sm text-brand-muted leading-[1.8]">
                   <EditableText value={t.mentorBody} onSave={save('contact.mentor.body')} editMode={editMode} as="span" multiline />
                 </p>
@@ -77,7 +77,7 @@ export function ContactEditSections({ t }: Props) {
 
           {/* Right: real form (non-interactive in edit mode) */}
           <div>
-            <p className="font-body text-[11px] tracking-[2px] uppercase text-brand-muted mb-5">Send a message</p>
+            <p className="font-body text-[13px] text-brand-muted mb-5">Send a message</p>
             <div style={{ position: 'relative' }}>
               <ContactForm />
               {editMode && (

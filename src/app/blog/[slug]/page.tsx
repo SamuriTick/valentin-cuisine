@@ -77,7 +77,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <ContainerStandard className="py-12 md:py-16 max-w-[720px]">
 
           {/* Breadcrumb */}
-          <p className="font-body text-[11px] tracking-[1.5px] uppercase text-brand-muted mb-8">
+          <p className="font-body text-[13px] text-brand-muted mb-8">
             <Link href="/blog" style={{ color: '#2a7c6f', textDecoration: 'none' }}>Blog</Link>
             <span className="mx-2">·</span>
             {CATEGORY_LABELS[post.category] || post.category}
@@ -114,8 +114,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="mt-12 pt-8 border-t border-brand-border flex gap-2 flex-wrap">
               {post.tags.split(',').map(tag => (
                 <span key={tag} style={{
-                  padding: '4px 12px', fontSize: 10, letterSpacing: '0.15em',
-                  textTransform: 'uppercase', fontFamily: "'Nunito', sans-serif", fontWeight: 600,
+                  padding: '4px 12px', fontSize: 12, fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
                   background: '#f4f1ed', color: '#7A7060',
                   border: '1px solid #e8e3dc', borderRadius: 99,
                 }}>
@@ -127,8 +126,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="mt-10">
             <Link href="/blog" style={{
-              fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 700,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700,
               color: '#2a7c6f', textDecoration: 'none',
             }}>
               ← Back to Blog

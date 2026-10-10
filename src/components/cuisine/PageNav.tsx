@@ -20,7 +20,7 @@ export function PageNav() {
       <div className="max-w-[1160px] mx-auto px-[clamp(16px,4vw,40px)] h-[68px] flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="font-serif-display text-[clamp(18px,4vw,24px)] text-brand-teal no-underline tracking-[2px] uppercase flex flex-col leading-[1.1]">
+        <Link href="/" className="font-serif-display text-[clamp(18px,4vw,24px)] text-brand-teal no-underline flex flex-col leading-[1.1]">
           {t.tagline}
           <span className="font-body text-[11px] italic text-brand-gold tracking-[1px] font-normal">
             {t.taglineSub}
@@ -34,7 +34,7 @@ export function PageNav() {
               <Link
                 key={href}
                 href={href}
-                className={`font-body text-[11px] tracking-[1.5px] uppercase no-underline px-3 py-[6px] border-b-2 transition-colors duration-200 ${
+                className={`font-body text-[13px] no-underline px-3 py-[6px] border-b-2 transition-colors duration-200 ${
                   pathname === href
                     ? 'font-bold text-brand-teal border-brand-teal'
                     : 'font-medium text-brand-muted border-transparent'
@@ -50,7 +50,7 @@ export function PageNav() {
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`px-[10px] py-[5px] font-body text-[10px] font-bold tracking-[1.5px] uppercase border-0 cursor-pointer ${
+                className={`px-[10px] py-[5px] font-body text-[12px] font-bold border-0 cursor-pointer ${
                   lang === l ? 'bg-brand-teal text-white' : 'bg-transparent text-brand-muted'
                 }`}
               >
@@ -59,7 +59,7 @@ export function PageNav() {
             ))}
           </div>
 
-          <Link href="/kimchi" className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
+          <Link href="/kimchi" className="font-body text-[13px] font-bold text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]">
             Order Kim Chi
           </Link>
         </div>
@@ -84,7 +84,7 @@ export function PageNav() {
               key={href}
               href={href}
               onClick={() => setMenuOpen(false)}
-              className={`font-body text-[13px] tracking-[1.5px] uppercase no-underline py-[10px] border-b border-brand-border ${
+              className={`font-body text-[13px] no-underline py-[10px] border-b border-brand-border ${
                 pathname === href ? 'font-bold text-brand-teal' : 'font-medium text-brand-muted'
               }`}
             >
@@ -98,7 +98,7 @@ export function PageNav() {
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-[10px] py-[5px] font-body text-[10px] font-bold tracking-[1.5px] uppercase border-0 cursor-pointer ${
+                  className={`px-[10px] py-[5px] font-body text-[12px] font-bold border-0 cursor-pointer ${
                     lang === l ? 'bg-brand-teal text-white' : 'bg-transparent text-brand-muted'
                   }`}
                 >
@@ -110,7 +110,7 @@ export function PageNav() {
             <Link
               href="/kimchi"
               onClick={() => setMenuOpen(false)}
-              className="font-body text-[11px] font-bold tracking-[1.5px] uppercase text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]"
+              className="font-body text-[13px] font-bold text-white bg-brand-teal no-underline px-[18px] py-2 rounded-[2px]"
             >
               Order Kim Chi
             </Link>

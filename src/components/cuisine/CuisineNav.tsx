@@ -45,8 +45,7 @@ export function CuisineNav({ t, lang, setLang }: Props) {
         <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
           {NAV_LINKS.map(({ href, label }) => (
             <Link key={href} href={href} style={{
-              fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 400,
-              letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400, textDecoration: 'none',
               color: pathname === href ? '#1a1a1a' : 'rgba(26,26,26,0.5)',
               transition: 'color 0.2s',
             }}>
@@ -55,9 +54,8 @@ export function CuisineNav({ t, lang, setLang }: Props) {
           ))}
           <span style={{ width: 1, height: 16, background: '#ece8df', display: 'inline-block' }} />
           <Link href="/kimchi" style={{
-            fontFamily: "'Nunito', sans-serif", fontSize: 11, fontWeight: 700,
-            letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
-            background: '#b03060', color: '#fff', padding: '6px 14px', borderRadius: 4,
+            fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, textDecoration: 'none',
+            background: '#b03060', color: '#fff', padding: '6px 14px', borderRadius: 999,
             transition: 'opacity 0.2s',
           }}>
             Order Kimchi
@@ -88,8 +86,7 @@ export function CuisineNav({ t, lang, setLang }: Props) {
         }}>
           {NAV_LINKS.map(({ href, label }) => (
             <Link key={href} href={href} onClick={() => setMenuOpen(false)} style={{
-              fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: pathname === href ? 600 : 400,
-              letterSpacing: 1.5, textTransform: 'uppercase', textDecoration: 'none',
+              fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: pathname === href ? 600 : 400, textDecoration: 'none',
               color: pathname === href ? '#1a1a1a' : 'rgba(26,26,26,0.55)',
               padding: '14px 0', borderBottom: '1px solid #f0ece4',
             }}>
@@ -97,10 +94,9 @@ export function CuisineNav({ t, lang, setLang }: Props) {
             </Link>
           ))}
           <Link href="/kimchi" onClick={() => setMenuOpen(false)} style={{
-            fontFamily: "'Nunito', sans-serif", fontSize: 12, fontWeight: 700,
-            letterSpacing: 1.5, textTransform: 'uppercase', color: '#fff',
+            fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 700, color: '#fff',
             textDecoration: 'none', display: 'inline-block', marginTop: 20,
-            background: '#b03060', padding: '10px 20px', borderRadius: 4,
+            background: '#b03060', padding: '10px 20px', borderRadius: 999,
             textAlign: 'center',
           }}>
             Order Kimchi

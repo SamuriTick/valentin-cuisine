@@ -96,14 +96,14 @@ export function HeroSection({ t, heroImage = '/valentin-hero.jpg', heroImageCrop
               <a
                 href="/kimchi"
                 onClick={e => { if (editMode) e.preventDefault() }}
-                className="font-body text-[11px] font-bold tracking-[2.5px] uppercase bg-brand-teal text-white px-8 py-4 rounded no-underline text-center"
+                className="font-body text-[13px] font-bold bg-brand-teal text-white px-8 py-4 rounded-full no-underline text-center"
               >
                 <EditableText value={t.heroCta} onSave={save('hero.cta')} editMode={editMode} as="span" />
               </a>
               <a
                 href="/contact"
                 onClick={e => { if (editMode) e.preventDefault() }}
-                className="font-body text-[11px] font-normal tracking-[2.5px] uppercase px-8 py-4 rounded no-underline text-center border border-brand-border text-brand-muted bg-transparent"
+                className="font-body text-[13px] font-normal px-8 py-4 rounded-2xl no-underline text-center border border-brand-border text-brand-muted bg-transparent"
               >
                 <EditableText value={t.heroLearn} onSave={save('hero.learn')} editMode={editMode} as="span" />
               </a>

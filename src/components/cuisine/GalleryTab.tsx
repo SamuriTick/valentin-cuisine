@@ -60,7 +60,7 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
         {list.length > 0 || editMode ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {list.map((photo, i) => (
-              <div key={`${photo.url}-${i}`} className="rounded-lg overflow-hidden aspect-[4/3] relative bg-brand-card-dark border border-brand-card-border">
+              <div key={`${photo.url}-${i}`} className="rounded-2xl overflow-hidden aspect-[4/3] relative bg-brand-card-dark border border-brand-card-border">
                 <EditableImage
                   src={getMediaDisplayUrl(photo.url)}
                   alt={photo.alt ?? ''}
@@ -82,7 +82,7 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
             {editMode && (
               <button
                 onClick={() => setShowPicker(true)}
-                className="rounded-lg aspect-[4/3] border-2 border-dashed border-white/30 hover:border-brand-teal text-white/70 hover:text-brand-teal font-body text-sm flex items-center justify-center transition-colors"
+                className="rounded-2xl aspect-[4/3] border-2 border-dashed border-white/30 hover:border-brand-teal text-white/70 hover:text-brand-teal font-body text-sm flex items-center justify-center transition-colors"
               >
                 + Add photo
               </button>
@@ -91,8 +91,8 @@ export function GalleryTab({ t: tProp, photos = [] }: Props) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="bg-brand-card-dark border border-brand-card-border rounded-lg aspect-[4/3] flex items-center justify-center">
-                <span className="font-body text-[11px] text-brand-muted tracking-[1.5px] uppercase">
+              <div key={i} className="bg-brand-card-dark border border-brand-card-border rounded-2xl aspect-[4/3] flex items-center justify-center">
+                <span className="font-body text-[13px] text-brand-muted">
                   Photo {i + 1}
                 </span>
               </div>
