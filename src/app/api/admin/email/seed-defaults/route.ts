@@ -96,9 +96,9 @@ const DEFAULTS = [
 <p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">To confirm your order, please pay by bank transfer using the details below:</p>
 <div style="border:1px solid #E8E0D5;border-radius:8px;overflow:hidden;margin:0 0 16px;">
   <table style="border-collapse:collapse;width:100%;">
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_NAME}}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_SORT}}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account number</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_ACCOUNT}}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_NAME}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_SORT}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account number</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_ACCOUNT}</td></tr>
     <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Amount</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">&pound;{{{{total}}}}</td></tr>
     <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;">Reference</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;">{{{{name}}}}</td></tr>
   </table>
