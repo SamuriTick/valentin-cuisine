@@ -79,7 +79,7 @@ function ownerBody(vars: Record<string, string | number>) {
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #ece8df;color:#8a8070;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Email</td>
-        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;"><a href="mailto:${email}" style="color:#c2412d;text-decoration:none;">${email}</a></td>
+        <td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=${encodeURIComponent(email)}" style="color:#c2412d;text-decoration:none;">${email}</a></td>
       </tr>
       ${phone ? `<tr><td style="padding:10px 0;border-bottom:1px solid #ece8df;color:#8a8070;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #ece8df;font-size:14px;color:#1a1a1a;">${phone}</td></tr>` : ''}
       ${isKimchiOrder ? `

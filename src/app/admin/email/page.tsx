@@ -312,7 +312,7 @@ export default function EmailPage() {
                     <tr key={sub.id}>
                       <td style={s.td as React.CSSProperties}><strong>{sub.name}</strong></td>
                       <td style={{ ...(s.td as React.CSSProperties), fontSize: '13px' }}>
-                        <a href={`mailto:${sub.email}`} style={{ color: '#1E3A1E', textDecoration: 'none' }}>{sub.email}</a>
+                        <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(sub.email)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#1E3A1E', textDecoration: 'none' }}>{sub.email}</a>
                       </td>
                       <td style={{ ...(s.td as React.CSSProperties), color: '#7A7060', fontSize: '13px' }}>{sub.location || '—'}</td>
                       <td style={{ ...(s.td as React.CSSProperties), color: '#7A7060', fontSize: '13px' }}>{sub.wantsToTry || '—'}</td>

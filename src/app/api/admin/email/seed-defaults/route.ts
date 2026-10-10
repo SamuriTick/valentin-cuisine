@@ -22,7 +22,7 @@ const DEFAULTS = [
   </tr>
   <tr>
     <td style="padding:10px 0;border-bottom:1px solid #E8E0D5;color:#7A7060;font-size:12px;letter-spacing:1px;text-transform:uppercase;">Email</td>
-    <td style="padding:10px 0;border-bottom:1px solid #E8E0D5;font-size:14px;"><a href="mailto:{{email}}" style="color:#3d7a6b;">{{email}}</a></td>
+    <td style="padding:10px 0;border-bottom:1px solid #E8E0D5;font-size:14px;"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={{email}}" style="color:#3d7a6b;">{{email}}</a></td>
   </tr>
   <tr>
     <td style="padding:10px 0;border-bottom:1px solid #E8E0D5;color:#7A7060;font-size:12px;letter-spacing:1px;text-transform:uppercase;">Phone</td>

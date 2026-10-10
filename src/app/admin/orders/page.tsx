@@ -120,7 +120,7 @@ export default function OrdersPage() {
                     {o.items}
                     {o.total != null && <div style={{ fontSize: 12, color: "rgba(26,26,26,0.5)", marginTop: 2 }}>£{o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)}</div>}
                   </td>
-                  <td style={td}><a href={`mailto:${o.email}`} style={{ color: "#3d7a6b" }}>{o.email}</a></td>
+                  <td style={td}><a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}`} target="_blank" rel="noopener noreferrer" style={{ color: "#3d7a6b" }}>{o.email}</a></td>
                   <td style={td}>{o.phone ? <a href={`tel:${o.phone}`} style={{ color: "#3d7a6b" }}>{o.phone}</a> : <span style={{ color: "rgba(26,26,26,0.3)" }}>—</span>}</td>
                   <td style={{ ...td, whiteSpace: "nowrap" }}>{new Date(o.createdAt).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</td>
                   <td style={td}>
