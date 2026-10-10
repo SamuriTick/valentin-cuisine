@@ -57,8 +57,8 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   storageStages: [
     { stage: 'Days 1-3 (fresh)', note: 'Clean, crunchy, mild tang. Perfectly good to eat right away.' },
     { stage: '1 week', note: 'Fermentation kicks in. Flavour deepens noticeably. My preferred stage.' },
-    { stage: '1-3 months', note: 'Sour, complex, intensely flavoured. Excellent for cooking.' },
-    { stage: '3+ months', note: "Funky and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don't throw it out." },
+    { stage: '2-3 weeks', note: 'Sour, complex, intensely flavoured. Excellent for cooking.' },
+    { stage: '3-4 weeks', note: "Properly sour and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don't throw it out." },
   ],
   storageTip1Title: "CO2 tip: don't overfill",
   storageTip1Body: "Fermenting kimchi produces CO2, which makes the liquid rise. If you fill the jar right to the top, it will overflow. Leave a couple of centimetres of space at the top when you first open it. Press the cabbage below the brine level and seal it again. If it bubbles over, just open the lid briefly to release the gas.",

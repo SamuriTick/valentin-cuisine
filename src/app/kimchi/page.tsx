@@ -43,8 +43,8 @@ const PAIRINGS_DEFAULTS = [
 const STORAGE_STAGES_DEFAULTS = [
   { stage: 'Days 1-3 (fresh)', note: 'Clean, crunchy, mild tang. Perfectly good to eat right away.' },
   { stage: '1 week', note: 'Fermentation kicks in. Flavour deepens noticeably. My preferred stage.' },
-  { stage: '1-3 months', note: 'Sour, complex, intensely flavoured. Excellent for cooking.' },
-  { stage: '3+ months', note: 'Funky and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don\'t throw it out.' },
+  { stage: '2-3 weeks', note: 'Sour, complex, intensely flavoured. Excellent for cooking.' },
+  { stage: '3-4 weeks', note: 'Properly sour and deeply fermented. Make kimchi fried rice or kimchi pancakes. Don\'t throw it out.' },
 ];
 
 const ORDER_STEPS_DEFAULTS = [
@@ -277,6 +277,7 @@ export default async function KimchiPage() {
               ['Fish sauce', 'Umami base (omit for vegan)'],
               ['Soya sauce', 'Salt and depth'],
               ['Oyster sauce', 'Rich, savoury depth (omit for vegan)'],
+              ['Dried shrimp from Cà Mau, Vietnam', 'The secret. Replaces fermented shrimp: more umami (omit for vegan)'],
             ].map(([name, note]) => (
               <div key={name} className="flex flex-col py-3 border-b border-brand-border last:border-0">
                 <p className="font-body text-sm font-semibold text-brand-dark">{name}</p>
