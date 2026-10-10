@@ -61,6 +61,37 @@ export default function OrdersPage() {
     await fetch("/api/admin/orders?all=1", { method: "DELETE" })
   }
 
+  function paymentRequestLink(o: Order) {
+    const total = o.total == null ? "" : o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)
+    const summary = o.items.split(" · ")[0]
+    const body = [
+      `Hi ${o.name},`,
+      "",
+      "Thank you so much for ordering my kimchi! I really appreciate it.",
+      "",
+      "Here's a quick summary of your order:",
+      `${summary}${total ? ` for £${total}` : ""}`,
+      "",
+      "To confirm your order, please pay by bank transfer using the details below:",
+      "",
+      "Name: MSTR Valentin Thang",
+      "Sort code: 20-90-74",
+      "Account number: 33552330",
+      `Amount: £${total}`,
+      `Reference: ${o.name}`,
+      "",
+      "Once I've received your payment, your kimchi will be ready to collect on the 25th at The Panda's Pantry in Putney, SW London.",
+      "",
+      "If you have any questions, just reply to this email.",
+      "",
+      "Thanks again for supporting me!",
+      "",
+      "Valentin",
+    ].join("\n")
+    const subject = "Thanks for your kimchi order! Payment details inside"
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  }
+
   function daysLeft(deletedAt: string) {
     const ms = new Date(deletedAt).getTime() + 14 * 24 * 60 * 60 * 1000 - Date.now()
     return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)))
@@ -137,7 +168,12 @@ export default function OrdersPage() {
                   </td>
                   <td style={{ ...td, whiteSpace: "nowrap" }}>
                     {view === "active" ? (
+                      <>
+                      {!o.paid && (
+                        <a href={paymentRequestLink(o)} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#c2412d", fontWeight: 600, textDecoration: "none", marginRight: 12 }}>Request payment</a>
+                      )}
                       <button onClick={() => setTrashed(o.id, true)} style={{ fontSize: 12, color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
+                      </>
                     ) : (
                       <>
                         <button onClick={() => setTrashed(o.id, false)} style={{ fontSize: 12, color: "#3d7a6b", fontWeight: 600, background: "none", border: "none", cursor: "pointer", marginRight: 12 }}>Restore</button>

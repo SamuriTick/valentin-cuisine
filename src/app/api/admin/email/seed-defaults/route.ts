@@ -87,28 +87,26 @@ const DEFAULTS = [
 </p>`,
   },
   {
-    slug: 'payment-request',
-    name: 'Payment request — bank details',
-    subject: 'How to pay for your order',
-    body: `<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Hi {{name}},</h2>
-<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Thanks for your order! To confirm it, please send the payment by bank transfer using the details below. Once it arrives, your order will be ready to collect on the 25th.</p>
-
-<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1a1a1a;">Pay by bank transfer</h3>
-<div style="border:1px solid #E8E0D5;border-radius:4px;overflow:hidden;margin-bottom:24px;">
+    slug: 'order-payment-request',
+    name: 'Order payment request',
+    subject: 'Thanks for your kimchi order! Payment details inside',
+    body: `<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Hi {{name}},</p>
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Thank you so much for ordering my kimchi! I really appreciate it.</p>
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Here&rsquo;s a quick summary of your order:<br/><strong>{{order}} for &pound;{{total}}</strong></p>
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">To confirm your order, please pay by bank transfer using the details below:</p>
+<div style="border:1px solid #E8E0D5;border-radius:8px;overflow:hidden;margin:0 0 16px;">
   <table style="border-collapse:collapse;width:100%;">
-    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_NAME}</td></tr>
-    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;font-family:Georgia,serif;border-bottom:1px solid #E8E0D5;">${BANK_SORT}</td></tr>
-    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;font-family:Georgia,serif;border-bottom:1px solid #E8E0D5;">${BANK_ACCOUNT}</td></tr>
-    <tr><td style="padding:12px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7A7060;background:#F8F5EE;">Reference</td><td style="padding:12px 16px;font-size:14px;color:#1a1a1a;">Your name</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_NAME}}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_SORT}}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account number</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${{BANK_ACCOUNT}}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Amount</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">&pound;{{{{total}}}}</td></tr>
+    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;">Reference</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;">{{{{name}}}}</td></tr>
   </table>
 </div>
-
-<p style="margin:0 0 24px;font-size:13px;color:#7A7060;line-height:1.7;">Collection is from Putney, SW London (no delivery).</p>
-
-<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
-  Any questions? Just reply to this email.<br/>
-  &mdash; Valentin
-</p>`,
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Once I&rsquo;ve received your payment, your kimchi will be ready to collect on the 25th at The Panda&rsquo;s Pantry in Putney, SW London.</p>
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">If you have any questions, just reply to this email.</p>
+<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Thanks again for supporting me!</p>
+<p style="margin:0;font-size:14px;color:#1a1a1a;line-height:1.7;">Valentin</p>`,
   },
   {
     slug: 'payment-received',
@@ -154,7 +152,8 @@ export async function POST(req: NextRequest) {
       const key = PREFIX + tpl.slug
       const row = await prisma.siteContent.upsert({
         where: { key_lang: { key, lang: 'en' } },
-        update: { value: JSON.stringify({ name: tpl.name, subject: tpl.subject, body: tpl.body }) },
+        // Only add missing templates; never overwrite ones the admin has edited
+        update: {},
         create: { key, lang: 'en', value: JSON.stringify({ name: tpl.name, subject: tpl.subject, body: tpl.body }) },
       })
       results.push(row)
