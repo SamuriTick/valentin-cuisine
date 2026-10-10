@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 
 type Order = {
   id: number; name: string; email: string; phone: string | null;
-  items: string; total: number | null; stage: string; paid: boolean; createdAt: string;
+  items: string; total: number | null; stage: string; paid: boolean; createdAt: string; deletedAt: string | null;
 }
 
 const STAGES = [
@@ -21,6 +21,7 @@ const select: React.CSSProperties = { padding: "6px 8px", fontSize: 13, border: 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const [view, setView] = useState<"active" | "trash">("active")
 
   async function load() {
     const res = await fetch("/api/admin/orders")
@@ -39,21 +40,63 @@ export default function OrdersPage() {
     })
   }
 
-  async function remove(id: number) {
-    if (!confirm("Delete this order?")) return
+  async function setTrashed(id: number, trashed: boolean) {
+    setOrders(os => os.map(o => o.id === id ? { ...o, deletedAt: trashed ? new Date().toISOString() : null } : o))
+    await fetch("/api/admin/orders", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, trashed }),
+    })
+  }
+
+  async function deleteForever(id: number) {
+    if (!confirm("Permanently delete this order? This can't be undone.")) return
     setOrders(os => os.filter(o => o.id !== id))
     await fetch(`/api/admin/orders?id=${id}`, { method: "DELETE" })
   }
+
+  async function emptyTrash() {
+    if (!confirm("Permanently delete everything in the trash? This can't be undone.")) return
+    setOrders(os => os.filter(o => !o.deletedAt))
+    await fetch("/api/admin/orders?all=1", { method: "DELETE" })
+  }
+
+  function daysLeft(deletedAt: string) {
+    const ms = new Date(deletedAt).getTime() + 14 * 24 * 60 * 60 * 1000 - Date.now()
+    return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)))
+  }
+
+  const active = orders.filter(o => !o.deletedAt)
+  const trashed = orders.filter(o => o.deletedAt)
+  const shown = view === "active" ? active : trashed
+  const tab = (on: boolean): React.CSSProperties => ({
+    padding: "8px 14px", fontSize: 13, borderRadius: 4, cursor: "pointer",
+    border: "1px solid " + (on ? "#1a1a1a" : "#e8e3dc"),
+    background: on ? "#1a1a1a" : "#fff", color: on ? "#fff" : "#1a1a1a",
+  })
 
   return (
     <div>
       <h1 style={{ fontFamily: "Georgia, serif", fontWeight: "normal", fontSize: 28, margin: "0 0 6px" }}>Orders</h1>
       <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)", margin: "0 0 24px" }}>Every kimchi order placed on the site. Update the stage and payment as you go.</p>
 
+      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 16, flexWrap: "wrap" }}>
+        <button onClick={() => setView("active")} style={tab(view === "active")}>Orders ({active.length})</button>
+        <button onClick={() => setView("trash")} style={tab(view === "trash")}>Trash ({trashed.length})</button>
+        {view === "trash" && trashed.length > 0 && (
+          <button onClick={emptyTrash} style={{ marginLeft: "auto", padding: "8px 14px", fontSize: 13, borderRadius: 4, cursor: "pointer", border: "1px solid #DC2626", background: "#fff", color: "#DC2626" }}>
+            Empty trash
+          </button>
+        )}
+      </div>
+      {view === "trash" && (
+        <p style={{ fontSize: 12, color: "rgba(26,26,26,0.5)", margin: "0 0 16px" }}>Orders in the trash are permanently deleted automatically after 14 days.</p>
+      )}
+
       {loading ? (
         <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)" }}>Loading…</p>
-      ) : orders.length === 0 ? (
-        <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)" }}>No orders yet.</p>
+      ) : shown.length === 0 ? (
+        <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)" }}>{view === "active" ? "No orders yet." : "Trash is empty."}</p>
       ) : (
         <div style={{ overflowX: "auto", background: "#fff", border: "1px solid #e8e3dc", borderRadius: 6 }}>
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 820 }}>
@@ -70,7 +113,7 @@ export default function OrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {orders.map(o => (
+              {shown.map(o => (
                 <tr key={o.id}>
                   <td style={{ ...td, fontWeight: 600 }}>{o.name}</td>
                   <td style={td}>
@@ -92,8 +135,16 @@ export default function OrdersPage() {
                       <option value="paid">Paid</option>
                     </select>
                   </td>
-                  <td style={td}>
-                    <button onClick={() => remove(o.id)} style={{ fontSize: 12, color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
+                  <td style={{ ...td, whiteSpace: "nowrap" }}>
+                    {view === "active" ? (
+                      <button onClick={() => setTrashed(o.id, true)} style={{ fontSize: 12, color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
+                    ) : (
+                      <>
+                        <button onClick={() => setTrashed(o.id, false)} style={{ fontSize: 12, color: "#3d7a6b", fontWeight: 600, background: "none", border: "none", cursor: "pointer", marginRight: 12 }}>Restore</button>
+                        <button onClick={() => deleteForever(o.id)} style={{ fontSize: 12, color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete forever</button>
+                        <div style={{ fontSize: 11, color: "rgba(26,26,26,0.4)", marginTop: 4 }}>{daysLeft(o.deletedAt!)} day{daysLeft(o.deletedAt!) === 1 ? "" : "s"} left</div>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
