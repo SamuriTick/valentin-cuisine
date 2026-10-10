@@ -54,7 +54,7 @@ const ORDER_STEPS_DEFAULTS = [
 ];
 
 const FAQS_DEFAULTS = [
-  { q: 'How long does it keep?', a: '3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).' },
+  { q: 'How long does it keep?', a: '3 to 4 weeks refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).' },
   { q: 'Is it ready to eat when I get it?', a: 'Yes. But you\'re getting it 2 to 3 days old, which is good. One week old is noticeably better: the fermentation has properly kicked in. I prefer it at least a week in. Leave it in the fridge, it\'ll keep improving.' },
   { q: "What's different about this recipe?", a: "Most kimchi uses a tapioca base and layers the paste into the cabbage. I blend everything together: the sauce gets further into the vegetable, the flavour is deeper and more even throughout. I also use locally sourced dried shrimp from Cà Mau, Vietnam, instead of fermented shrimp. More umami, more depth." },
   { q: 'Can I get it delivered?', a: 'Not anymore: collection only, from The Panda\'s Pantry in Putney, SW London. Orders are ready to collect on the 25th.' },
@@ -128,7 +128,7 @@ export default async function KimchiPage() {
   const storageTip1Title = map['kimchi.storage.tip1.title'] ?? "CO2 tip: don't overfill"
   const storageTip1Body  = map['kimchi.storage.tip1.body']  ?? "Fermenting kimchi produces CO2, which makes the liquid rise. If you fill the jar right to the top, it will overflow. Leave a couple of centimetres of space at the top when you first open it. Press the cabbage below the brine level and seal it again. If it bubbles over, just open the lid briefly to release the gas."
   const storageTip2Title = map['kimchi.storage.tip2.title'] ?? 'Fridge vs counter'
-  const storageTip2Body  = map['kimchi.storage.tip2.body']  ?? "Leave it on the counter for a day or two to kickstart fermentation quickly, then move it to the fridge to slow it down. In the fridge it keeps for 3 to 4 months. On the counter it will ferment much faster: check it daily."
+  const storageTip2Body  = map['kimchi.storage.tip2.body']  ?? "Leave it on the counter for a day or two to kickstart fermentation quickly, then move it to the fridge to slow it down. In the fridge it keeps for 3 to 4 weeks. On the counter it will ferment much faster: check it daily."
 
   // Order section
   const orderEyebrow = map['kimchi.order.eyebrow'] ?? 'Get yours'
@@ -270,13 +270,13 @@ export default async function KimchiPage() {
             <p className="font-body text-[13px] text-brand-muted mb-4">What&rsquo;s in it</p>
             {[
               ['Napa cabbage', 'One whole big head per 2kg jar'],
-              ['Gochugaru + chilli blend', 'Blended smooth into the paste'],
-              ['Garlic & ginger', 'Also blended. Will make your eyes water.'],
-              ['Lots of onions', 'A lot of onions. You have been warned.'],
-              ['Soy sauce', 'Salt and depth'],
+              ['Asian chives', 'Fresh and chopped in for bite'],
+              ['Sugar & salt', 'Salt draws out the water, sugar feeds the ferment'],
+              ['Gochugaru', 'Korean chilli flakes, blended smooth into the paste'],
+              ['Onion, garlic & ginger', 'All blended. Will make your eyes water.'],
               ['Fish sauce', 'Umami base (omit for vegan)'],
-              ['Dried shrimp from Cà Mau, Vietnam', 'The secret. Replaces fermented shrimp: more umami'],
-              ['Vinegar', 'Balances the fermentation'],
+              ['Soya sauce', 'Salt and depth'],
+              ['Oyster sauce', 'Rich, savoury depth (omit for vegan)'],
             ].map(([name, note]) => (
               <div key={name} className="flex flex-col py-3 border-b border-brand-border last:border-0">
                 <p className="font-body text-sm font-semibold text-brand-dark">{name}</p>

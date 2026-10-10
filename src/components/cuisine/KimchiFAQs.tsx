@@ -7,7 +7,7 @@ interface FAQ { q: string; a: string }
 const DEFAULT_FAQS: FAQ[] = [
   {
     q: 'How long does it keep?',
-    a: '3 to 4 months refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).',
+    a: '3 to 4 weeks refrigerated is the standard recommendation. But kimchi can technically last years: I\'ve heard of people with two-year-old jars still going. The longer it ferments, the more sour and complex it gets. Old kimchi is best for cooking (fried rice, pancakes, sauce for fish).',
   },
   {
     q: 'Is it ready to eat when I get it?',
