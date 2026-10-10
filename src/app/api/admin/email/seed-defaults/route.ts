@@ -77,7 +77,7 @@ const DEFAULTS = [
 
 <div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
   <p style="margin:0;font-size:13px;line-height:1.7;color:#7A7060;">
-    <strong style="color:#1a1a1a;">Collection:</strong> I&rsquo;ll be in touch to arrange a collection time in Putney, SW London, once payment is confirmed.
+    <strong style="color:#1a1a1a;">Collection:</strong> Once payment is confirmed, your order will be ready to collect on the 25th in Putney, SW London.
   </p>
 </div>
 
@@ -91,7 +91,7 @@ const DEFAULTS = [
     name: 'Payment request — bank details',
     subject: 'How to pay for your order',
     body: `<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Hi {{name}},</h2>
-<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Thanks for your order! To confirm it, please send the payment by bank transfer using the details below. Once it arrives I&rsquo;ll arrange a collection time with you.</p>
+<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Thanks for your order! To confirm it, please send the payment by bank transfer using the details below. Once it arrives, your order will be ready to collect on the 25th.</p>
 
 <h3 style="margin:0 0 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1a1a1a;">Pay by bank transfer</h3>
 <div style="border:1px solid #E8E0D5;border-radius:4px;overflow:hidden;margin-bottom:24px;">

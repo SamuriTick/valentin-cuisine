@@ -137,7 +137,7 @@ function customerBody(vars: Record<string, string | number>) {
 
     <div style="padding:16px 18px;background:#fdf2f6;border:1px solid #ece8df;border-left:3px solid #b03060;border-radius:2px;margin-bottom:28px;">
       <p style="margin:0;font-size:13px;line-height:1.75;color:#8a8070;">
-        <strong style="color:#1a1a1a;">Next steps:</strong> Once I see your payment I&rsquo;ll get in touch to arrange a collection time in Putney, SW London.
+        <strong style="color:#1a1a1a;">Next steps:</strong> Once I see your payment, your order will be ready to collect on the 25th in Putney, SW London.
       </p>
     </div>
 
@@ -181,6 +181,22 @@ export async function POST(req: NextRequest) {
   }
 
   const isKimchiOrder = typeof total === 'number'
+
+  if (isKimchiOrder) {
+    try {
+      await prisma.order.create({
+        data: {
+          name,
+          email: email.trim(),
+          phone: phone ? String(phone).trim() : null,
+          items: String(occasion ?? '').replace(/^Kimchi order — /, ''),
+          total,
+        },
+      })
+    } catch (err) {
+      console.error("[CONTACT] Failed to save order:", err)
+    }
+  }
   const vars: Record<string, string | number> = {
     name: name ?? '',
     email: email ?? '',

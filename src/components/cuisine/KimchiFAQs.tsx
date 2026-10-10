@@ -19,7 +19,7 @@ const DEFAULT_FAQS: FAQ[] = [
   },
   {
     q: 'Can I get it delivered?',
-    a: 'Not anymore: collection only, from Putney in SW London. I will confirm a time with you after your order.',
+    a: 'Not anymore: collection only, from Putney in SW London. Orders are ready to collect on the 25th.',
   },
   {
     q: 'Can I get a vegan version?',

@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS "orders" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "name" TEXT NOT NULL,
+  "email" TEXT NOT NULL,
+  "phone" TEXT,
+  "items" TEXT NOT NULL,
+  "total" REAL,
+  "stage" TEXT NOT NULL DEFAULT 'ordered',
+  "paid" BOOLEAN NOT NULL DEFAULT false,
+  "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

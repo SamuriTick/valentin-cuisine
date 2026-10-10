@@ -186,3 +186,17 @@ model WaitingListSignup {
   @@map("waiting_list_signups")
 }
 
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  items     String
+  total     Float?
+  stage     String   @default("ordered")
+  paid      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("orders")
+}
