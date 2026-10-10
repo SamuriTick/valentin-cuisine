@@ -77,7 +77,7 @@ const DEFAULTS = [
 
 <div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
   <p style="margin:0;font-size:13px;line-height:1.7;color:#7A7060;">
-    <strong style="color:#1a1a1a;">Collection:</strong> Once payment is confirmed, your order will be ready to collect on the 25th in Putney, SW London.
+    <strong style="color:#1a1a1a;">Collection:</strong> Once payment is confirmed, your order will be ready to collect on the 25th at The Panda&rsquo;s Pantry in Putney, SW London.
   </p>
 </div>
 

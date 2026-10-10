@@ -19,7 +19,7 @@ const DEFAULT_FAQS: FAQ[] = [
   },
   {
     q: 'Can I get it delivered?',
-    a: 'Not anymore: collection only, from Putney in SW London. Orders are ready to collect on the 25th.',
+    a: 'Not anymore: collection only, from The Panda\'s Pantry in Putney, SW London. Orders are ready to collect on the 25th.',
   },
   {
     q: 'Can I get a vegan version?',

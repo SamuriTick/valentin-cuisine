@@ -137,7 +137,7 @@ function customerBody(vars: Record<string, string | number>) {
 
     <div style="padding:16px 18px;background:#fbece6;border:1px solid #ece8df;border-left:3px solid #c2412d;border-radius:2px;margin-bottom:28px;">
       <p style="margin:0;font-size:13px;line-height:1.75;color:#8a8070;">
-        <strong style="color:#1a1a1a;">Next steps:</strong> Once I see your payment, your order will be ready to collect on the 25th in Putney, SW London.
+        <strong style="color:#1a1a1a;">Next steps:</strong> Once I see your payment, your order will be ready to collect on the 25th at The Panda&rsquo;s Pantry in Putney, SW London.
       </p>
     </div>
 

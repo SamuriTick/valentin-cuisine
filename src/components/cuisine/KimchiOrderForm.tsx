@@ -102,7 +102,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
             </div>
           ))}
         </div>
-        <p className="font-body text-[12px] text-brand-muted mt-6">These details are also in your confirmation email. Once I see your payment, your order will be ready to collect on the 25th in Putney, SW London.</p>
+        <p className="font-body text-[12px] text-brand-muted mt-6">These details are also in your confirmation email. Once I see your payment, your order will be ready to collect on the 25th at The Panda&apos;s Pantry in Putney, SW London.</p>
       </div>
     );
   }
@@ -176,7 +176,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
       </div>
 
       <div className="px-4 py-3 bg-brand-green-light border border-brand-border rounded-xl font-body text-[13px] text-brand-dark">
-        Collection only, from Putney (SW London). Ready to collect on the 25th.
+        Collection only, from The Panda&apos;s Pantry in Putney (SW London). Ready to collect on the 25th.
       </div>
 
       <div>
