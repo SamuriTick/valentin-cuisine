@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 const TASTE_DEFAULTS = [
   { label: 'Spicy', desc: 'The kick has to be there: that\'s non-negotiable. It\'ll attack your mouth a little.' },
-  { label: 'Umami', desc: 'Dried Vietnamese shrimp adds a depth you won\'t get from fermented shrimp. The secret.' },
+  { label: 'Umami', desc: 'Dried shrimp from Cà Mau, Vietnam, adds a depth you won\'t get from fermented shrimp. The secret.' },
   { label: 'Salty', desc: 'Fish sauce, soy sauce, and brine from the fermentation itself.' },
   { label: 'Sweet', desc: 'Just a tiny bit. Barely there, but you\'d miss it if it wasn\'t.' },
 ];
@@ -275,7 +275,7 @@ export default async function KimchiPage() {
               ['Lots of onions', 'A lot of onions. You have been warned.'],
               ['Soy sauce', 'Salt and depth'],
               ['Fish sauce', 'Umami base (omit for vegan)'],
-              ['Dried Vietnamese shrimp', 'The secret. Replaces fermented shrimp: more umami'],
+              ['Dried shrimp from Cà Mau, Vietnam', 'The secret. Replaces fermented shrimp: more umami'],
               ['Vinegar', 'Balances the fermentation'],
             ].map(([name, note]) => (
               <div key={name} className="flex flex-col py-3 border-b border-brand-border last:border-0">

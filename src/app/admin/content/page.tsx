@@ -31,7 +31,7 @@ const KIMCHI_DEFAULTS: KimchiContent = {
   tasteTitle2: 'at once.',
   taste: [
     { label: 'Spicy', desc: "The kick has to be there: that's non-negotiable. It'll attack your mouth a little." },
-    { label: 'Umami', desc: "Dried Vietnamese shrimp adds a depth you won't get from fermented shrimp. The secret." },
+    { label: 'Umami', desc: "Dried shrimp from Cà Mau, Vietnam, adds a depth you won't get from fermented shrimp. The secret." },
     { label: 'Salty', desc: "Fish sauce, soy sauce, and brine from the fermentation itself." },
     { label: 'Sweet', desc: "Just a tiny bit. Barely there, but you'd miss it if it wasn't." },
   ],

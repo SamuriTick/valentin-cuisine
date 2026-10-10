@@ -219,7 +219,7 @@ export function KimchiEditSections({ t }: Props) {
           </div>
           <div className="bg-white border border-brand-border rounded-2xl p-6">
             <p className="font-body text-[13px] text-brand-muted mb-4">What&rsquo;s in it (hardcoded — edit in code)</p>
-            <p className="font-body text-[12px] text-brand-muted italic">Napa cabbage, gochugaru, garlic, ginger, onions, soy sauce, fish sauce, dried Vietnamese shrimp, vinegar</p>
+            <p className="font-body text-[12px] text-brand-muted italic">Napa cabbage, gochugaru, garlic, ginger, onions, soy sauce, fish sauce, dried shrimp from Cà Mau (Vietnam), vinegar</p>
           </div>
         </ContainerStandard>
       </div>
