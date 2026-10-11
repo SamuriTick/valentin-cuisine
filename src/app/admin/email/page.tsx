@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { s } from "@/components/admin/AdminUI"
+import { orderSummary } from "@/lib/customerEmails"
 
-type Tab = "templates" | "subscribers" | "sent"
+type Tab = "templates" | "customers" | "subscribers" | "sent"
 
 type Template = {
   slug: string
@@ -20,6 +21,73 @@ type Signup = {
   wantsToTry: string | null
   optIn: boolean
   createdAt: string
+}
+
+type Order = {
+  id: number
+  name: string
+  email: string
+  phone: string | null
+  items: string
+  total: number | null
+  paid: boolean
+  stage: string
+  createdAt: string
+  deletedAt: string | null
+}
+
+const STAGE_LABEL: Record<string, string> = { ordered: 'Ordered', confirmed: 'Confirmed', ready: 'Ready to collect', collected: 'Collected' }
+
+// Template dropdown + Send button for emailing one person
+function SendTemplate({ templates, to, vars, onSent }: {
+  templates: Template[]
+  to: string
+  vars: Record<string, string>
+  onSent: () => void
+}) {
+  const [slug, setSlug] = useState('')
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [error, setError] = useState('')
+  const options = templates.filter(t => t.slug !== 'contact-owner-notification')
+
+  async function send() {
+    const tpl = options.find(t => t.slug === slug)
+    if (!tpl) return
+    if (!confirm(`Send "${tpl.name}" to ${vars.name || to} (${to})?`)) return
+    setState('sending'); setError('')
+    const res = await fetch('/api/admin/email/send-one', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, to, vars }),
+    })
+    if (res.ok) {
+      setState('sent'); setSlug(''); onSent()
+      setTimeout(() => setState('idle'), 3000)
+    } else {
+      const data = await res.json().catch(() => ({}))
+      setError(data.error ?? 'Failed to send'); setState('error')
+    }
+  }
+
+  if (options.length === 0) return <span style={{ fontSize: 12, color: '#7A7060' }}>No templates yet</span>
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+        <select value={slug} onChange={e => { setSlug(e.target.value); setState('idle') }}
+          style={{ padding: '6px 8px', fontSize: 12, border: '1px solid #e8e3dc', borderRadius: 6, background: '#fff', maxWidth: 190 }}>
+          <option value="">Choose email…</option>
+          {options.map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}
+        </select>
+        <button onClick={send} disabled={!slug || state === 'sending'}
+          style={{ padding: '6px 12px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: slug ? 'pointer' : 'default',
+            background: slug ? '#c2412d' : '#e8e3dc', color: slug ? '#fff' : '#7A7060' }}>
+          {state === 'sending' ? 'Sending…' : 'Send'}
+        </button>
+      </div>
+      {state === 'sent' && <p style={{ fontSize: 12, color: '#15803d', margin: '4px 0 0' }}>Sent</p>}
+      {state === 'error' && <p style={{ fontSize: 12, color: '#DC2626', margin: '4px 0 0' }}>{error}</p>}
+    </div>
+  )
 }
 
 type Campaign = {
@@ -49,6 +117,7 @@ export default function EmailPage() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [subscribers, setSubscribers] = useState<Signup[]>([])
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(false)
 
   // Template editing
@@ -83,11 +152,17 @@ export default function EmailPage() {
     if (res.ok) setCampaigns(await res.json())
   }, [])
 
+  const loadOrders = useCallback(async () => {
+    const res = await fetch('/api/admin/orders')
+    if (res.ok) setOrders((await res.json() as Order[]).filter(o => !o.deletedAt))
+  }, [])
+
   useEffect(() => {
+    loadOrders()
     loadTemplates()
     loadSubscribers()
     loadCampaigns()
-  }, [loadTemplates, loadSubscribers, loadCampaigns])
+  }, [loadTemplates, loadSubscribers, loadCampaigns, loadOrders])
 
   // ── Template CRUD ──────────────────────────────────────────────────────────
 
@@ -198,6 +273,9 @@ export default function EmailPage() {
         <button style={tabStyle(tab === 'templates')} onClick={() => setTab('templates')}>
           Templates {templates.length > 0 && `(${templates.length})`}
         </button>
+        <button style={tabStyle(tab === 'customers')} onClick={() => setTab('customers')}>
+          Customers {orders.length > 0 && `(${orders.length})`}
+        </button>
         <button style={tabStyle(tab === 'subscribers')} onClick={() => setTab('subscribers')}>
           Subscribers {subscribers.length > 0 && `(${subscribers.length})`}
         </button>
@@ -286,6 +364,56 @@ export default function EmailPage() {
           </div>
         )}
 
+        {/* ── Customers (kimchi orders) ── */}
+        {tab === 'customers' && (
+          orders.length === 0 ? (
+            <div style={{ padding: '40px', textAlign: 'center', color: '#7A7060' }}>
+              No kimchi orders yet. People who order will appear here.
+            </div>
+          ) : (
+            <div className="admin-table-wrap">
+              <p style={{ fontSize: 13, color: '#7A7060', margin: 0, padding: '14px 20px', borderBottom: '1px solid #e8e3dc' }}>
+                Pick an email next to a customer and press Send. Their name, order and total are filled in automatically.
+              </p>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead style={s.tableHead as React.CSSProperties}>
+                  <tr>
+                    <th style={s.th as React.CSSProperties}>Name</th>
+                    <th style={s.th as React.CSSProperties}>Email</th>
+                    <th style={s.th as React.CSSProperties}>Order</th>
+                    <th style={s.th as React.CSSProperties}>Status</th>
+                    <th style={s.th as React.CSSProperties}>Send an email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map(o => {
+                    const total = o.total == null ? '' : o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)
+                    return (
+                      <tr key={o.id}>
+                        <td style={s.td as React.CSSProperties}><strong>{o.name}</strong></td>
+                        <td style={{ ...(s.td as React.CSSProperties), fontSize: '13px' }}>{o.email}</td>
+                        <td style={{ ...(s.td as React.CSSProperties), fontSize: '13px' }}>
+                          {orderSummary(o.items)}{total && ` · £${total}`}
+                          <div style={{ fontSize: 12, color: '#7A7060' }}>{formatDate(o.createdAt)}</div>
+                        </td>
+                        <td style={{ ...(s.td as React.CSSProperties), fontSize: '12px' }}>
+                          <span style={{ padding: '2px 8px', borderRadius: '99px', fontWeight: 600, background: o.paid ? '#DCFCE7' : '#FEE2E2', color: o.paid ? '#166534' : '#991B1B' }}>
+                            {o.paid ? 'Paid' : 'Not paid'}
+                          </span>
+                          <div style={{ color: '#7A7060', marginTop: 4 }}>{STAGE_LABEL[o.stage] ?? o.stage}</div>
+                        </td>
+                        <td style={s.td as React.CSSProperties}>
+                          <SendTemplate templates={templates} to={o.email} vars={{ name: o.name, order: orderSummary(o.items), total }} onSent={loadCampaigns} />
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )
+        )}
+
         {/* ── Subscribers ── */}
         {tab === 'subscribers' && (
           loading ? (
@@ -305,6 +433,7 @@ export default function EmailPage() {
                     <th style={s.th as React.CSSProperties}>Wants to try</th>
                     <th style={s.th as React.CSSProperties}>Updates</th>
                     <th style={s.th as React.CSSProperties}>Signed up</th>
+                    <th style={s.th as React.CSSProperties}>Send an email</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -322,6 +451,9 @@ export default function EmailPage() {
                         </span>
                       </td>
                       <td style={{ ...(s.td as React.CSSProperties), color: '#7A7060', fontSize: '13px' }}>{formatDate(sub.createdAt)}</td>
+                      <td style={s.td as React.CSSProperties}>
+                        <SendTemplate templates={templates} to={sub.email} vars={{ name: sub.name }} onSent={loadCampaigns} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
