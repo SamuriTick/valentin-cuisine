@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { CUSTOMER_EMAILS, orderSummary, toPlainText } from "@/lib/customerEmails"
 
 type Order = {
   id: number; name: string; email: string; phone: string | null;
@@ -61,35 +62,11 @@ export default function OrdersPage() {
     await fetch("/api/admin/orders?all=1", { method: "DELETE" })
   }
 
-  function paymentRequestLink(o: Order) {
+  function gmailLink(o: Order, slug: string) {
+    const email = CUSTOMER_EMAILS.find(e => e.slug === slug)!
     const total = o.total == null ? "" : o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)
-    const summary = o.items.split(" · ")[0]
-    const body = [
-      `Hi ${o.name},`,
-      "",
-      "Thank you so much for ordering my kimchi! I really appreciate it.",
-      "",
-      "Here's a quick summary of your order:",
-      `${summary}${total ? ` for £${total}` : ""}`,
-      "",
-      "To confirm your order, please pay by bank transfer using the details below:",
-      "",
-      "Name: MSTR Valentin Thang",
-      "Sort code: 20-90-74",
-      "Account number: 33552330",
-      `Amount: £${total}`,
-      `Reference: ${o.name}`,
-      "",
-      "Once I've received your payment, your kimchi will be ready to collect on the 25th at The Panda's Pantry in Putney, SW London.",
-      "",
-      "If you have any questions, just reply to this email.",
-      "",
-      "Thanks again for supporting me!",
-      "",
-      "Valentin",
-    ].join("\n")
-    const subject = "Thanks for your kimchi order! Payment details inside"
-    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    const body = toPlainText(email, { name: o.name, order: orderSummary(o.items), total })
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}&su=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(body)}`
   }
 
   function daysLeft(deletedAt: string) {
@@ -169,9 +146,11 @@ export default function OrdersPage() {
                   <td style={{ ...td, whiteSpace: "nowrap" }}>
                     {view === "active" ? (
                       <>
-                      {!o.paid && (
-                        <a href={paymentRequestLink(o)} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#c2412d", fontWeight: 600, textDecoration: "none", marginRight: 12 }}>Request payment</a>
-                      )}
+                      <select value="" onChange={e => { if (e.target.value) window.open(gmailLink(o, e.target.value), "_blank", "noopener,noreferrer") }}
+                        style={{ ...select, fontSize: 12, color: "#c2412d", fontWeight: 600, marginRight: 12 }}>
+                        <option value="">Email…</option>
+                        {CUSTOMER_EMAILS.map(em => <option key={em.slug} value={em.slug}>{em.name}</option>)}
+                      </select>
                       <button onClick={() => setTrashed(o.id, true)} style={{ fontSize: 12, color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
                       </>
                     ) : (

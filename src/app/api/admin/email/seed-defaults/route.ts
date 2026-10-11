@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/lib/auth-middleware'
 import { prisma } from '@/lib/prisma'
+import { CUSTOMER_EMAILS, toTemplateHtml } from '@/lib/customerEmails'
 
 const PREFIX = 'email.tpl.'
 
@@ -86,63 +87,7 @@ const DEFAULTS = [
   &mdash; Valentin
 </p>`,
   },
-  {
-    slug: 'order-payment-request',
-    name: 'Order payment request',
-    subject: 'Thanks for your kimchi order! Payment details inside',
-    body: `<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Hi {{name}},</p>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Thank you so much for ordering my kimchi! I really appreciate it.</p>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Here&rsquo;s a quick summary of your order:<br/><strong>{{order}} for &pound;{{total}}</strong></p>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">To confirm your order, please pay by bank transfer using the details below:</p>
-<div style="border:1px solid #E8E0D5;border-radius:8px;overflow:hidden;margin:0 0 16px;">
-  <table style="border-collapse:collapse;width:100%;">
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Name</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_NAME}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Sort code</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_SORT}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Account number</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">${BANK_ACCOUNT}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;border-bottom:1px solid #E8E0D5;">Amount</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #E8E0D5;">&pound;{{{{total}}}}</td></tr>
-    <tr><td style="padding:10px 16px;font-size:13px;color:#7A7060;width:130px;background:#F8F5EE;">Reference</td><td style="padding:10px 16px;font-size:14px;color:#1a1a1a;">{{{{name}}}}</td></tr>
-  </table>
-</div>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Once I&rsquo;ve received your payment, your kimchi will be ready to collect on the 25th at The Panda&rsquo;s Pantry in Putney, SW London.</p>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">If you have any questions, just reply to this email.</p>
-<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">Thanks again for supporting me!</p>
-<p style="margin:0;font-size:14px;color:#1a1a1a;line-height:1.7;">Valentin</p>`,
-  },
-  {
-    slug: 'payment-received',
-    name: 'Payment received — ready to collect',
-    subject: 'Payment received, thank you!',
-    body: `<p style="margin:0 0 8px;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#3d7a6b;">Payment received</p>
-<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Thanks, {{name}}!</h2>
-<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">I&rsquo;ve received your payment. Your order will be ready to collect from Putney, SW London.</p>
-
-<div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
-  <p style="margin:0;font-size:13px;line-height:1.7;color:#1a1a1a;"><strong>Collection:</strong> [day and time] at [address]. Reply to let me know if that works for you.</p>
-</div>
-
-<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
-  Any questions? Just reply to this email.<br/>
-  &mdash; Valentin
-</p>`,
-  },
-  {
-    slug: 'collection-reminder',
-    name: 'Collection reminder',
-    subject: 'Your order is ready to collect',
-    body: `<h2 style="margin:0 0 12px;font-family:Georgia,serif;font-weight:normal;font-size:24px;color:#1a1a1a;">Hi {{name}},</h2>
-<p style="margin:0 0 24px;font-size:14px;color:#7A7060;line-height:1.7;">Just a reminder that your order is ready and waiting for you in Putney, SW London.</p>
-
-<div style="padding:16px;background:#F8F5EE;border-left:3px solid #3d7a6b;border-radius:2px;margin-bottom:24px;">
-  <p style="margin:0;font-size:13px;line-height:1.7;color:#1a1a1a;"><strong>When:</strong> [day and time]<br/><strong>Where:</strong> [address]</p>
-</div>
-
-<p style="margin:0 0 24px;font-size:13px;color:#7A7060;line-height:1.7;">Tip: keep it in the fridge once you get home. It keeps getting better for the first week.</p>
-
-<p style="margin:0;font-size:13px;color:#7A7060;line-height:1.7;">
-  Any questions? Just reply to this email.<br/>
-  &mdash; Valentin
-</p>`,
-  },
+  ...CUSTOMER_EMAILS.map(e => ({ slug: e.slug, name: e.name, subject: e.subject, body: toTemplateHtml(e) })),
 ]
 
 export async function POST(req: NextRequest) {
