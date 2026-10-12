@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 import { prisma } from "@/lib/prisma"
 import { FROM, emailWrapper, applyVars } from "@/lib/emailLayout"
+import { orderSummary } from "@/lib/customerEmails"
 
 export const dynamic = 'force-dynamic'
 
@@ -67,7 +68,7 @@ function ownerBody(vars: Record<string, string | number>) {
 }
 
 function customerBody(vars: Record<string, string | number>) {
-  const { name, jars, total } = vars
+  const { name, jars, total, order } = vars
   return `
     <p style="margin:0 0 4px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c2412d;">Order confirmed</p>
     <h2 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:28px;color:#1a1a1a;letter-spacing:-0.3px;">Thanks, ${name}.</h2>
@@ -77,7 +78,7 @@ function customerBody(vars: Record<string, string | number>) {
       <table style="border-collapse:collapse;width:100%;">
         <tr>
           <td style="padding:8px 0;font-size:13px;color:#8a8070;">Hand-made kimchi</td>
-          <td style="padding:8px 0;font-size:13px;color:#1a1a1a;text-align:right;">${jars} jar${Number(jars) > 1 ? 's' : ''} &times; £15</td>
+          <td style="padding:8px 0;font-size:13px;color:#1a1a1a;text-align:right;">${order || `${jars} jar${Number(jars) > 1 ? 's' : ''}`}</td>
         </tr>
         <tr>
           <td style="padding:12px 0 0;font-size:15px;font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;border-top:1px solid #ece8df;">Total</td>
@@ -174,6 +175,7 @@ export async function POST(req: NextRequest) {
     details: details ?? '',
     jars: jars ?? '',
     total: total ?? '',
+    order: isKimchiOrder ? orderSummary(String(occasion ?? '').replace(/^Kimchi order — /, '')) : '',
   }
 
   try {

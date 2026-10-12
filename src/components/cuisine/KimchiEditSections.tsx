@@ -97,7 +97,7 @@ export function KimchiEditSections({ t }: Props) {
               <div className="relative w-full h-full flex items-center justify-center">
                 <div className="text-center px-8">
                   <p className="font-display text-[80px] text-brand-teal leading-none">김치</p>
-                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 1kg or 2kg · Glass jar</p>
                 </div>
                 {editMode && (
                   <EditableImage

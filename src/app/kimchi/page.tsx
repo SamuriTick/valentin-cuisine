@@ -11,16 +11,16 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "Hand-Made Kimchi — Putney, London",
-  description: 'Spicy, tangy, umami-rich kimchi made fresh to order. Blended (not layered) for deeper flavour. £15 for 2kg in a glass jar. Collection only from The Panda\'s Pantry in Putney, SW London.',
+  description: 'Spicy, tangy, umami-rich kimchi made fresh to order. Blended (not layered) for deeper flavour. £10 for 1kg or £15 for 2kg, in a glass jar. Collection only from The Panda\'s Pantry in Putney, SW London.',
   openGraph: {
     title: "Valentin's Hand-Made Kimchi — Putney, London",
-    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £15 for 2kg in a glass jar.',
+    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £10 for 1kg or £15 for 2kg, in a glass jar.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: "Valentin's Hand-Made Kimchi — Putney, London",
-    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £15 for 2kg in a glass jar.',
+    description: 'Spicy, tangy, umami-rich kimchi made fresh to order. £10 for 1kg or £15 for 2kg, in a glass jar.',
   },
 };
 
@@ -82,8 +82,8 @@ export default async function KimchiPage() {
   const heroTitle1   = map['kimchi.hero.title1']  ?? 'Spicy. Salty.'
   const heroTitle2   = map['kimchi.hero.title2']  ?? 'Umami-rich.'
   const heroDesc     = map['kimchi.hero.desc']    ?? "Not your standard recipe: blended, not layered, with a Vietnamese twist. Made fresh to order. Goes with literally everything."
-  const heroPrice    = map['kimchi.hero.price']   ?? '£15'
-  const heroPriceSub = map['kimchi.hero.price_sub'] ?? 'for 2kg · glass jar · no microplastics'
+  const heroPrice    = map['kimchi.hero.price']   ?? 'From £10'
+  const heroPriceSub = map['kimchi.hero.price_sub'] ?? '1kg or 2kg · glass jar · no microplastics'
 
   // Quote
   const valentinQuote = map['kimchi.quote'] ?? "I haven't been making kimchi for a while because I'm a kid and I'm still in school. But now I have time, so buy my kimchi. It's probably going to sell out in a few weeks."
@@ -185,7 +185,7 @@ export default async function KimchiPage() {
               ) : (
                 <div className="text-center px-8">
                   <p className="font-display text-[clamp(72px,14vw,120px)] text-brand-teal leading-none">김치</p>
-                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 2kg · Glass jar</p>
+                  <p className="font-body text-[13px] text-brand-muted mt-3">Kimchi · 1kg or 2kg · Glass jar</p>
                 </div>
               )}
             </div>
@@ -269,7 +269,7 @@ export default async function KimchiPage() {
           <div className="bg-white border border-brand-border rounded-2xl p-6 md:p-8">
             <p className="font-body text-[13px] text-brand-muted mb-4">What&rsquo;s in it</p>
             {[
-              ['Napa cabbage', 'One whole big head per 2kg jar'],
+              ['Napa cabbage', 'One whole big head per 2kg jar, half for 1kg'],
               ['Asian chives', 'Fresh and chopped in for bite'],
               ['Sugar & salt', 'Salt draws out the water, sugar feeds the ferment'],
               ['Gochugaru', 'Korean chilli flakes, blended smooth into the paste'],
@@ -462,7 +462,7 @@ export default async function KimchiPage() {
           </h2>
           <div className="w-12 h-px bg-brand-border mx-auto mt-5 mb-5" />
           <p className="font-body text-[13px] text-brand-muted mb-8">
-            {linkedProduct?.price ?? heroPrice} &middot; 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
+            {heroPrice} &middot; 1kg or 2kg &middot; Glass jar &middot; Made fresh to order &middot; SW London
           </p>
           <a href="#order" className="font-body text-[13px] font-bold bg-brand-teal text-white no-underline px-10 py-4 rounded-full inline-block hover:opacity-85 transition-opacity duration-200">
             Order Now

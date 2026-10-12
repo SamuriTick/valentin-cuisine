@@ -48,8 +48,8 @@ const DEFAULTS = [
 <div style="background:#F8F5EE;border-radius:4px;padding:20px;margin-bottom:24px;">
   <table style="border-collapse:collapse;width:100%;">
     <tr>
-      <td style="padding:8px 0;font-size:13px;color:#7A7060;">Kimchi jars</td>
-      <td style="padding:8px 0;font-size:13px;color:#1a1a1a;text-align:right;">{{jars}} jar(s) &times; £15</td>
+      <td style="padding:8px 0;font-size:13px;color:#7A7060;">Kimchi</td>
+      <td style="padding:8px 0;font-size:13px;color:#1a1a1a;text-align:right;">{{order}}</td>
     </tr>
     <tr>
       <td style="padding:10px 0 0;font-size:15px;font-family:Georgia,serif;color:#1a1a1a;border-top:1px solid #E8E0D5;font-weight:bold;">Total</td>

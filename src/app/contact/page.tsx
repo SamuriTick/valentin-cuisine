@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const FOOD_DEFAULTS = [
-  { label: 'Kimchi', body: 'Hand-made, blended with a Vietnamese twist. £15 for 2kg in a glass jar. SW London collection or Royal Mail.' },
+  { label: 'Kimchi', body: 'Hand-made, blended with a Vietnamese twist. £10 for 1kg or £15 for 2kg, in a glass jar. Collection only, from The Panda\'s Pantry in Putney (SW London).' },
   { label: 'Custom cakes', body: 'Celebration cakes made to order. Tell me the flavour, design, and date and I will handle the rest.' },
   { label: 'Sourdough & pastries', body: 'I bake to order on weekends and school holidays. Ask and I will tell you what is available.' },
 ]
