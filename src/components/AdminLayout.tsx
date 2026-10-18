@@ -11,6 +11,7 @@ const NAV = [
   { name: "Gallery",      href: "/admin/media" },
   { name: "Site Content", href: "/admin/content" },
   { name: "Orders",       href: "/admin/orders" },
+  { name: "Info",         href: "/admin/info" },
   { name: "Email",        href: "/admin/email" },
 ]
 

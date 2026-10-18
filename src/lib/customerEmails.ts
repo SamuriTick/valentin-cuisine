@@ -128,9 +128,23 @@ export function toTemplateHtml(email: CustomerEmail): string {
     .join('\n')
 }
 
+// Read jars and size from a saved order line: "2× 2kg (£15) · …" → { qty: 2, size: '2kg', kg: 4 }.
+// Old "3 jars × £15 = £45" orders were all 2kg jars.
+export function parseOrderLine(items: string): { qty: number; size: string; kg: number } | null {
+  const first = (items.split(' · ')[0] ?? items).replace(/\}+\s*$/, '')
+  const jars = first.match(/^(\d+) jars? × £[\d.]+ = £[\d.]+$/)
+  if (jars) return { qty: Number(jars[1]), size: '2kg', kg: Number(jars[1]) * 2 }
+  const m = first.match(/^(\d+)×\s*([\d.]+)\s*(kg|g)\b/i)
+  if (!m) return null
+  const qty = Number(m[1])
+  const unit = (m[3] ?? '').toLowerCase()
+  const each = unit === 'g' ? Number(m[2]) / 1000 : Number(m[2])
+  return { qty, size: `${Number(m[2])}${unit}`, kg: qty * each }
+}
+
 // Turn a saved order line like "2× 2kg (£15) · Collection (Putney)" into "2 × 2kg"
 export function orderSummary(items: string): string {
-  const first = items.split(' · ')[0] ?? items
+  const first = (items.split(' · ')[0] ?? items).replace(/\}+\s*$/, '')
   const jars = first.match(/^(\d+) jars? × £[\d.]+ = £[\d.]+$/)
   if (jars) return `${jars[1]} jar${jars[1] === '1' ? '' : 's'}`
   return first.replace(/\s*\(£[^)]*\)\s*$/, '').replace(/^(\d+)×\s*/, '$1 × ')

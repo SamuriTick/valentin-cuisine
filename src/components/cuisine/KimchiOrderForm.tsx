@@ -70,7 +70,7 @@ export function KimchiOrderForm({ pricePerJar = 15, variants = [] }: Props) {
           name: form.name,
           email: form.email.trim(),
           phone: form.phone.trim(),
-          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''}} · Collection (Putney)`,
+          occasion: `Kimchi order — ${getOrderLabel()}${form.dietary ? ` · dietary: ${form.dietary}` : ''} · Collection (Putney)`,
           details: form.details,
           jars,
           total,
