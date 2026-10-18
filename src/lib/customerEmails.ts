@@ -24,6 +24,21 @@ const bankBlock = (v: EmailVars) => [
 
 export const CUSTOMER_EMAILS: CustomerEmail[] = [
   {
+    slug: 'thank-you-for-ordering',
+    name: 'Thank you for ordering',
+    subject: 'Thank you so much for your kimchi order!',
+    body: v => [
+      `Hi ${v.name},`,
+      'Thank you so much for ordering my kimchi!',
+      `Your order: ${v.order}`,
+      "It really means a lot to me. Every order supports me more than you know, and it keeps me going as I build this little kimchi project from my kitchen.",
+      "I promise to make your kimchi the best I possibly can, with care and the freshest ingredients I can find. I can't wait for you to try it.",
+      'If you have any questions, just reply to this email.',
+      'With gratitude,',
+      'Valentin',
+    ],
+  },
+  {
     slug: 'order-payment-request',
     name: 'Order payment request',
     subject: 'Thanks for your kimchi order! Payment details inside',
