@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { parseOrderLine } from "@/lib/customerEmails"
+import KimchiCosts, { type CostVariant } from "@/components/admin/KimchiCosts"
 
 type Order = {
   id: number; name: string; email: string; phone: string | null;
   items: string; total: number | null; stage: string; paid: boolean; createdAt: string; deletedAt: string | null;
 }
 type Product = { pageUrl: string | null; available: boolean; weights: string | null }
-type Variant = { amount: string; unit: string; price: string }
+type Variant = { amount: string; unit: string; price: string; discount?: { type: string; value: string } }
 
 const STAGE_LABELS: Record<string, string> = { ordered: "Ordered", confirmed: "Confirmed", ready: "Ready to collect", collected: "Collected" }
 
@@ -19,11 +20,18 @@ const foot: React.CSSProperties = { ...num, fontWeight: 700, background: "#faf8f
 
 const sizeKey = (amount: string, unit: string) => `${Number(amount)}${unit.trim().toLowerCase()}`
 const fmtKg = (kg: number) => `${Number(kg.toFixed(2))} kg`
+const toKg = (amount: string, unit: string) => Number(amount) / (unit.trim().toLowerCase() === "g" ? 1000 : 1)
+// Price the customer actually pays, after the size's discount
+const salePrice = (v: Variant) => {
+  const price = parseFloat(v.price) || 0, off = parseFloat(v.discount?.value ?? "") || 0
+  return v.discount?.type === "percent" ? price * (1 - off / 100) : price - off
+}
 const fmtMoney = (n: number) => `£${n % 1 === 0 ? n.toFixed(0) : n.toFixed(2)}`
 
 export default function InfoPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [sizes, setSizes] = useState<string[]>([])
+  const [costVariants, setCostVariants] = useState<CostVariant[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -35,6 +43,7 @@ export default function InfoPage() {
         let variants: Variant[] = []
         try { variants = kimchi?.weights ? JSON.parse(kimchi.weights) : [] } catch { /* bad JSON: no sizes */ }
         setSizes(Array.from(new Set(variants.map(v => sizeKey(v.amount, v.unit)))))
+        setCostVariants(variants.map(v => ({ size: sizeKey(v.amount, v.unit), kg: toKg(v.amount, v.unit), price: salePrice(v) })))
       }
       setLoading(false)
     })
@@ -76,7 +85,7 @@ export default function InfoPage() {
     <div>
       <h1 style={{ fontFamily: "Georgia, serif", fontWeight: "normal", fontSize: 28, margin: "0 0 6px" }}>Info</h1>
       <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)", margin: "0 0 24px" }}>
-        All current orders as a spreadsheet, with how many jars of each size and how much kimchi to make. Sizes follow the kimchi product, so adding or removing a size updates the totals. Orders in the trash aren&apos;t counted.
+        All current orders as a spreadsheet, with how many jars of each size and how much kimchi to make, plus what each jar costs you to make below. Sizes follow the kimchi product, so adding or removing a size updates the totals. Orders in the trash aren&apos;t counted.
       </p>
 
       {loading ? (
@@ -159,6 +168,8 @@ export default function InfoPage() {
               </table>
             </div>
           )}
+
+          <KimchiCosts variants={costVariants} jars={Object.fromEntries(sizes.map(s => [s, jarsOf(s)]))} />
         </>
       )}
     </div>
