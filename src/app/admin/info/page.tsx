@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { parseOrderLine } from "@/lib/customerEmails"
 import KimchiCosts, { type CostVariant } from "@/components/admin/KimchiCosts"
+import MoneyInOut from "@/components/admin/MoneyInOut"
 
 type Order = {
   id: number; name: string; email: string; phone: string | null;
@@ -85,7 +86,7 @@ export default function InfoPage() {
     <div>
       <h1 style={{ fontFamily: "Georgia, serif", fontWeight: "normal", fontSize: 28, margin: "0 0 6px" }}>Info</h1>
       <p style={{ fontSize: 13, color: "rgba(26,26,26,0.5)", margin: "0 0 24px" }}>
-        All current orders as a spreadsheet, with how many jars of each size and how much kimchi to make, plus what each jar costs you to make below. Sizes follow the kimchi product, so adding or removing a size updates the totals. Orders in the trash aren&apos;t counted.
+        All current orders as a spreadsheet, with how many jars of each size and how much kimchi to make, plus what each jar costs you to make and your money in and out below. Sizes follow the kimchi product, so adding or removing a size updates the totals. Orders in the trash aren&apos;t counted.
       </p>
 
       {loading ? (
@@ -170,6 +171,11 @@ export default function InfoPage() {
           )}
 
           <KimchiCosts variants={costVariants} jars={Object.fromEntries(sizes.map(s => [s, jarsOf(s)]))} />
+
+          <MoneyInOut
+            paidOrders={rows.filter(r => r.paid && r.total).map(r => ({ id: r.id, name: r.name, total: r.total!, date: r.createdAt }))}
+            unpaidTotal={totalMoney - paidMoney}
+          />
         </>
       )}
     </div>
