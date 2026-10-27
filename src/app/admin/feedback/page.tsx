@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { ALL_QUESTIONS, OVERALL_OPTIONS, gridKey, type Answers } from "@/lib/feedbackQuestions"
 import { orderSummary } from "@/lib/customerEmails"
 
-type Response = { id: number; orderId: number | null; name: string; answers: Answers; published: boolean; items: string | null; updatedAt: string }
+type Response = { id: number; orderId: number | null; name: string; answers: Answers; published: boolean; siteText: string | null; items: string | null; updatedAt: string }
 
 const EMOJI = ["😞", "😐", "🙂", "😋", "🤩"]
 const RED = "#c2412d", GREEN = "#15803d", MUTED = "rgba(26,26,26,0.5)"
@@ -37,6 +37,39 @@ function Bars({ label, options, counts }: { label: string; options: string[]; co
   )
 }
 
+// One person's review as shown on /kimchi: editable text + show/hide
+function SiteReview({ row, onSave }: { row: Response; onSave: (id: number, text: string, published: boolean) => Promise<void> }) {
+  const original = row.siteText ?? (typeof row.answers.review === "string" ? row.answers.review : "")
+  const [text, setText] = useState(original)
+  const [saving, setSaving] = useState(false)
+  const score = OVERALL_OPTIONS.indexOf(row.answers.overall as string) + 1
+  const save = async (published: boolean) => { setSaving(true); await onSave(row.id, text, published); setSaving(false) }
+  const btn = (primary: boolean): React.CSSProperties => ({ fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99, cursor: "pointer",
+    border: `1px solid ${primary ? GREEN : "#e8e3dc"}`, background: primary ? GREEN : "#fff", color: primary ? "#fff" : "#1a1a1a" })
+  return (
+    <div style={{ ...box, borderColor: row.published ? GREEN : "#e8e3dc" }}>
+      <p style={{ fontSize: 13, fontWeight: 600, margin: "0 0 4px" }}>
+        {row.name.trim().split(/\s+/)[0]} <span style={{ color: RED, fontWeight: 400 }}>{"★".repeat(Math.max(score, 0))}</span>
+      </p>
+      <p style={{ fontSize: 11, color: row.published ? GREEN : MUTED, margin: "0 0 8px" }}>
+        {row.published ? "✓ On the kimchi page" : "Not on the site"} · {row.answers.share === "yes" ? "agreed to share" : "didn't tick “share”"}
+      </p>
+      <textarea rows={3} value={text} onChange={e => setText(e.target.value)} placeholder="Review text (optional)"
+        style={{ width: "100%", boxSizing: "border-box", fontSize: 13, fontFamily: "inherit", padding: 8, border: "1px solid #e8e3dc", borderRadius: 4, resize: "vertical" }} />
+      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+        {row.published ? (
+          <>
+            <button disabled={saving || text === original} onClick={() => save(true)} style={{ ...btn(true), opacity: text === original ? 0.4 : 1 }}>Save text</button>
+            <button disabled={saving} onClick={() => save(false)} style={btn(false)}>Hide from site</button>
+          </>
+        ) : (
+          <button disabled={saving} onClick={() => save(true)} style={btn(true)}>Show on kimchi page</button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function FeedbackAdminPage() {
   const [rows, setRows] = useState<Response[]>([])
   const [loading, setLoading] = useState(true)
@@ -51,9 +84,9 @@ export default function FeedbackAdminPage() {
     await fetch(`/api/admin/feedback?id=${id}`, { method: "DELETE" })
   }
 
-  async function setPublished(id: number, published: boolean) {
-    setRows(rs => rs.map(r => r.id === id ? { ...r, published } : r))
-    await fetch(`/api/admin/feedback?id=${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ published }) })
+  async function saveSite(id: number, siteText: string, published: boolean) {
+    setRows(rs => rs.map(r => r.id === id ? { ...r, siteText: siteText.trim() || null, published } : r))
+    await fetch(`/api/admin/feedback?id=${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ siteText, published }) })
   }
 
   const count = (key: string) => rows.reduce<Record<string, number>>((c, r) => {
@@ -69,13 +102,13 @@ export default function FeedbackAdminPage() {
   }
   const comments = rows.flatMap(r => (["change", "ideas", "review"] as const)
     .filter(k => typeof r.answers[k] === "string")
-    .map(k => ({ id: `${r.id}${k}`, name: r.name, kind: k, text: r.answers[k] as string, share: r.answers.share === "yes", rowId: r.id, published: r.published })))
+    .map(k => ({ id: `${r.id}${k}`, name: r.name, kind: k, text: r.answers[k] as string, share: r.answers.share === "yes" })))
 
   return (
     <div>
       <h1 style={{ fontFamily: "Georgia, serif", fontWeight: "normal", fontSize: 28, margin: "0 0 6px" }}>Feedback</h1>
       <p style={{ fontSize: 13, color: MUTED, margin: "0 0 24px" }}>
-        Answers from the kimchi feedback form. Reviews people agreed to share can be put on the kimchi page with “Show on kimchi page”. Send people their link from the Orders page (&quot;Copy feedback link&quot;, or Email → &quot;How was your kimchi?&quot;).
+        Answers from the kimchi feedback form. Put reviews on the kimchi page from “On the kimchi page” below. Send people their link from the Orders page (&quot;Copy feedback link&quot;, or Email → &quot;How was your kimchi?&quot;).
         Anyone can also fill it in at <a href="/feedback" target="_blank" style={{ color: RED }}>/feedback</a>.
       </p>
 
@@ -112,18 +145,19 @@ export default function FeedbackAdminPage() {
                       {c.kind === "review" && <span style={{ color: c.share ? GREEN : MUTED }}> · {c.share ? "OK to share" : "private"}</span>}
                     </p>
                     <p style={{ fontSize: 14, margin: 0, lineHeight: 1.6 }}>“{c.text}”</p>
-                    {c.kind === "review" && c.share && (
-                      <button onClick={() => setPublished(c.rowId, !c.published)}
-                        style={{ marginTop: 10, fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99, cursor: "pointer",
-                          border: `1px solid ${c.published ? GREEN : "#e8e3dc"}`, background: c.published ? "#f0fdf4" : "#fff", color: c.published ? GREEN : "#1a1a1a" }}>
-                        {c.published ? "✓ On the kimchi page · Hide" : "Show on kimchi page"}
-                      </button>
-                    )}
                   </div>
                 ))}
               </div>
             </>
           )}
+
+          <h2 style={h2}>On the kimchi page</h2>
+          <p style={{ fontSize: 13, color: MUTED, margin: "0 0 12px" }}>
+            Pick who shows up under “What people say”. Write or edit the review text (leave it empty to show just their name and stars). Only the first name is shown.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12 }}>
+            {rows.map(r => <SiteReview key={r.id} row={r} onSave={saveSite} />)}
+          </div>
 
           <h2 style={h2}>Everyone</h2>
           <div style={{ overflowX: "auto", background: "#fff", border: "1px solid #e8e3dc", borderRadius: 6 }}>

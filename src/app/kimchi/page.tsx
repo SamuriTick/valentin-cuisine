@@ -72,13 +72,12 @@ export default async function KimchiPage() {
     prisma.feedback.findMany({ where: { published: true }, orderBy: { updatedAt: 'desc' } }),
   ])
 
-  // Reviews: published by the admin, and still opted in to sharing by the customer
-  const reviews = publishedFeedback.flatMap(f => {
+  // Reviews picked by the admin; text is the admin's version, else the customer's own review
+  const reviews = publishedFeedback.map(f => {
     let a: Answers = {}
-    try { a = JSON.parse(f.answers) } catch { /* skip */ }
-    if (a.share !== 'yes' || typeof a.review !== 'string') return []
-    const score = OVERALL_OPTIONS.indexOf(a.overall as string) + 1
-    return [{ id: f.id, text: a.review, name: f.name.trim().split(/\s+/)[0], score }]
+    try { a = JSON.parse(f.answers) } catch { /* keep empty */ }
+    const text = f.siteText ?? (typeof a.review === 'string' ? a.review : '')
+    return { id: f.id, text, overall: typeof a.overall === 'string' ? a.overall : '', name: f.name.trim().split(/\s+/)[0], score: OVERALL_OPTIONS.indexOf(a.overall as string) + 1 }
   })
 
   const linkedWeights: { amount: string; unit: string; price: string }[] = linkedProduct?.weights
@@ -465,7 +464,9 @@ export default async function KimchiPage() {
               {reviews.map(r => (
                 <blockquote key={r.id} className="bg-white border border-brand-border rounded-2xl p-6 m-0 flex flex-col">
                   {r.score > 0 && <p className="text-[#c2412d] text-[15px] tracking-[2px] mb-3" aria-label={`${r.score} out of 5`}>{'★'.repeat(r.score)}<span className="text-brand-border">{'★'.repeat(5 - r.score)}</span></p>}
-                  <p className="font-body text-[15px] text-brand-dark leading-[1.6] mb-4 flex-1">“{r.text}”</p>
+                  {r.text
+                    ? <p className="font-body text-[15px] text-brand-dark leading-[1.6] mb-4 flex-1">“{r.text}”</p>
+                    : <p className="font-body text-[15px] text-brand-muted leading-[1.6] mb-4 flex-1">Rated it {r.overall.toLowerCase()}</p>}
                   <cite className="font-body text-[13px] text-brand-teal not-italic">{r.name}</cite>
                 </blockquote>
               ))}

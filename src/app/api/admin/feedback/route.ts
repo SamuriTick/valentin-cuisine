@@ -15,17 +15,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(rows.map(r => {
       let answers = {}
       try { answers = JSON.parse(r.answers) } catch { /* keep empty */ }
-      return { id: r.id, orderId: r.orderId, name: r.name, answers, published: r.published, items: r.orderId ? itemsById.get(r.orderId) ?? null : null, updatedAt: r.updatedAt }
+      return { id: r.id, orderId: r.orderId, name: r.name, answers, published: r.published, siteText: r.siteText, items: r.orderId ? itemsById.get(r.orderId) ?? null : null, updatedAt: r.updatedAt }
     }))
   })
 }
 
-// Show or hide a review on the public kimchi page
+// Show or hide a review on the public kimchi page, and set the text shown there
 export async function PATCH(req: NextRequest) {
   return withAuth(req, async () => {
     const id = Number(new URL(req.url).searchParams.get("id"))
-    const body = await req.json().catch(() => null) as { published?: unknown } | null
-    await prisma.feedback.update({ where: { id }, data: { published: body?.published === true } })
+    const body = await req.json().catch(() => null) as { published?: unknown; siteText?: unknown } | null
+    const siteText = typeof body?.siteText === "string" ? body.siteText.trim().slice(0, 2000) : undefined
+    await prisma.feedback.update({ where: { id }, data: {
+      ...(typeof body?.published === "boolean" && { published: body.published }),
+      ...(siteText !== undefined && { siteText: siteText || null }),
+    } })
     return NextResponse.json({ ok: true })
   })
 }
