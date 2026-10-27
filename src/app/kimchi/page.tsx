@@ -6,6 +6,7 @@ import { KimchiShort } from '@/components/cuisine/KimchiShort';
 import { youtubeId } from '@/lib/youtube';
 import { getContentMap } from '@/lib/siteContent';
 import { prisma } from '@/lib/prisma';
+import { OVERALL_OPTIONS, type Answers } from '@/lib/feedbackQuestions';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,10 +66,20 @@ const FAQS_DEFAULTS = [
 ];
 
 export default async function KimchiPage() {
-  const [map, linkedProduct] = await Promise.all([
+  const [map, linkedProduct, publishedFeedback] = await Promise.all([
     getContentMap(),
     prisma.product.findFirst({ where: { pageUrl: '/kimchi', available: true } }),
+    prisma.feedback.findMany({ where: { published: true }, orderBy: { updatedAt: 'desc' } }),
   ])
+
+  // Reviews: published by the admin, and still opted in to sharing by the customer
+  const reviews = publishedFeedback.flatMap(f => {
+    let a: Answers = {}
+    try { a = JSON.parse(f.answers) } catch { /* skip */ }
+    if (a.share !== 'yes' || typeof a.review !== 'string') return []
+    const score = OVERALL_OPTIONS.indexOf(a.overall as string) + 1
+    return [{ id: f.id, text: a.review, name: f.name.trim().split(/\s+/)[0], score }]
+  })
 
   const linkedWeights: { amount: string; unit: string; price: string }[] = linkedProduct?.weights
     ? (() => { try { return JSON.parse(linkedProduct.weights) } catch { return [] } })()
@@ -443,6 +454,25 @@ export default async function KimchiPage() {
 
         </ContainerStandard>
       </section>
+
+      {/* Reviews */}
+      {reviews.length > 0 && (
+        <section className="bg-brand-light border-t border-brand-border">
+          <ContainerStandard className="py-section">
+            <p className="font-accent text-[clamp(22px,3vw,32px)] text-brand-teal mb-3 leading-none">What people say</p>
+            <div className="w-12 h-px bg-brand-border mb-8" />
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {reviews.map(r => (
+                <blockquote key={r.id} className="bg-white border border-brand-border rounded-2xl p-6 m-0 flex flex-col">
+                  {r.score > 0 && <p className="text-[#c2412d] text-[15px] tracking-[2px] mb-3" aria-label={`${r.score} out of 5`}>{'★'.repeat(r.score)}<span className="text-brand-border">{'★'.repeat(5 - r.score)}</span></p>}
+                  <p className="font-body text-[15px] text-brand-dark leading-[1.6] mb-4 flex-1">“{r.text}”</p>
+                  <cite className="font-body text-[13px] text-brand-teal not-italic">{r.name}</cite>
+                </blockquote>
+              ))}
+            </div>
+          </ContainerStandard>
+        </section>
+      )}
 
       {/* FAQs */}
       <section className="bg-white border-t border-brand-border">

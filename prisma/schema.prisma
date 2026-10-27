@@ -208,6 +208,7 @@ model Feedback {
   orderId   Int?     @unique @map("order_id")
   name      String
   answers   String   // JSON, keys from src/lib/feedbackQuestions.ts
+  published Boolean  @default(false) // review shown on /kimchi (only if the customer ticked "share")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 

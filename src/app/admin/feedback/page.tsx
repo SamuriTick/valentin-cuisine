@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { ALL_QUESTIONS, OVERALL_OPTIONS, gridKey, type Answers } from "@/lib/feedbackQuestions"
 import { orderSummary } from "@/lib/customerEmails"
 
-type Response = { id: number; orderId: number | null; name: string; answers: Answers; items: string | null; updatedAt: string }
+type Response = { id: number; orderId: number | null; name: string; answers: Answers; published: boolean; items: string | null; updatedAt: string }
 
 const EMOJI = ["😞", "😐", "🙂", "😋", "🤩"]
 const RED = "#c2412d", GREEN = "#15803d", MUTED = "rgba(26,26,26,0.5)"
@@ -51,6 +51,11 @@ export default function FeedbackAdminPage() {
     await fetch(`/api/admin/feedback?id=${id}`, { method: "DELETE" })
   }
 
+  async function setPublished(id: number, published: boolean) {
+    setRows(rs => rs.map(r => r.id === id ? { ...r, published } : r))
+    await fetch(`/api/admin/feedback?id=${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ published }) })
+  }
+
   const count = (key: string) => rows.reduce<Record<string, number>>((c, r) => {
     const v = r.answers[key]
     for (const x of Array.isArray(v) ? v : v ? [v] : []) c[x] = (c[x] ?? 0) + 1
@@ -64,13 +69,13 @@ export default function FeedbackAdminPage() {
   }
   const comments = rows.flatMap(r => (["change", "ideas", "review"] as const)
     .filter(k => typeof r.answers[k] === "string")
-    .map(k => ({ id: `${r.id}${k}`, name: r.name, kind: k, text: r.answers[k] as string, share: r.answers.share === "yes" })))
+    .map(k => ({ id: `${r.id}${k}`, name: r.name, kind: k, text: r.answers[k] as string, share: r.answers.share === "yes", rowId: r.id, published: r.published })))
 
   return (
     <div>
       <h1 style={{ fontFamily: "Georgia, serif", fontWeight: "normal", fontSize: 28, margin: "0 0 6px" }}>Feedback</h1>
       <p style={{ fontSize: 13, color: MUTED, margin: "0 0 24px" }}>
-        Answers from the kimchi feedback form. Send people their link from the Orders page (&quot;Copy feedback link&quot;, or Email → &quot;How was your kimchi?&quot;).
+        Answers from the kimchi feedback form. Reviews people agreed to share can be put on the kimchi page with “Show on kimchi page”. Send people their link from the Orders page (&quot;Copy feedback link&quot;, or Email → &quot;How was your kimchi?&quot;).
         Anyone can also fill it in at <a href="/feedback" target="_blank" style={{ color: RED }}>/feedback</a>.
       </p>
 
@@ -107,6 +112,13 @@ export default function FeedbackAdminPage() {
                       {c.kind === "review" && <span style={{ color: c.share ? GREEN : MUTED }}> · {c.share ? "OK to share" : "private"}</span>}
                     </p>
                     <p style={{ fontSize: 14, margin: 0, lineHeight: 1.6 }}>“{c.text}”</p>
+                    {c.kind === "review" && c.share && (
+                      <button onClick={() => setPublished(c.rowId, !c.published)}
+                        style={{ marginTop: 10, fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99, cursor: "pointer",
+                          border: `1px solid ${c.published ? GREEN : "#e8e3dc"}`, background: c.published ? "#f0fdf4" : "#fff", color: c.published ? GREEN : "#1a1a1a" }}>
+                        {c.published ? "✓ On the kimchi page · Hide" : "Show on kimchi page"}
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
