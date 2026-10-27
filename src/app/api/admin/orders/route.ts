@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { withAuth } from "@/lib/auth-middleware"
 import { prisma } from "@/lib/prisma"
+import { feedbackUrl } from "@/lib/feedbackToken"
 
 const STAGES = ["ordered", "confirmed", "ready", "collected"]
 const TRASH_DAYS = 14
@@ -12,7 +13,11 @@ export async function GET(req: NextRequest) {
     await prisma.order.deleteMany({ where: { deletedAt: { lt: cutoff } } })
 
     const orders = await prisma.order.findMany({ orderBy: { createdAt: "desc" } })
-    return NextResponse.json(orders)
+    const answered = new Set((await prisma.feedback.findMany({ select: { orderId: true } })).map(f => f.orderId))
+    const origin = new URL(req.url).origin
+    return NextResponse.json(await Promise.all(orders.map(async o => ({
+      ...o, feedbackUrl: await feedbackUrl(origin, o.id), hasFeedback: answered.has(o.id),
+    }))))
   })
 }
 

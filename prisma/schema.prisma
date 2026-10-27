@@ -201,3 +201,15 @@ model Order {
 
   @@map("orders")
 }
+
+// Kimchi feedback form answers; one per order when sent from an order link
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  orderId   Int?     @unique @map("order_id")
+  name      String
+  answers   String   // JSON, keys from src/lib/feedbackQuestions.ts
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("feedback")
+}

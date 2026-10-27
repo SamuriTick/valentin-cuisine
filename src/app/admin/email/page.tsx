@@ -34,6 +34,7 @@ type Order = {
   stage: string
   createdAt: string
   deletedAt: string | null
+  feedbackUrl?: string
 }
 
 const STAGE_LABEL: Record<string, string> = { ordered: 'Ordered', confirmed: 'Confirmed', ready: 'Ready to collect', collected: 'Collected' }
@@ -403,7 +404,7 @@ export default function EmailPage() {
                           <div style={{ color: '#7A7060', marginTop: 4 }}>{STAGE_LABEL[o.stage] ?? o.stage}</div>
                         </td>
                         <td style={s.td as React.CSSProperties}>
-                          <SendTemplate templates={templates} to={o.email} vars={{ name: o.name, order: orderSummary(o.items), total }} onSent={loadCampaigns} />
+                          <SendTemplate templates={templates} to={o.email} vars={{ name: o.name, order: orderSummary(o.items), total, link: o.feedbackUrl ?? '' }} onSent={loadCampaigns} />
                         </td>
                       </tr>
                     )

@@ -6,6 +6,7 @@ import { CUSTOMER_EMAILS, orderSummary, toPlainText } from "@/lib/customerEmails
 type Order = {
   id: number; name: string; email: string; phone: string | null;
   items: string; total: number | null; stage: string; paid: boolean; createdAt: string; deletedAt: string | null;
+  feedbackUrl: string; hasFeedback: boolean;
 }
 
 const STAGES = [
@@ -65,7 +66,7 @@ export default function OrdersPage() {
   function gmailLink(o: Order, slug: string) {
     const email = CUSTOMER_EMAILS.find(e => e.slug === slug)!
     const total = o.total == null ? "" : o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)
-    const body = toPlainText(email, { name: o.name, order: orderSummary(o.items), total })
+    const body = toPlainText(email, { name: o.name, order: orderSummary(o.items), total, link: o.feedbackUrl })
     return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}&su=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(body)}`
   }
 
@@ -127,6 +128,10 @@ export default function OrdersPage() {
                   <td style={td}>
                     {o.items}
                     {o.total != null && <div style={{ fontSize: 12, color: "rgba(26,26,26,0.5)", marginTop: 2 }}>£{o.total % 1 === 0 ? o.total.toFixed(0) : o.total.toFixed(2)}</div>}
+                    {o.hasFeedback
+                      ? <a href="/admin/feedback" style={{ display: "inline-block", marginTop: 4, fontSize: 11, fontWeight: 600, color: "#15803d" }}>✓ Feedback received</a>
+                      : <button onClick={() => navigator.clipboard.writeText(o.feedbackUrl).then(() => alert("Feedback link copied. Paste it into WhatsApp or a message."))}
+                          style={{ display: "block", marginTop: 4, padding: 0, fontSize: 11, color: "#c2412d", background: "none", border: "none", cursor: "pointer" }}>Copy feedback link</button>}
                   </td>
                   <td style={td}><a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(o.email)}`} target="_blank" rel="noopener noreferrer" style={{ color: "#3d7a6b" }}>{o.email}</a></td>
                   <td style={td}>{o.phone ? <a href={`tel:${o.phone}`} style={{ color: "#3d7a6b" }}>{o.phone}</a> : <span style={{ color: "rgba(26,26,26,0.3)" }}>—</span>}</td>

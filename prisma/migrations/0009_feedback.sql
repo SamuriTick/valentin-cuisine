@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS "feedback" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "order_id" INTEGER,
+  "name" TEXT NOT NULL,
+  "answers" TEXT NOT NULL,
+  "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE UNIQUE INDEX IF NOT EXISTS "feedback_order_id_key" ON "feedback"("order_id");

@@ -4,7 +4,8 @@
 export const BANK = { name: 'MSTR Valentin Thang', sort: '20-90-74', account: '33552330' }
 export const COLLECTION = "on the 25th at The Panda's Pantry in Putney, SW London"
 
-export type EmailVars = { name: string; order: string; total: string }
+// link: the order's personal feedback form link
+export type EmailVars = { name: string; order: string; total: string; link?: string }
 
 export type CustomerEmail = {
   slug: string
@@ -109,6 +110,20 @@ export const CUSTOMER_EMAILS: CustomerEmail[] = [
       'Valentin',
     ],
   },
+  {
+    slug: 'ask-for-feedback',
+    name: 'How was your kimchi? (feedback)',
+    subject: 'How was your kimchi?',
+    body: v => [
+      `Hi ${v.name},`,
+      "I hope you've been enjoying your kimchi! I'd love to know what you thought.",
+      "I've made a short form, mostly just taps, and it takes under a minute:",
+      v.link ?? '',
+      "Please be honest, good or bad. I read every answer myself, and it really helps me make the next batch even better.",
+      'Thank you so much for supporting me!',
+      'Valentin',
+    ],
+  },
 ]
 
 export function toPlainText(email: CustomerEmail, v: EmailVars): string {
@@ -119,12 +134,14 @@ function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&rsquo;')
 }
 
-// HTML version for the Email templates, with {{name}}, {{order}} and {{total}} placeholders
+// HTML version for the Email templates, with {{name}}, {{order}}, {{total}} and {{link}} placeholders
 export function toTemplateHtml(email: CustomerEmail): string {
   const P = '<p style="margin:0 0 16px;font-size:14px;color:#1a1a1a;line-height:1.7;">'
   return email
-    .body({ name: '{{name}}', order: '{{order}}', total: '{{total}}' })
-    .map(p => (Array.isArray(p) ? `${P}${p.map(esc).join('<br/>')}</p>` : `${P}${esc(p)}</p>`))
+    .body({ name: '{{name}}', order: '{{order}}', total: '{{total}}', link: '{{link}}' })
+    .map(p => (p === '{{link}}'
+      ? `<p style="margin:8px 0 24px;"><a href="{{link}}" style="display:inline-block;background:#c2412d;color:#ffffff;text-decoration:none;font-size:14px;font-weight:bold;padding:12px 26px;border-radius:99px;">Give my feedback</a></p>`
+      : Array.isArray(p) ? `${P}${p.map(esc).join('<br/>')}</p>` : `${P}${esc(p)}</p>`))
     .join('\n')
 }
 
