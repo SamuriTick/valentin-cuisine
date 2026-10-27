@@ -14,8 +14,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function FeedbackPage({ searchParams }: { searchParams: { o?: string } }) {
-  const orderId = await orderIdFromToken(searchParams.o)
+export default async function FeedbackPage({ searchParams }: { searchParams: Promise<{ o?: string }> }) {
+  const { o: token } = await searchParams
+  const orderId = await orderIdFromToken(token)
   const order = orderId ? await prisma.order.findUnique({ where: { id: orderId } }) : null
   const existing = order ? await prisma.feedback.findUnique({ where: { orderId: order.id } }) : null
   let previous: Answers | undefined
@@ -40,7 +41,7 @@ export default async function FeedbackPage({ searchParams }: { searchParams: { o
       </div>
 
       <ContainerStandard className="py-10 md:py-14 max-w-[720px]">
-        <FeedbackForm token={order ? searchParams.o : undefined} needsName={!order} previous={previous} />
+        <FeedbackForm token={order ? token : undefined} needsName={!order} previous={previous} />
       </ContainerStandard>
     </div>
   );

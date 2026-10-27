@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "build:check": "npm run type-check && npm run lint && npm run build",
-    "cf:build": "opennextjs-cloudflare build",
+    "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "cf:preview": "npm run cf:build && npx wrangler dev",
     "cf:deploy": "npm run cf:build && npx wrangler deploy",
     "d1:migrate:local": "npx wrangler d1 migrations apply valentin-cuisine-db --local",
