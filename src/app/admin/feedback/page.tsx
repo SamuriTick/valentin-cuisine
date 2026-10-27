@@ -103,7 +103,7 @@ export default function FeedbackAdminPage() {
                 {comments.map(c => (
                   <div key={c.id} style={box}>
                     <p style={{ fontSize: 11, letterSpacing: 1, textTransform: "uppercase", color: MUTED, margin: "0 0 6px" }}>
-                      {c.name} · {c.kind === "change" ? "Would change" : c.kind === "ideas" ? "Would like you to make" : "Review"}
+                      {c.name} · {c.kind === "change" ? "Anything else" : c.kind === "ideas" ? "Would like you to make" : "Review"}
                       {c.kind === "review" && <span style={{ color: c.share ? GREEN : MUTED }}> · {c.share ? "OK to share" : "private"}</span>}
                     </p>
                     <p style={{ fontSize: 14, margin: 0, lineHeight: 1.6 }}>“{c.text}”</p>

@@ -25,11 +25,11 @@ export const MAIN_QUESTIONS: Question[] = [
 export const EXTRA_QUESTIONS: Question[] = [
   { key: 'collection', label: 'How was collecting it?', kind: 'choice', options: ['Easy', 'OK', 'Difficult'] },
   { key: 'fresh', label: 'How fresh did it feel when you got it?', kind: 'choice', options: ['Too fresh', 'Just right', 'Too fermented'] },
-  { key: 'ateWith', label: 'What did you eat it with?', kind: 'multi', options: ['Rice', 'Noodles', 'Ramen', 'Eggs', 'Fried rice', 'On its own', 'Other'] },
+  { key: 'ateWith', label: 'What did you eat it with?', kind: 'multi', options: ['Rice', 'Noodles', 'Ramen', 'Eggs', 'Meat', 'Fried rice', 'On its own', 'Other'] },
   { key: 'recommend', label: 'Would you recommend it to a friend?', kind: 'choice', options: YES_NO },
-  { key: 'heard', label: 'How did you hear about us?', kind: 'choice', options: ['Friend', 'Instagram', 'WhatsApp', 'Passing by', 'Other'] },
+  { key: 'heard', label: 'How did you hear about us?', kind: 'choice', options: ['Friend', 'WhatsApp', 'Passing by', 'Other'] },
   { key: 'ideas', label: 'What else would you like me to make?', kind: 'text', placeholder: 'Other kimchi, sauces, cakes…' },
-  { key: 'change', label: "Anything you'd change?", kind: 'text', placeholder: 'Be honest, it helps!' },
+  { key: 'change', label: 'Anything else?', kind: 'text', placeholder: 'Anything you would change, or anything at all…' },
 ]
 
 export const ALL_QUESTIONS = [...MAIN_QUESTIONS, ...EXTRA_QUESTIONS]
