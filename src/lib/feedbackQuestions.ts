@@ -25,6 +25,7 @@ export const MAIN_QUESTIONS: Question[] = [
 export const EXTRA_QUESTIONS: Question[] = [
   { key: 'collection', label: 'How was collecting it?', kind: 'choice', options: ['Easy', 'OK', 'Difficult'] },
   { key: 'fresh', label: 'How fresh did it feel when you got it?', kind: 'choice', options: ['Too fresh', 'Just right', 'Too fermented'] },
+  { key: 'finished', label: 'How long did it take you to finish it?', kind: 'choice', options: ['Under a week', '1–2 weeks', '2–4 weeks', 'Over a month', 'Still eating it'] },
   { key: 'ateWith', label: 'What did you eat it with?', kind: 'multi', options: ['Rice', 'Noodles', 'Ramen', 'Eggs', 'Meat', 'Fried rice', 'On its own', 'Other'] },
   { key: 'recommend', label: 'Would you recommend it to a friend?', kind: 'choice', options: YES_NO },
   { key: 'heard', label: 'How did you hear about us?', kind: 'choice', options: ['Friend', 'WhatsApp', 'Passing by', 'Other'] },
